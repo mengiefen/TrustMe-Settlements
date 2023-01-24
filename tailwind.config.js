@@ -1,30 +1,63 @@
-const { fontFamily } = require("tailwindcss/defaultTheme")
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './app/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
 
     // Or if using `src` directory:
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        bg: "#202741",
-        secondary: "#02cae5",
-        "dark-orange": "#ed4c5c",
-        "light-orange": "#ee8848",
-        "text-light": "#fbfcf5",
-        text: "#f4f8f9",
-        "text-dark": "#cbcac8",
+        bg: '#202741',
+        secondary: {
+          50: '#e6fafc',
+          100: '#b3eff7',
+          200: '#9aeaf5',
+          300: '#35d5ea',
+          400: '#1bcfe8',
+          500: '#02cae5',
+          600: '#02b6ce',
+          700: '#02a2b7',
+          800: '#018da0',
+          900: '#017989',
+        },
+        'dark-orange': {
+          50: '#fbdbde',
+          100: '#fac9ce',
+          200: '#f4949d',
+          300: '#f1707d',
+          400: '#ef5e6c',
+          500: '#ed4c5c',
+          600: '#d54453',
+          700: '#be3d4a',
+          800: '#a63540',
+          900: '#8e2e37',
+        },
+        'light-orange': {
+          50: '#fce7da',
+          100: '#fadbc8',
+          200: '#f5b891',
+          300: '#f1a06d',
+          400: '#f0945a',
+          500: '#ee8848',
+          600: '#d67a41',
+          700: '#be6d3a',
+          800: '#a75f32',
+          900: '#8f522b',
+        },
+        'text-light': '#fbfcf5',
+        text: '#f4f8f9',
+        'text-dark': '#cbcac8',
       },
     },
 
     fontFamily: {
-      poppins: ["Poppins", ...fontFamily.sans],
+      poppins: ['Poppins', ...fontFamily.sans],
     },
   },
   plugins: [],
-}
+};
