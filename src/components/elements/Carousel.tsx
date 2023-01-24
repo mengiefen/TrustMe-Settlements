@@ -1,16 +1,10 @@
-import React from 'react';
-import CarouselItem from './CarouselItem';
-import {
-  CarouselProvider,
-  Slide,
-  Slider,
-  ButtonBack,
-  ButtonNext,
-} from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css';
-import { data } from './data';
+import React from "react"
+import CarouselItem from "./CarouselItem"
+import { CarouselProvider, Slide, Slider, ButtonBack, ButtonNext } from "pure-react-carousel"
+import "pure-react-carousel/dist/react-carousel.es.css"
+import { data } from "./data"
 
-import { FcNext, FcPrevious } from 'react-icons/fc';
+import { FcNext, FcPrevious } from "react-icons/fc"
 
 const Carousel = () => {
   return (
@@ -19,16 +13,12 @@ const Carousel = () => {
       naturalSlideWidth={10}
       totalSlides={data.length}
       orientation="horizontal"
-      className="w-[350px] h-[350px] relative"
+      className="w-[350px] h-[350px] relative ml-12 my-5"
     >
-      <Slider>
+      <Slider className="h-full">
         {data.map((item, index) => (
           <Slide index={index} key={item.id}>
-            <CarouselItem
-              image={item.image}
-              title={item.title}
-              description={item.description}
-            />
+            <CarouselItem image={item.image} title={item.title} description={item.description} />
           </Slide>
         ))}
       </Slider>
@@ -39,7 +29,7 @@ const Carousel = () => {
         <FcPrevious className="text-3xl text-secondary-500" />
       </ButtonNext>
     </CarouselProvider>
-  );
-};
+  )
+}
 
-export default Carousel;
+export default Carousel
