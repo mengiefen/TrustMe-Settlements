@@ -1,20 +1,18 @@
-import React, { ReactComponentElement, ReactElement } from 'react'
-import Header from '@/components/elements/Header'
-import Footer from '@/components/elements/Footer'
+import React, { ReactComponentElement, ReactElement } from "react"
+import Header from "@/components/elements/Header"
+import Footer from "@/components/elements/Footer"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
 }
 
-const Layout = (props: LayoutProps ) => {
+const Layout = (props: LayoutProps) => {
   return (
     <>
-   <Header />
-   {
-    props.children
-   }
+      <Header />
+      {props.children}
 
-   <Footer />
+      <Footer />
     </>
   )
 }

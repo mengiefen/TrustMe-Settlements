@@ -1,13 +1,14 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from '@next/font/google';
-import styles from '@/styles/Home.module.css';
-import Layout from '@/Layout';
-import Hero from '@/components/Hero';
-import Service from '@/components/Service';
-import Usage from '@/components/Usage';
+import Head from "next/head"
+import Image from "next/image"
+import { Inter } from "@next/font/google"
+import styles from "@/styles/Home.module.css"
+import Layout from "@/Layout"
+import Hero from "@/components/Hero"
+import Service from "@/components/Service"
+import Usage from "@/components/Usage"
+import Contact from "@/components/Contact"
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] })
 
 export default function Home() {
   return (
@@ -18,13 +19,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-bg flex flex-col justify-between items-center text-white">
+      <main className="bg-bg flex flex-col justify-between items-center text-white w-screen overflow-hidden">
         <Layout>
           <>
+            <Hero />
             <Service />
+            <Usage />
+            <Contact />
           </>
         </Layout>
       </main>
     </>
-  );
+  )
 }
