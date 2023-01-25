@@ -8,8 +8,8 @@ const Hero = () => {
     <div className="flex flex-col items-center justify-around mb-12">
       <div className="flex flex-col items-center justify-center w-[80%] mb-5">
         <Image src={HeroImage} alt="Hero Image" />
-        <h1 className="text-3xl font-semibold text-center text-text my-5 tracking-wider leading-10">
-          Settle Your Trade with Trust<span className="font-bold text-secondary-500">Me</span>
+        <h1 className="text-3xl font-semibold text-center text-text my-5 tracking-widest leading-10">
+          Settle Your Trade & Trust<span className="font-bold text-secondary-500">Me</span>
         </h1>
         <p className="text-center text-text font-light leading-6">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel tincidunt
