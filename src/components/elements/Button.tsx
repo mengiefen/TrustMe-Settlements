@@ -42,6 +42,7 @@ const Button = ({
   return (
     <button type={buttonType} className={buttonClass} onClick={props.onClick}>
       {label}
+      {props.children}
     </button>
   )
 }
