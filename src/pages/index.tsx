@@ -5,6 +5,7 @@ import Hero from "@/components/Hero"
 import Service from "@/components/Service"
 import Usage from "@/components/Usage"
 import Contact from "@/components/Contact"
+import TransactionDetail from "./TransactionDetail"
 
 const inter = Inter({ subsets: ["latin"] })
 
