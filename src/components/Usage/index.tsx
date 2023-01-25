@@ -1,5 +1,6 @@
 import React from "react"
 import UsageCard from "../elements/UsageCard"
+import UsageCardReverse from "../elements/UsageCardReverse"
 
 const Usage = () => {
   return (
@@ -9,8 +10,9 @@ const Usage = () => {
       </h2>
       <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50">
         <UsageCard />
+        <UsageCardReverse />
         <UsageCard />
-        <UsageCard />
+        <UsageCardReverse />
       </div>
     </div>
   )

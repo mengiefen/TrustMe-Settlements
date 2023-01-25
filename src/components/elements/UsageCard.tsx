@@ -2,8 +2,8 @@ import React from "react"
 
 const UsageCard = () => {
   return (
-    <div className="flex flex-row md:contents ">
-      <div className="bg-slate-800 border border-secondary-900 col-start-1 col-end-5 p-4 rounded-md my-4 ml-auto shadow-md text-center">
+    <div className="flex flex-row md:contents w-full ">
+      <div className="bg-slate-800 border border-secondary-900 col-start-1 col-end-5 p-4 rounded-md my-4 ml-auto shadow-md text-center w-[45%]">
         <h3 className="font-semibold text-lg mb-1 ">Lorem ipsum</h3>
         <p className="leading-tight text-justify">Lorem ipsum dolor sit amet </p>
       </div>
@@ -14,7 +14,9 @@ const UsageCard = () => {
         <div className="w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-secondary-500 shadow"></div>
       </div>
 
-      <p className="leading-tight my-auto text-center ">Lorem ipsum dolor sit amet consectetur</p>
+      <p className="leading-tight my-auto text-center w-[45%]">
+        Lorem ipsum dolor sit amet consectetur
+      </p>
     </div>
   )
 }

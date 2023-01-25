@@ -33,6 +33,7 @@ const Button = ({
   bg = "bg-secondary-500",
   ...props
 }: ButtonProps) => {
+  // for optimization purpose
   const buttonClass = useMemo(() => {
     return `${baseClasses} ${buttonVariants[variant]} ${buttonSizes[size]} ${bg} ${props.otherClasses}}    
     `
