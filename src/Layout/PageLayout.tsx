@@ -16,7 +16,7 @@ const PageLayout = (props: LayoutProps) => {
 
       <FlashMessage
         message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto nisi deleniti."
-        type="alert"
+        type="warning"
       />
     </>
   )
