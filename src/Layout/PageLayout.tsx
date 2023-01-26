@@ -1,6 +1,6 @@
 import React, { ReactComponentElement, ReactElement } from "react"
 import Header from "@/components/elements/Header"
-import Footer from "@/components/elements/Footer"
+import FlashMessage from "@/components/elements/FlashMessage"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -13,6 +13,11 @@ const PageLayout = (props: LayoutProps) => {
     <>
       <Header bg="bg-text" logoPrimaryColor="text-bg" />
       {props.children}
+
+      <FlashMessage
+        message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto nisi deleniti."
+        type="warning"
+      />
     </>
   )
 }
