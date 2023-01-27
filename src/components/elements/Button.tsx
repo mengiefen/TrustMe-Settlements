@@ -3,7 +3,7 @@ type ButtonProps = {
   children?: React.ReactNode
   label: string
   buttonType?: "button" | "submit" | "reset"
-  onClick: () => void
+  onClick?: () => void
   variant?: "primary" | "secondary" | "tertiary"
   size?: "small" | "medium" | "large"
   bg?: string
@@ -11,7 +11,7 @@ type ButtonProps = {
 }
 
 const baseClasses =
-  "inline-block text-center cursor-pointer focus:outline-none text-white rounded transition duration-200 ease-in-out font-semibold"
+  "text-center cursor-pointer focus:outline-none text-white rounded transition duration-200 ease-in-out font-semibold"
 
 const buttonVariants = {
   primary: "hover:bg-secondary-600",

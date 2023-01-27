@@ -13,11 +13,11 @@ const PageLayout = (props: LayoutProps) => {
     <>
       <Header bg="bg-text" logoPrimaryColor="text-bg" />
       {props.children}
-
+      {/* 
       <FlashMessage
         message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto nisi deleniti."
         type="warning"
-      />
+      /> */}
     </>
   )
 }

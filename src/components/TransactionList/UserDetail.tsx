@@ -1,7 +1,8 @@
 import React from "react"
 import { CgArrowsExchangeAlt } from "react-icons/cg"
-import { BsLink } from "react-icons/bs"
+import { BsLink, BsPlus, BsPlusCircle } from "react-icons/bs"
 import { MdLogout } from "react-icons/md"
+import { AiFillPlusCircle } from "react-icons/ai"
 import Button from "../elements/Button"
 const UserDetail = () => {
   return (
@@ -23,14 +24,23 @@ const UserDetail = () => {
         </div>
       </div>
 
-      <Button
+      {/* <Button
         label="Exit"
         variant="tertiary"
         bg="bg-red-400 flex flex-row gap-2 items-center justify-center px-1 py-3"
         onClick={() => {}}
       >
         <MdLogout className="text-xl" />
-      </Button>
+      </Button> */}
+      <div className="flex flex-col gap-2 justify-end items-center mt-auto">
+        <button
+          type="button"
+          className="w-[70px] h-[70px] rounded-full p-[3px] bg-secondary-800 text-white outline-none border-none hover:outline-none hover:bg-none focus:outline-none focus:bg-none flex flex-col items-center justify-center"
+        >
+          <BsPlus className="text-5xl" />
+        </button>
+        <span className="font-semibold tracking-wide uppercase">Create Trade</span>
+      </div>
     </div>
   )
 }

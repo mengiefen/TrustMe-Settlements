@@ -4,6 +4,8 @@ import TableComponent from "./TableComponent"
 import UserDetail from "./UserDetail"
 import { MdOutlineArrowForward } from "react-icons/md"
 import { FaUserCircle } from "react-icons/fa"
+import SearchBox from "./SearchBox"
+import TradeList from "./TradeList"
 
 const ArrowRight = (
   <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
@@ -15,10 +17,9 @@ const UserCircle = (
 
 const TransactionList = () => {
   return (
-    <PageLayout bg="bg-light-dark border-bg  border-b-[0.5px]">
+    <PageLayout bg="bg-bg border-bg  border-b-[0.5px]">
       <div className="px-5">
-        <UserDetail />
-        <TableComponent />
+        <TradeList />
       </div>
     </PageLayout>
   )

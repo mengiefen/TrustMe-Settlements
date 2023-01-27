@@ -7,12 +7,8 @@ import TradeStatus from "../elements/TradeStatus"
 import Pagination from "./Pagination"
 
 const CompletedStatus = <TradeStatus status="Completed" />
-const PendingStatus = (
-  <TradeStatus status="Pending" style="bg-yellow-100 border-yellow-700 text-yellow-900" />
-)
-const CanceledStatus = (
-  <TradeStatus status="Canceled" style="  bg-red-100 text-red-600 border-red-400" />
-)
+const PendingStatus = <TradeStatus status="Pending" />
+const CanceledStatus = <TradeStatus status="Canceled" />
 
 const ArrowRight = (
   <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
@@ -145,9 +141,9 @@ const TableComponent = () => {
                   return (
                     <td
                       {...cell.getCellProps()}
-                      className="px-2 py-3 my-2"
                       key={idx}
                       style={{ borderSpacing: "10px" }}
+                      className="px-2 py-3 my-2 "
                     >
                       {cell.render("Cell")}
                     </td>
