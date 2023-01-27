@@ -2,7 +2,6 @@ import React from "react"
 import Image from "next/image"
 import HeroImage from "../../assets/9.png"
 import Button from "../elements/Button"
-import MobileMenu from "../elements/MobileMenu";
 
 const Hero = () => {
   return (
