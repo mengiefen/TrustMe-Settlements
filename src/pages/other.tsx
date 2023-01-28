@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux"
-import { wrapper } from "../redux/store"
 import { increment } from "../redux/counterSlice"
 import { addUser } from "../redux/userSlice"
 import { RootState } from "../redux/store"
@@ -29,17 +28,17 @@ const Other = () => {
   )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps((store): any => async () => {
-  store.dispatch(increment())
+// export const getServerSideProps = wrapper.getServerSideProps((store): any => async () => {
+//   store.dispatch(increment())
 
-  const response = await fetch(`https://reqres.in/api/users/${Math.floor(Math.random() * 10 + 1)}`)
-  const { data } = await response.json()
-  store.dispatch(
-    addUser({
-      id: data.id,
-      name: data.first_name + " " + data.last_name,
-    })
-  )
-})
+//   const response = await fetch(`https://reqres.in/api/users/${Math.floor(Math.random() * 10 + 1)}`)
+//   const { data } = await response.json()
+//   store.dispatch(
+//     addUser({
+//       id: data.id,
+//       name: data.first_name + " " + data.last_name,
+//     })
+//   )
+// })
 
 export default Other

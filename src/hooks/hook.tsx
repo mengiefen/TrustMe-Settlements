@@ -1,4 +1,3 @@
-import FlashMessage from "@/components/elements/FlashMessage"
 import React, { useState, useEffect, useRef } from "react"
 import { useAccount, useConnect, useDisconnect } from "wagmi"
 
@@ -23,7 +22,11 @@ export const useEthereum = () => {
 }
 
 export const useFormatAddress = (address: string) => {
-  return address.slice(0, 4) + "..." + address.slice(-3)
+  if (address != "") {
+    return address.slice(0, 4) + "..." + address.slice(-4)
+  }
+
+  return ""
 }
 
 const useConnectWallet = () => {}

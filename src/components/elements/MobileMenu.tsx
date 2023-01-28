@@ -1,8 +1,10 @@
+import { useFormatAddress } from "@/hooks/hook"
 import Link from "next/link"
 import React, { useEffect } from "react"
 import Button from "./Button"
-import { useAccount, useDisconnect } from "wagmi"
+import { useAccount, useDisconnect, useConnect } from "wagmi"
 import { useIsMounted } from "@/hooks/useIsMounted"
+import { InjectedConnector } from "@wagmi/core"
 
 type menuProps = {
   isActive: boolean
@@ -12,17 +14,25 @@ type menuProps = {
 const MobileMenu = (props: menuProps) => {
   const isMounted = useIsMounted()
   const { address, isConnected } = useAccount()
+  const { connectAsync, connectors } = useConnect({
+    connector: new InjectedConnector(),
+  })
   const { disconnect } = useDisconnect()
   const { showMenu, isActive } = props
   const [buttonText, setButtonText] = React.useState("Connect Wallet")
-  const [userAddress, setUserAddress] = React.useState<React.SetStateAction<string> | undefined>(
-    ""
-  )
+
+  const formattedAddress = useFormatAddress(address || "")
 
   const handleDisconnect = () => {
     disconnect()
     setButtonText("Connect Wallet")
-    setUserAddress("")
+  }
+
+  const handleConnect = async () => {
+    if (isMounted) {
+      setButtonText("Disconnect Wallet")
+      await connectAsync({ connector: connectors[0] })
+    }
   }
 
   return (
@@ -65,19 +75,23 @@ const MobileMenu = (props: menuProps) => {
         </div>
 
         <div className="btn-div items-center justify-center pl-8 my-5">
-          {isMounted ? (
+          {isMounted && (
             <>
-              <Button label={buttonText} onClick={() => handleDisconnect()} />
+              {isConnected ? (
+                <>
+                  <Button label={buttonText} onClick={() => handleDisconnect()} />
 
-              <div className=" flex flex-row address pt-10">
-                <small className="flex flex-row text-white">
-                  <>Connected To {userAddress}</>
-                  <span className=" pl-1 pt-[1px]">&#8208;</span>
-                </small>
-              </div>
+                  <div className=" flex flex-row address pt-10">
+                    <small className="flex flex-row text-white">
+                      <>Connected To {formattedAddress}</>
+                      <span className=" pl-1 pt-[1px]">&#8208;</span>
+                    </small>
+                  </div>
+                </>
+              ) : (
+                <Button label={buttonText} onClick={() => handleConnect()} />
+              )}
             </>
-          ) : (
-            <Button label={buttonText} onClick={() => {}} />
           )}
         </div>
       </div>

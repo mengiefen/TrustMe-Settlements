@@ -2,55 +2,42 @@ import React, { useEffect } from "react"
 import Image from "next/image"
 import HeroImage from "../../assets/9.png"
 import Button from "../elements/Button"
-import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi"
+import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
 import { useFormatAddress, useEthereum } from "@/hooks/hook"
-import FlashMessage from "../elements/FlashMessage"
+import { useIsMounted } from "@/hooks/useIsMounted"
+import FlashMessage from "../FlashMessage"
 
 const Hero = () => {
+  const isMounted = useIsMounted()
   const { address, isConnected } = useAccount()
+
   const { disconnect } = useDisconnect()
-  const [connected, setConnected] = React.useState(false)
   const [buttonText, setButtonText] = React.useState("Connect Wallet")
-  const [userAddress, setUserAddress] = React.useState<React.SetStateAction<string> | undefined>(
-    ""
-  )
   const [flash, setFlash] = React.useState({
     message: "",
     type: "",
   })
 
-  const ethereum = useEthereum()
+  const formattedAddress = useFormatAddress(address || "")
 
-  const formattedAddress = useFormatAddress(userAddress as string)
-
-  const { connect } = useConnect({
+  const { connectAsync, connectors } = useConnect({
     connector: new InjectedConnector(),
   })
 
-  const handleConnect = () => {
-    if (ethereum) {
-      connect()
+  const handleConnect = async (connector: Connector) => {
+    if (isMounted) {
+      await connectAsync({ connector })
       setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
+      setButtonText("Disconnect Wallet")
     } else {
       setFlash({ ...flash, message: "Please install Metamask", type: "alert" })
     }
   }
 
-  useEffect(() => {
-    if (ethereum) {
-      if (isConnected) {
-        setButtonText("Diconnect Wallet")
-        setUserAddress(address)
-        setConnected(true)
-      }
-    }
-  }, [isConnected, address])
-
   const handleDisconnect = () => {
     disconnect()
     setButtonText("Connect Wallet")
-    setUserAddress("")
   }
 
   return (
@@ -66,30 +53,27 @@ const Hero = () => {
           vel tincidunt luctus.
         </p>
       </div>
+      {isMounted && (
+        <div>
+          <Button
+            label={buttonText}
+            variant="primary"
+            onClick={() => {
+              if (isConnected) {
+                handleDisconnect()
+                return
+              }
+              handleConnect(connectors[0])
+            }}
+            size="large"
+            bg="bg-gradient-to-r from-purplish-800 to-secondary-800"
+          />
 
-      <Button
-        label={buttonText}
-        variant="primary"
-        onClick={() => {
-          if (connected) {
-            handleDisconnect()
-            return
-          }
-          handleConnect()
-        }}
-        size="large"
-        bg="bg-gradient-to-r from-purplish-800 to-secondary-800"
-      />
-
-      {flash.message && flash.type === "alert" ? (
-        <FlashMessage message={flash.message} type={flash.type} />
-      ) : null}
-
-      {isConnected ? (
-        <div className="flex flex-col items-center justify-center w-[80%] mt-5">
-          <p className="text-center text-text font-light leading-6">{formattedAddress}</p>
+          <div className="flex flex-col items-center justify-center w-[80%] mt-5">
+            <p className="text-center text-text font-light leading-6">{formattedAddress}</p>
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   )
 }
