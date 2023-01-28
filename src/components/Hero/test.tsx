@@ -5,9 +5,11 @@ import Button from "../elements/Button"
 import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
 import { useFormatAddress, useEthereum } from "@/hooks/hook"
-import FlashMessage from "../elements/FlashMessage"
+import { useIsMounted } from "@/hooks/useIsMounted"
+import FlashMessage from "../FlashMessage"
 
 const Hero = () => {
+  const isMounted = useIsMounted()
   const { address, isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const [connected, setConnected] = React.useState(false)
@@ -20,8 +22,6 @@ const Hero = () => {
     type: "",
   })
 
-  const ethereum = useEthereum()
-
   const formattedAddress = useFormatAddress(userAddress as string)
 
   const { connect } = useConnect({
@@ -29,23 +29,13 @@ const Hero = () => {
   })
 
   const handleConnect = () => {
-    if (ethereum) {
+    if (isMounted) {
       connect()
       setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
     } else {
       setFlash({ ...flash, message: "Please install Metamask", type: "alert" })
     }
   }
-
-  useEffect(() => {
-    if (ethereum) {
-      if (isConnected) {
-        setButtonText("Diconnect Wallet")
-        setUserAddress(address)
-        setConnected(true)
-      }
-    }
-  }, [isConnected, address])
 
   const handleDisconnect = () => {
     disconnect()
@@ -66,30 +56,27 @@ const Hero = () => {
           vel tincidunt luctus.
         </p>
       </div>
+      {isMounted && (
+        <div>
+          <Button
+            label={buttonText}
+            variant="primary"
+            onClick={() => {
+              if (connected) {
+                handleDisconnect()
+                return
+              }
+              handleConnect()
+            }}
+            size="large"
+            bg="bg-gradient-to-r from-purplish-800 to-secondary-800"
+          />
 
-      <Button
-        label={buttonText}
-        variant="primary"
-        onClick={() => {
-          if (connected) {
-            handleDisconnect()
-            return
-          }
-          handleConnect()
-        }}
-        size="large"
-        bg="bg-gradient-to-r from-purplish-800 to-secondary-800"
-      />
-
-      {flash.message && flash.type === "alert" ? (
-        <FlashMessage message={flash.message} type={flash.type} />
-      ) : null}
-
-      {isConnected ? (
-        <div className="flex flex-col items-center justify-center w-[80%] mt-5">
-          <p className="text-center text-text font-light leading-6">{formattedAddress}</p>
+          <div className="flex flex-col items-center justify-center w-[80%] mt-5">
+            <p className="text-center text-text font-light leading-6">{formattedAddress}</p>
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   )
 }

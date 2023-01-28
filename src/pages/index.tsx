@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { Inter } from "@next/font/google"
 import Layout from "@/Layout"
-import Hero from "@/components/Hero"
+import Hero from "@/components/Hero/test"
 import Service from "@/components/Service"
 import Usage from "@/components/Usage"
 import Contact from "@/components/Contact"

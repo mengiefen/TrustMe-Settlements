@@ -1,17 +1,21 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-// import {Poppins} from '@next/font/google'
+import "@/styles/globals.css"
+import type { AppProps } from "next/app"
+import { wrapper } from "@/redux/store"
+import { useRouter } from "next/router"
+import { WagmiConfig } from "wagmi"
+import client from "../connector/connect"
 
-// const poppins = Poppins({ 
-//   weights: ['100', '200','300', '400', '500', '600', '700', '800', '900'], 
-//   subsets: ['latin'],
-//   variable: '--font-poppins',
-// })
+const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter()
+  console.log(router.pathname)
 
-export default function App({ Component, pageProps }: AppProps) {
   return (
-  <main className='font-poppins'>
-    <Component {...pageProps} />
+    <main className="font-poppins">
+      <WagmiConfig client={client}>
+        <Component {...pageProps} />
+      </WagmiConfig>
     </main>
   )
 }
+
+export default wrapper.withRedux(App)
