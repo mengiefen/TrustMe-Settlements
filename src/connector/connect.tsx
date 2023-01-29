@@ -7,8 +7,8 @@ import { publicProvider } from "wagmi/providers/public"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || ""
-const INFURA_API_KEY = process.env.INFURA_PROJECT_ID || ""
+const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ""
+const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || ""
 
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, goerli, polygon],
@@ -39,7 +39,7 @@ const client = createClient({
     }),
   ],
   provider,
-  webSocketProvider,
+  // webSocketProvider,
 })
 
 interface WagmiProviderProps {

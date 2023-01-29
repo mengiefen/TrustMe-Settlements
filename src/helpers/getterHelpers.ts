@@ -48,11 +48,9 @@ export const getTradeStatus = async (tradeID: number) => {
 }
 
 export const getTradesIDsByUser = async (address: string) => {
-  console.log("================================")
-  console.log("Contract", trustMeContract)
-  const tradeStatus = await trustMeContract.getTradesIDsByUser(address)
+  const tradeIds = await trustMeContract.getTradesIDsByUser(address)
 
-  return tradeStatus
+  return tradeIds
 }
 
 export const getUserToTradesIDs = async (userAddress: string, id: number) => {
