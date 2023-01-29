@@ -1,4 +1,5 @@
 import { ethers } from "ethers"
+import { goerli } from "wagmi"
 
 export const CONTRACT_ABI = [
   { inputs: [], name: "CannotTradeSameToken", type: "error" },
@@ -189,10 +190,10 @@ const ALCHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY || ""
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
 const PRIVATE_KEY = process.env.PRIVATE_KEY || ""
 
-const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", ALCHEMY_API_KEY) // Signer
-const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
+const alchemyProvider = new ethers.providers.AlchemyProvider(goerli.network, ALCHEMY_API_KEY) // Signer
+// const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
 export const trustMeContract = new ethers.Contract(
-  CONTRACT_ADDRESS,
+  "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E",
   JSON.stringify(CONTRACT_ABI),
-  signer
+  alchemyProvider
 )

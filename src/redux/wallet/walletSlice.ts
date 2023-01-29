@@ -1,10 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
-const initialState = {
+interface WalletState {
+  buttonText: string
+  connected: boolean
+  address: string
+}
+const initialState: WalletState = {
   buttonText: "Connect Wallet",
   connected: false,
   address: "",
-} as any
+}
 
 const walletsSlice = createSlice({
   name: "wallets",

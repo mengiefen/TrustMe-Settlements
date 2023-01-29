@@ -1,44 +1,44 @@
-import { Alchemy, Network } from "alchemy-sdk"
 import { trustMeContract } from "../constants/interact"
+// import { Alchemy, Network } from "alchemy-sdk"
 
-const ALCHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
+// const ALCHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY
+// const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
 
-const settings = {
-  apiKey: ALCHEMY_API_KEY,
-  network: Network.ETH_GOERLI,
-}
+// const settings = {
+//   apiKey: ALCHEMY_API_KEY,
+//   network: Network.ETH_GOERLI,
+// }
 
-const alchemy = new Alchemy(settings)
+// const alchemy = new Alchemy(settings)
 
-// Returns the current block number
-export const getBlockNumber = async () => {
-  const blockNumber = await alchemy.core.getBlockNumber()
-  return blockNumber
-}
+// // Returns the current block number
+// export const getBlockNumber = async () => {
+//   const blockNumber = await alchemy.core.getBlockNumber()
+//   return blockNumber
+// }
 
-alchemy.core.getTokenBalances(CONTRACT_ADDRESS).then((balances) => {
-  console.log("Balances:", balances)
-})
+// alchemy.core.getTokenBalances(CONTRACT_ADDRESS).then((balances) => {
+//   console.log("Balances:", balances)
+// })
 
-// Returns the token balances for a specific owner address given a list of contracts
-export const getTokenBalances = async (ownerAddress: string, contractAddresses: string[]) => {
-  const balances = await alchemy.core.getTokenBalances(ownerAddress, contractAddresses)
+// // Returns the token balances for a specific owner address given a list of contracts
+// export const getTokenBalances = async (ownerAddress: string, contractAddresses: string[]) => {
+//   const balances = await alchemy.core.getTokenBalances(ownerAddress, contractAddresses)
 
-  return balances
-}
+//   return balances
+// }
 
-async function getPendingTrades() {
+export async function getPendingTrades() {
   const pendingTradesIDs = await trustMeContract.methods.getPendingTradesIDs().call()
   return pendingTradesIDs
 }
 
-async function getTrade(tradeId: number) {
+export async function getTrade(tradeId: number) {
   const trade = await trustMeContract.methods.getTrade(tradeId).call()
   return trade
 }
 
-async function getTradeIdToTrade(tradeId: number) {
+export async function getTradeIdToTrade(tradeId: number) {
   return await trustMeContract.methods.getTradeIdToTrade(tradeId).call()
 }
 
@@ -48,7 +48,10 @@ export const getTradeStatus = async (tradeID: number) => {
 }
 
 export const getTradesIDsByUser = async (address: string) => {
+  console.log("================================")
+  console.log("Contract", trustMeContract)
   const tradeStatus = await trustMeContract.getTradesIDsByUser(address)
+
   return tradeStatus
 }
 
