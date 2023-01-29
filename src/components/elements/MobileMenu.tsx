@@ -2,9 +2,12 @@ import { useFormatAddress } from "@/hooks/hook"
 import Link from "next/link"
 import React, { useEffect } from "react"
 import Button from "./Button"
-import { useAccount, useDisconnect, useConnect } from "wagmi"
+import { useAccount, useDisconnect, useConnect, Connector } from "wagmi"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { InjectedConnector } from "@wagmi/core"
+import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 type menuProps = {
   isActive: boolean
@@ -14,24 +17,31 @@ type menuProps = {
 const MobileMenu = (props: menuProps) => {
   const isMounted = useIsMounted()
   const { address, isConnected } = useAccount()
+  const dispatch = useDispatch()
+  const {
+    buttonText,
+    address: userAddress,
+    connected,
+  } = useSelector((state: RootState) => state.wallets)
+
   const { connectAsync, connectors } = useConnect({
     connector: new InjectedConnector(),
   })
+
   const { disconnect } = useDisconnect()
   const { showMenu, isActive } = props
-  const [buttonText, setButtonText] = React.useState("Connect Wallet")
 
-  const formattedAddress = useFormatAddress(address || "")
-
+  const formattedAddress = useFormatAddress(userAddress)
   const handleDisconnect = () => {
     disconnect()
-    setButtonText("Connect Wallet")
+    dispatch(disconnectWallet())
   }
 
-  const handleConnect = async () => {
+  const handleConnect = async (connector: Connector) => {
     if (isMounted) {
-      setButtonText("Disconnect Wallet")
-      await connectAsync({ connector: connectors[0] })
+      const data = await connectAsync({ connector })
+      await dispatch(connectWallet(data.account))
+    } else {
     }
   }
 
@@ -89,7 +99,7 @@ const MobileMenu = (props: menuProps) => {
                   </div>
                 </>
               ) : (
-                <Button label={buttonText} onClick={() => handleConnect()} />
+                <Button label={buttonText} onClick={() => handleConnect(connectors[0])} />
               )}
             </>
           )}

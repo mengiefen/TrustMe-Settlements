@@ -1,11 +1,10 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-import counter from "./counterSlice"
-import user from "./userSlice"
-import { createWrapper } from "next-redux-wrapper"
+// import tradesReducer from "./trade/tradesSlice"
+import walletsReducer from "./wallet/walletSlice"
 
 const rootReducer = combineReducers({
-  counter,
-  user,
+  // trades: tradesReducer,
+  wallets: walletsReducer,
 })
 
 export const makeStore = () => {
