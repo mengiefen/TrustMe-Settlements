@@ -1,4 +1,4 @@
-import PageLayout from "@/Layout/PageLayout"
+import Layout from "@/Layout"
 import React from "react"
 import TableComponent from "./TableComponent"
 import UserDetail from "./UserDetail"
@@ -17,11 +17,11 @@ const UserCircle = (
 
 const TransactionList = () => {
   return (
-    <PageLayout bg="bg-bg border-bg  border-b-[0.5px]">
+    <Layout bg="bg-bg border-bg  border-b-[0.5px]">
       <div className="px-5">
         <TradeList />
       </div>
-    </PageLayout>
+    </Layout>
   )
 }
 

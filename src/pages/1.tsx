@@ -1,3 +1,5 @@
+"use client"
+
 import TransactionList from "@/components/TransactionList"
 import React from "react"
 import TableRow from "@/components/TransactionList/TableRow"
@@ -8,5 +10,7 @@ const List = () => {
     <>
       <TransactionList />
     </>
-  )}
+  )
+}
+
 export default List

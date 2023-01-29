@@ -72,6 +72,26 @@ const Hero = () => {
           <div className="flex flex-col items-center justify-center w-[80%] mt-5">
             <p className="text-center text-text font-light leading-6">{formattedAddress}</p>
           </div>
+          <div className="flex items-center justify-center w-[80%] mt-5 flex-wrap gap-3">
+            {connectors.map((connector) => {
+              return (
+                <button
+                  onClick={() => handleConnect(connector)}
+                  key={connector.id}
+                  className="bg-bg p-2 rounded-md text-text border border-white"
+                >
+                  {connector.name}
+                </button>
+              )
+            })}
+
+            <button
+              onClick={() => handleDisconnect()}
+              className="bg-bg p-2 rounded-md text-text border border-white"
+            >
+              Disconnect
+            </button>
+          </div>
         </div>
       )}
     </div>
