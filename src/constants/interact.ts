@@ -1,4 +1,3 @@
-export const CONTRACT_ADDRESS = "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E"
 export const CONTRACT_ABI = [
   { inputs: [], name: "CannotTradeSameToken", type: "error" },
   { inputs: [], name: "CannotTradeWithSelf", type: "error" },

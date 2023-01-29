@@ -6,7 +6,6 @@ import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
 import { useFormatAddress, useEthereum } from "@/hooks/hook"
 import { useIsMounted } from "@/hooks/useIsMounted"
-import FlashMessage from "../FlashMessage"
 
 const Hero = () => {
   const isMounted = useIsMounted()
