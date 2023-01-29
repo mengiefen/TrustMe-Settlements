@@ -19,6 +19,13 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/icrementCounter.txs"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/icrementCounter.txs",
+    "src/constants/interact.js",
+    "src/constants/interact.js"
+  ],
   "exclude": ["node_modules"]
 }
