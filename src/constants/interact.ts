@@ -185,7 +185,7 @@ export const CONTRACT_ABI = [
   },
 ]
 
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || ""
+const ALCHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY || ""
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
 const PRIVATE_KEY = process.env.PRIVATE_KEY || ""
 

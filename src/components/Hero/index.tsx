@@ -6,19 +6,28 @@ import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
 import { useFormatAddress, useEthereum } from "@/hooks/hook"
 import { useIsMounted } from "@/hooks/useIsMounted"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
+import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 
 const Hero = () => {
   const isMounted = useIsMounted()
   const { address, isConnected } = useAccount()
+  const {
+    buttonText,
+    address: userAddress,
+    connected,
+  } = useSelector((state: RootState) => state.wallets)
+  const dispatch = useDispatch()
 
   const { disconnect } = useDisconnect()
-  const [buttonText, setButtonText] = React.useState("Connect Wallet")
+
   const [flash, setFlash] = React.useState({
     message: "",
     type: "",
   })
 
-  const formattedAddress = useFormatAddress(address || "")
+  const formattedAddress = useFormatAddress(userAddress)
 
   const { connectAsync, connectors } = useConnect({
     connector: new InjectedConnector(),
@@ -26,9 +35,9 @@ const Hero = () => {
 
   const handleConnect = async (connector: Connector) => {
     if (isMounted) {
-      await connectAsync({ connector })
+      const data = await connectAsync({ connector })
+      await dispatch(connectWallet(data.account))
       setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
-      setButtonText("Disconnect Wallet")
     } else {
       setFlash({ ...flash, message: "Please install Metamask", type: "alert" })
     }
@@ -36,7 +45,7 @@ const Hero = () => {
 
   const handleDisconnect = () => {
     disconnect()
-    setButtonText("Connect Wallet")
+    dispatch(disconnectWallet())
   }
 
   return (
