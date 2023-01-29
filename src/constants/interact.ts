@@ -1,4 +1,12 @@
-export const CONTRACT_ADDRESS = "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E"
+import { ethers } from "ethers";
+import { Alchemy, Network } from "alchemy-sdk"
+import { goerli } from "wagmi";
+
+const ALECHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY
+
+
+export const CONTRACT_ADDRESS = process.env.DEPLOYED_CONTRACT_ADDRESS || ""
+
 export const CONTRACT_ABI = [
   { inputs: [], name: "CannotTradeSameToken", type: "error" },
   { inputs: [], name: "CannotTradeWithSelf", type: "error" },
@@ -183,3 +191,8 @@ export const CONTRACT_ABI = [
     type: "function",
   },
 ]
+
+const alchemyProvider = new ethers.providers.AlchemyProvider(ALECHEMY_API_KEY, goerli);
+const signer = alchemyProvider.getSigner();
+
+export const Trust_Me_Contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
