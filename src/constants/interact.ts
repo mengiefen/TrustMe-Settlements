@@ -1,3 +1,4 @@
+
 import { ethers } from "ethers";
 import { Alchemy, Network } from "alchemy-sdk"
 import { goerli } from "wagmi";
@@ -6,6 +7,7 @@ const ALECHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY
 
 
 export const CONTRACT_ADDRESS = process.env.DEPLOYED_CONTRACT_ADDRESS || ""
+
 
 export const CONTRACT_ABI = [
   { inputs: [], name: "CannotTradeSameToken", type: "error" },
