@@ -191,9 +191,5 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || ""
 const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY || ""
 
 const alchemyProvider = new ethers.providers.AlchemyProvider(goerli.network, ALCHEMY_API_KEY) // Signer
-const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
-export const trustMeContract = new ethers.Contract(
-  "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E",
-  JSON.stringify(CONTRACT_ABI),
-  signer
-)
+export const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
+export const trustMeContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer)

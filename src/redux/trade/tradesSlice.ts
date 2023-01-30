@@ -1,33 +1,35 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { RootState } from "../store"
+import { createSlice, createAsyncThunk, PayloadAction, AsyncThunkAction } from "@reduxjs/toolkit"
+import { BigNumber } from "ethers"
 import { TrustMe } from "typechain"
 import { getTradesIDsByUser, getTrade } from "../../helpers/getterHelpers"
-import trades from "@/components/TransactionList/data"
+import { Trade } from "@/components/TransactionList/type"
 
 // export const fetchUserTrades = createAsyncThunk(
 //   "trades/fetchUserTrades",
-//   async (address: string) => {
+//   async ({ address }: { address: string }, { rejectWithValue }) => {
 //     const userIds = await getTradesIDsByUser(address)
-//     const trades: Trade[] = []
-//     userIds.forEach(async (id: number) => {
-//       const trade = await getTrade(id)
-//       trades.push(trade)
+
+//     let trades: TrustMe[] = []
+
+//     if (userIds.length === 0) {
+//       rejectWithValue("No trades found")
+//       return []
+//     }
+
+//     trades = userIds.map(async (id: BigNumber) => {
+//       return await getTrade(Number(id._hex)).then((trade) => console.log("trade", trade))
 //     })
+
+//     console.log("trades", trades)
 
 //     return trades
 //   }
 // )
 
-export const fetchUserTrades = (address: string) => {
-  return {
-    type: "trades/fetchUserTrades",
-    payload: trades,
-  }
-}
-
 // export const getTradesFromContract = async (address: string) => {
-//   const userIds = await getTradesIDsByUser(address)
-//   const trades: Trade[] = []
+//   const userIds = await getTradesIDsByUser("0x2306dA564868c47bb2C0123A25943cD54e6e8e2F")
+//   console.log("userIds", userIds)
+//   const trades: TrustMe[] = []
 //   userIds.forEach(async (id: number) => {
 //     const trade = await getTrade(id)
 //     trades.push(trade)
@@ -36,44 +38,43 @@ export const fetchUserTrades = (address: string) => {
 //   return trades
 // }
 
-/*
-  id   number :  1
-  seller   string :  0x7E14DcB55f6D5C2259e616ff254F566117dbdE5C
-  buyer   string :  0x8dBBEE719736970DffE9a64D1804499e3A99d5e0
-  tokenToSell   string :  0x92126D49096A8b898DD84ff1518EdD27009f4c79
-  tokenToBuy   string :  0xee0240DCa0C5bF8B34B4242265230fad6B180c13
-  amountOfTokenToSell   number :  100000000000000000000
-  amountOfTokenToBuy   number :  100000000000000000000
-  deadline   number :  1674918588
-  status   number :  3
-  */
-
-type Trade = {
-  id: number
-  seller: string
-  buyer: string
-  tokenToSell: string
-  tokenToBuy: string
-  amountOfTokenToSell: number
-  amountOfTokenToBuy: number
-  deadline: number
-  status: number
+type TradesState = {
+  trades: Trade[]
+  status: "loading" | "succeeded" | "failed"
 }
 
-const initialState: Trade[] = []
+const initialState = {
+  trades: [],
+  status: "loading",
+} as TradesState
 
 const tradesSlice = createSlice({
   name: "trades",
   initialState,
   reducers: {
-    fetchTrades: (state, action) => {
-      getTradesIDsByUser(action.payload).then((trades) => {
-        console.log("trades", trades)
-      })
+    updateTrades: (state, action: PayloadAction<Trade[]>) => {
+      console.log("action.payload", action.payload)
+      state.trades = [...action.payload]
+      state.status = "succeeded"
     },
   },
+
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(fetchUserTrades.pending, (state, action) => {
+  //       state.status = "loading"
+  //     })
+  //     .addCase(fetchUserTrades.fulfilled, (state, action: PayloadAction<TrustMe[]>) => {
+  //       state.status = "succeeded"
+  //       // state.trades = action.payload
+  //     })
+
+  //     .addCase(fetchUserTrades.rejected, (state, action) => {
+  //       state.status = "failed"
+  //     })
+  // },
 })
 
-export const { fetchTrades } = tradesSlice.actions
+export const { updateTrades } = tradesSlice.actions
 
 export default tradesSlice.reducer

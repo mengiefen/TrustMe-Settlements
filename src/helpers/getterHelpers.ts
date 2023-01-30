@@ -1,3 +1,8 @@
+import { getStatus } from "@/utils"
+import { formatEther } from "ethers/lib/utils.js"
+import { getSymbol } from "@/utils"
+import { Trade } from "./../components/TransactionList/type"
+import { BigNumber } from "ethers"
 import { trustMeContract } from "../constants/interact"
 // import { Alchemy, Network } from "alchemy-sdk"
 
@@ -29,17 +34,17 @@ import { trustMeContract } from "../constants/interact"
 // }
 
 export async function getPendingTrades() {
-  const pendingTradesIDs = await trustMeContract.methods.getPendingTradesIDs().call()
+  const pendingTradesIDs = await trustMeContract.getPendingTradesIDs()
   return pendingTradesIDs
 }
 
 export async function getTrade(tradeId: number) {
-  const trade = await trustMeContract.methods.getTrade(tradeId).call()
+  const trade = await trustMeContract.getTrade(tradeId)
   return trade
 }
 
 export async function getTradeIdToTrade(tradeId: number) {
-  return await trustMeContract.methods.getTradeIdToTrade(tradeId).call()
+  return await trustMeContract.getTradeIdToTrade(tradeId)
 }
 
 export const getTradeStatus = async (tradeID: number) => {
@@ -56,4 +61,27 @@ export const getTradesIDsByUser = async (address: string) => {
 export const getUserToTradesIDs = async (userAddress: string, id: number) => {
   const tradeStatus = await trustMeContract.userToTradesIDs(userAddress, id)
   return tradeStatus
+}
+
+export const getTradesList = async (amount: number) => {
+  const userAddress = "0x2306dA564868c47bb2C0123A25943cD54e6e8e2F"
+  const tradeIds = await getTradesIDsByUser(userAddress)
+
+  const trades: Trade[] = []
+  tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
+    const trade = await getTrade(Number(tradeId._hex))
+    await trades.push({
+      id: Number(trade.id),
+      seller: trade.seller,
+      buyer: trade.buyer,
+      tokenToSell: getSymbol(trade.tokenToSell),
+      tokenToBuy: getSymbol(trade.tokenToBuy),
+      amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
+      amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
+      deadline: Number(trade.deadline),
+      status: getStatus(trade.status),
+    })
+  })
+
+  return trades
 }

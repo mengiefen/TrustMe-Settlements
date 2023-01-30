@@ -1,9 +1,9 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-// import tradesReducer from "./trade/tradesSlice"
+import tradesReducer from "./trade/tradesSlice"
 import walletsReducer from "./wallet/walletSlice"
 
 const rootReducer = combineReducers({
-  // trades: tradesReducer,
+  trades: tradesReducer,
   wallets: walletsReducer,
 })
 

@@ -14,8 +14,8 @@ const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, goerli, polygon],
   [
     alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
-    infuraProvider({ apiKey: INFURA_API_KEY }),
-    publicProvider(),
+    // infuraProvider({ apiKey: INFURA_API_KEY }),
+    // publicProvider(),
   ]
 )
 
@@ -39,7 +39,7 @@ const client = createClient({
     }),
   ],
   provider,
-  // webSocketProvider,
+  webSocketProvider,
 })
 
 interface WagmiProviderProps {
