@@ -9,7 +9,8 @@ import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-// import { fetchTrades } from "@/redux/trade/tradesSlice"
+import { fetchTrades } from "@/redux/trade/tradesSlice"
+
 
 const Hero = () => {
   const isMounted = useIsMounted()
@@ -39,9 +40,9 @@ const Hero = () => {
       const data = await connectAsync({ connector })
       await dispatch(connectWallet(data.account))
 
-      // if (data.account) {
-      //   dispatch(fetchTrades(data.account))
-      // }
+      if (data.account) {
+        dispatch(fetchTrades(data.account))
+      }
 
       setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
     } else {
