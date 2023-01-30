@@ -2,21 +2,22 @@ import React from "react"
 import { FaSearch, FaUserCircle } from "react-icons/fa"
 import { MdOutlineArrowForward } from "react-icons/md"
 import TradeStatus from "../elements/TradeStatus"
+import trades from "./data"
 
-type RowProps = {
+interface RowProps {
   userPic?: React.ReactNode | React.ReactElement
-  ReceiveAmount: string
   ReceiveTokenId?: string
-  TransferAmount: string
   TransferTokenId?: string
-  status: React.ReactNode | React.ReactElement
+  amountOfTokenToBuy: string
+  amountOfTokenToSell: string
+  status: string
 }
 
 const TableRow = ({
   userPic = <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />,
-  ReceiveAmount,
+  amountOfTokenToBuy,
   ReceiveTokenId = "USDT",
-  TransferAmount,
+  amountOfTokenToSell,
   TransferTokenId = "TKN",
   status,
 }: RowProps) => {
@@ -27,18 +28,18 @@ const TableRow = ({
           <div className="col-span-2 text-start mr-auto">{userPic}</div>
           <div className="col-span-3 overflow-clip  text-secondary-900">
             <div className="flex flex-col">
-              {ReceiveAmount}
+              {amountOfTokenToBuy}
               <span className="font-bold mr-1 text-gray-400 text-[10px]">{ReceiveTokenId}</span>
             </div>
           </div>
           <div className="col-span-3 text-secondary-900 flex-col">
             <div className="flex flex-col">
-              {TransferAmount}
+              {amountOfTokenToSell}
               <span className="font-bold mr-1 text-[10px] text-gray-400">{TransferTokenId}</span>
             </div>
           </div>
           <div className="col-span-3 overflow-hidden">
-            <TradeStatus status={`${status}`} />
+            <TradeStatus status={status} />
           </div>
           <div className="col-span-1 overflow-hidden mx-auto">
             <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />

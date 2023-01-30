@@ -4,7 +4,7 @@ import HeroImage from "../../assets/9.png"
 import Button from "../elements/Button"
 import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
-import { useFormatAddress, useEthereum } from "@/hooks/hook"
+import { useFormatAddress, useEthereum } from "@/hooks/hooks"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import FlashMessage from "../FlashMessage"
 

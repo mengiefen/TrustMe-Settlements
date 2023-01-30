@@ -16,7 +16,6 @@ const walletsSlice = createSlice({
   initialState,
   reducers: {
     connectWallet: (state, action) => {
-      console.log("action.payload", action.payload)
       state.buttonText = "Disconnect Wallet"
       state.connected = true
       state.address = action.payload
