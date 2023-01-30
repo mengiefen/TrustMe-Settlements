@@ -1,4 +1,4 @@
-import { useFormatAddress } from "@/hooks/hook"
+import { useFormatAddress } from "@/hooks/hooks"
 import Link from "next/link"
 import React, { useEffect } from "react"
 import Button from "./Button"

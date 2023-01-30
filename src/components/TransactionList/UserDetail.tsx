@@ -4,7 +4,9 @@ import { BsLink, BsPlus, BsPlusCircle } from "react-icons/bs"
 import { MdLogout } from "react-icons/md"
 import { AiFillPlusCircle } from "react-icons/ai"
 import Button from "../elements/Button"
-const UserDetail = () => {
+import { UserDetailProps } from "./type"
+
+const UserDetail = (props: UserDetailProps) => {
   return (
     <div className="flex flex-row justify-between items-center mt-3">
       <div className="flex flex-col gap-5 shadow-md  shadow-gray-300 p-3 rounded bg-text border-[0.2px] border-gray-300">
@@ -12,14 +14,14 @@ const UserDetail = () => {
           <CgArrowsExchangeAlt className="text-2xl text-secondary-900" />
           <div className="flex flex-col gap-2">
             <h3 className="text-bg-light">Connected Address</h3>
-            <h4 className="text-sm text-secondary-800 tracking-wider">0xfa234...f453</h4>
+            <h4 className="text-sm text-secondary-800 tracking-wider">{props.userAddress}</h4>
           </div>
         </div>
 
         <div className="flex flex-row gap-5 items-center">
           <BsLink className="text-2xl text-secondary-900" />
           <h3 className="text-bg-light">
-            Transactions - <span>10</span>
+            Transactions - <span>{props.transactionCount}</span>
           </h3>
         </div>
       </div>

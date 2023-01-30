@@ -4,12 +4,11 @@ import HeroImage from "../../assets/9.png"
 import Button from "../elements/Button"
 import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { InjectedConnector } from "@wagmi/core"
-import { useFormatAddress, useEthereum } from "@/hooks/hook"
+import { useFormatAddress, useEthereum } from "@/hooks/hooks"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-// import { fetchTrades } from "@/redux/trade/tradesSlice"
 
 const Hero = () => {
   const isMounted = useIsMounted()
@@ -38,11 +37,6 @@ const Hero = () => {
     if (isMounted) {
       const data = await connectAsync({ connector })
       await dispatch(connectWallet(data.account))
-
-      // if (data.account) {
-      //   dispatch(fetchTrades(data.account))
-      // }
-
       setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
     } else {
       setFlash({ ...flash, message: "Please install Metamask", type: "alert" })
