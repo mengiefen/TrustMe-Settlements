@@ -1,3 +1,5 @@
+import { ERC20_ABI, signer } from "@/constants/interact"
+import { ethers } from "ethers"
 import React, { useState, useEffect, useRef } from "react"
 import { useAccount, useConnect, useDisconnect } from "wagmi"
 
@@ -20,6 +22,7 @@ export const useEthereum = () => {
 
   return ethereum
 }
+
 
 export const useFormatAddress = (address: string) => {
   if (address != "") {

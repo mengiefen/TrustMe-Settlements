@@ -39,7 +39,7 @@ const client = createClient({
     }),
   ],
   provider,
-  // webSocketProvider,
+  webSocketProvider,
 })
 
 interface WagmiProviderProps {

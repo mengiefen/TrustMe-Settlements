@@ -186,14 +186,74 @@ export const CONTRACT_ABI = [
   },
 ]
 
+export const ERC20_ABI = [
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "name": "balance",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  }
+]
+
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_GOERLI_API_KEY || ""
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || ""
 const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY || ""
 
 const alchemyProvider = new ethers.providers.AlchemyProvider(goerli.network, ALCHEMY_API_KEY) // Signer
-const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
+export const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider)
 export const trustMeContract = new ethers.Contract(
-  "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E",
-  JSON.stringify(CONTRACT_ABI),
+  CONTRACT_ADDRESS,
+  CONTRACT_ABI,
   signer
 )

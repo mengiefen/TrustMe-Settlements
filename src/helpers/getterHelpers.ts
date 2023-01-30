@@ -29,17 +29,17 @@ import { trustMeContract } from "../constants/interact"
 // }
 
 export async function getPendingTrades() {
-  const pendingTradesIDs = await trustMeContract.methods.getPendingTradesIDs().call()
+  const pendingTradesIDs = await trustMeContract.getPendingTradesIDs()
   return pendingTradesIDs
 }
 
-export async function getTrade(tradeId: number) {
-  const trade = await trustMeContract.methods.getTrade(tradeId).call()
-  return trade
+export async function getTradeIdToTrade(tradeId: number) {
+  return await trustMeContract.getTradeIdToTrade(tradeId)
 }
 
-export async function getTradeIdToTrade(tradeId: number) {
-  return await trustMeContract.methods.getTradeIdToTrade(tradeId).call()
+export const getTrade = async (tradeId : number) => {
+  const trade =  await trustMeContract.getTrade(tradeId);
+  return trade;
 }
 
 export const getTradeStatus = async (tradeID: number) => {
