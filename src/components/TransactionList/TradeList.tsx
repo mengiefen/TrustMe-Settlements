@@ -4,54 +4,33 @@ import SearchBox from "@/components/TransactionList/SearchBox"
 import UserDetail from "./UserDetail"
 import Button from "../elements/Button"
 import Pagination from "./Pagination"
-import { getTrade, getTradesIDsByUser, getTradesList } from "../../helpers/getterHelpers"
-import { BigNumber } from "ethers"
-import { getStatus, getSymbol } from "@/utils"
-import { formatEther } from "ethers/lib/utils.js"
+import { getTradeList } from "./fetchTrades"
 import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
-import { useSelector, useDispatch } from "react-redux"
-import { updateTrades } from "@/redux/trade/tradesSlice"
-import { RootState } from "@/redux/store"
+import { useRouter } from "next/router"
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any
   const [tradeList, setTradeList] = React.useState([]) as any
+  const [isLoading, setLoading] = React.useState(true)
+  const router = useRouter()
 
   // const trades = useSelector((state: RootState) => state.trades)
   // const dispatch = useDispatch()
-
-  const getTradeList = async (amount: number) => {
-    const userAddress = "0x2306dA564868c47bb2C0123A25943cD54e6e8e2F"
-    const tradeIds = await getTradesIDsByUser(userAddress)
-
-    const trades: Trade[] = []
-    tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
-      const trade = await getTrade(Number(tradeId._hex))
-      await trades.push({
-        id: Number(trade.id),
-        seller: trade.seller,
-        buyer: trade.buyer,
-        tokenToSell: await getSymbol(trade.tokenToSell),
-        tokenToBuy: await getSymbol(trade.tokenToBuy),
-        amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-        amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-        deadline: Number(trade.deadline),
-        status: getStatus(trade.status),
-      })
-    })
-
-    setTradeList(trades)
-  }
+  // useMemo(async () => {
+  //   const trades = await getTradeList(6)
+  //   console.log("trades", trades)
+  //   setTradeList(trades)
+  // }, [tradeList])
 
   useEffect(() => {
-    if (tradeList.length === 0) {
-      //   getTradeList(6).then((trades) => {
-      //     dispatch(updateTrades(trades))
-      //   })
-      getTradeList(6)
-
-      setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
+    if (router.isReady) setLoading(true)
+    if (isLoading === true) {
+      setLoading(false)
+      getTradeList(9).then((trades) => {
+        setTradeList(trades)
+        setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
+      })
     }
   }, [])
 

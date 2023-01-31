@@ -3,6 +3,7 @@ import { FaSearch, FaUserCircle } from "react-icons/fa"
 import { MdOutlineArrowForward } from "react-icons/md"
 import TradeStatus from "../elements/TradeStatus"
 import trades from "./data"
+import Link from "next/link"
 
 interface RowProps {
   userPic?: React.ReactNode | React.ReactElement
@@ -42,7 +43,9 @@ const TableRow = ({
             <TradeStatus status={status} />
           </div>
           <div className="col-span-1 overflow-hidden mx-auto">
-            <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
+            <Link href="/TransactionDetail">
+              <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
+            </Link>
           </div>
         </div>
         {status === "Pending" && (
