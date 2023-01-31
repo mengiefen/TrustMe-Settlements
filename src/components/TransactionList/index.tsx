@@ -1,10 +1,7 @@
 import Layout from "@/Layout"
 import React from "react"
-import TableComponent from "./TableComponent"
-import UserDetail from "./UserDetail"
 import { MdOutlineArrowForward } from "react-icons/md"
 import { FaUserCircle } from "react-icons/fa"
-import SearchBox from "./SearchBox"
 import TradeList from "./TradeList"
 
 const ArrowRight = (
@@ -17,8 +14,8 @@ const UserCircle = (
 
 const TransactionList = () => {
   return (
-    <Layout bg="bg-bg border-bg  border-b-[0.5px]">
-      <div className="px-5">
+    <Layout bg="bg-bg border-bg border-b-[0.5px]">
+      <div className="mx-5">
         <TradeList />
       </div>
     </Layout>

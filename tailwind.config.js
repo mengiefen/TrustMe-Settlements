@@ -12,6 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "menu-dark": "rgba(0, 0, 0, 0.1)",
         bg: "#202741",
         "bg-light": "#1e293b",
         secondary: {

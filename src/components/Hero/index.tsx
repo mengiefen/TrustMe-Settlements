@@ -19,7 +19,6 @@ const Hero = () => {
     connected,
   } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
-
   const { disconnect } = useDisconnect()
 
   const [flash, setFlash] = React.useState({

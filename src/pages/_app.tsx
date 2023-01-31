@@ -15,6 +15,15 @@ const App = ({ Component, pageProps }: AppProps) => {
     },
   })
 
+  useContractEvent({
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    eventName: "TradeExpired",
+    abi: trustMeContractABI,
+    listener: (event) => {
+      alert("Trade Expired!")
+    },
+  })
+
   return (
     <main className="font-poppins">
       <StoreProvider>
