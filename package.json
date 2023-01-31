@@ -16,6 +16,7 @@
     "@types/react-dom": "18.0.10",
     "alchemy-sdk": "^2.4.0",
     "axios": "^1.2.6",
+    "dayjs": "^1.11.7",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
     "ethers": "^5.7.2",

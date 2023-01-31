@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useDisconnect } from "wagmi"
 
 const useWindowWidth = () => {
@@ -21,9 +21,9 @@ export const useEthereum = () => {
   return ethereum
 }
 
-export const useFormatAddress = (address: string) => {
-  if (address != "") {
-    return address.slice(0, 4) + "..." + address.slice(-4)
+export const useFormatAddress = (address: `0x${string}` | undefined) => {
+  if (address != undefined) {
+    return address?.slice(0, 4) + "..." + address?.slice(-4)
   }
 
   return ""
@@ -72,4 +72,12 @@ const changeTo12Hour = (hours: number, minutes: number, seconds: number) => {
   }
 
   return `${hours12}:${minutes}:${seconds} ${ampm}`
+}
+
+export const useIsMounted = () => {
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+  return mounted
 }

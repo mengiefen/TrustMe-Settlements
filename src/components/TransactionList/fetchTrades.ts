@@ -4,9 +4,8 @@ import { BigNumber } from "ethers"
 import { Trade } from "./type"
 import { getTradesIDsByUser, getTrade } from "@/helpers/getterHelpers"
 
-export const getTradeList = async (amount: number) => {
-  const userAddress = "0x2306dA564868c47bb2C0123A25943cD54e6e8e2F"
-  const tradeIds = await getTradesIDsByUser(userAddress)
+export const getTradeList = async (amount: number, address: `0x${string}` | undefined) => {
+  const tradeIds = await getTradesIDsByUser(address as string)
 
   const trades: Trade[] = []
   tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {

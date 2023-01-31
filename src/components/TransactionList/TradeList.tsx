@@ -7,27 +7,18 @@ import Pagination from "./Pagination"
 import { getTradeList } from "./fetchTrades"
 import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
-import { useRouter } from "next/router"
+import { useAccount } from "wagmi"
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any
   const [tradeList, setTradeList] = React.useState([]) as any
   const [isLoading, setLoading] = React.useState(true)
-  const router = useRouter()
-
-  // const trades = useSelector((state: RootState) => state.trades)
-  // const dispatch = useDispatch()
-  // useMemo(async () => {
-  //   const trades = await getTradeList(6)
-  //   console.log("trades", trades)
-  //   setTradeList(trades)
-  // }, [tradeList])
+  const { address } = useAccount()
 
   useEffect(() => {
-    if (router.isReady) setLoading(true)
     if (isLoading === true) {
       setLoading(false)
-      getTradeList(9).then((trades) => {
+      getTradeList(9, address).then((trades) => {
         setTradeList(trades)
         setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
       })
@@ -37,8 +28,8 @@ const TradeList = () => {
   return (
     <>
       <UserDetail
-        userAddress={useFormatAddress("0x2306dA564868c47bb2C0123A25943cD54e6e8e2F")}
-        transactionCount={tradeList.length}
+        userAddress={useFormatAddress(address)}
+        transactionCount={tradeList.length + pendingTrades.length}
       />
       <SearchBox />
 
@@ -82,7 +73,6 @@ const TradeList = () => {
       <h2 className="text-lg font-semibold text-secondary-900 my-2">Other Settlements</h2>
 
       {tradeList.map((trade: Trade) => {
-        console.log(trade)
         if (trade.status !== "Pending") {
           return (
             <TableRow
@@ -96,8 +86,7 @@ const TradeList = () => {
           )
         }
       })}
-
-      <Pagination />
+      {tradeList.length > 5 && <Pagination />}
     </>
   )
 }
