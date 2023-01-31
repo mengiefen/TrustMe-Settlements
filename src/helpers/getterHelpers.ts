@@ -38,7 +38,7 @@ export async function getPendingTrades() {
   return pendingTradesIDs
 }
 
-export async function getTrade(tradeId: number) {
+export const getTrade = async (tradeId: number) => {
   const trade = await trustMeContract.getTrade(tradeId)
   return trade
 }
@@ -63,25 +63,25 @@ export const getUserToTradesIDs = async (userAddress: string, id: number) => {
   return tradeStatus
 }
 
-export const getTradesList = async (amount: number) => {
-  const userAddress = "0x2306dA564868c47bb2C0123A25943cD54e6e8e2F"
-  const tradeIds = await getTradesIDsByUser(userAddress)
+// export const getTradesList = async (amount: number) => {
+//   const userAddress = "0x2306dA564868c47bb2C0123A25943cD54e6e8e2F"
+//   const tradeIds = await getTradesIDsByUser(userAddress)
 
-  const trades: Trade[] = []
-  tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
-    const trade = await getTrade(Number(tradeId._hex))
-    await trades.push({
-      id: Number(trade.id),
-      seller: trade.seller,
-      buyer: trade.buyer,
-      tokenToSell: getSymbol(trade.tokenToSell),
-      tokenToBuy: getSymbol(trade.tokenToBuy),
-      amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-      amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-      deadline: Number(trade.deadline),
-      status: getStatus(trade.status),
-    })
-  })
+//   const trades: Trade[] = []
+//   tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
+//     const trade = await getTrade(Number(tradeId._hex))
+//     await trades.push({
+//       id: Number(trade.id),
+//       seller: trade.seller,
+//       buyer: trade.buyer,
+//       tokenToSell: getSymbol(trade.tokenToSell),
+//       tokenToBuy: getSymbol(trade.tokenToBuy),
+//       amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
+//       amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
+//       deadline: Number(trade.deadline),
+//       status: getStatus(trade.status),
+//     })
+//   })
 
-  return trades
-}
+//   return trades
+// }
