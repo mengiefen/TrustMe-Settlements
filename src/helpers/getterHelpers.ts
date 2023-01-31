@@ -1,20 +1,10 @@
 import { getStatus } from "../utils"
 import { formatEther } from "ethers/lib/utils.js"
 import { getSymbol } from "../utils"
-import { Trade } from "../components/Transactions/type"
+import { Trade } from "../components/TransactionList/type"
 import { BigNumber } from "ethers"
 import { trustMeContract } from "../constants/interact"
-import { Alchemy, Network } from "alchemy-sdk"
-
-const ALCHEMY_API_KEY = process.env.ALCHEMY_GOERLI_API_KEY
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
-
-const settings = {
-  apiKey: ALCHEMY_API_KEY,
-  network: Network.ETH_GOERLI,
-}
-
-const alchemy = new Alchemy(settings)
+import { alchemy } from "@/connector/connect"
 
 // // Returns the current block number
 // export const getBlockNumber = async () => {

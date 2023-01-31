@@ -18,10 +18,14 @@ const TradeList = () => {
   useEffect(() => {
     if (isLoading === true) {
       setLoading(false)
-      getTradeList(9, address).then((trades) => {
-        setTradeList(trades)
-        setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
-      })
+      const fetch = async () => {
+        Promise.all([getTradeList(9, address)]).then((trades) => {
+          setTradeList(trades)
+          setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
+        })
+      }
+
+      fetch()
     }
   }, [])
 

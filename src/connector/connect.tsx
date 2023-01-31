@@ -6,6 +6,7 @@ import { infuraProvider } from "wagmi/providers/infura"
 import { publicProvider } from "wagmi/providers/public"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
+import { Alchemy, Network } from "alchemy-sdk"
 
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ""
 const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || ""
@@ -41,6 +42,13 @@ const client = createClient({
   provider,
   webSocketProvider,
 })
+
+// Alchemy SDK
+const config = {
+  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_GOERLI_API_KEY,
+  network: Network.ETH_GOERLI,
+}
+export const alchemy = new Alchemy(config)
 
 interface WagmiProviderProps {
   children: React.ReactNode
