@@ -33,8 +33,6 @@ const Layout = (props: LayoutProps) => {
         buyer: buyer,
         seller: seller,
       })
-      alert("Trade created!")
-      console.log(tradeId, buyer, seller)
     })
 
     trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
@@ -44,8 +42,6 @@ const Layout = (props: LayoutProps) => {
         buyer: buyer,
         seller: seller,
       })
-      alert("Trade expired!")
-      console.log(tradeId, buyer, seller)
     })
   }, [])
 
