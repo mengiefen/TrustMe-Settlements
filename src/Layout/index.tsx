@@ -4,7 +4,6 @@ import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
 import trustMeContractABI from "../constants/abi.json"
 import { useContractEvent } from "wagmi"
-import { alchemy } from "../connector/mainnet_connect"
 import { utils } from "ethers"
 import { trustMeContract } from "../constants/interact"
 
@@ -67,7 +66,8 @@ const Layout = (props: LayoutProps) => {
     <main
       className={`${
         router.pathname === "/" ? "bg-bg text-text" : "bg-text text-bg"
-      } flex flex-col justify-between items-center overflow-hidden w-screen md:px-10 lg:px-20`}
+      } flex flex-col justify-between items-center overflow-hidden w-screen
+       md:px-10 lg:px-20`}
     >
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}

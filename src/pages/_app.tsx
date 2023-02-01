@@ -4,7 +4,6 @@ import WagmiProvider from "../connector/connect"
 import StoreProvider from "@/redux/StoreProvider"
 
 const App = ({ Component, pageProps }: AppProps) => {
-
   return (
     <main className="font-poppins">
       <StoreProvider>
