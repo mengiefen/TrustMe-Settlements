@@ -3,8 +3,9 @@ import { Inter } from "@next/font/google"
 import Layout from "@/Layout"
 import Hero from "@/components/Hero"
 import Service from "@/components/Service"
-import Usage from "@/components/Usage"
+// import Usage from "@/components/Usage"
 import Contact from "@/components/Contact"
+import { Usage } from "@/components/Usage/Usage"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -17,16 +18,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-bg flex flex-col justify-between items-center text-white w-screen overflow-hidden">
-        <Layout>
-          <>
-            <Hero />
-            <Service />
-            <Usage />
-            <Contact />
-          </>
-        </Layout>
-      </main>
+
+      <Layout>
+        <>
+          <Hero />
+          <Service />
+
+          <Usage />
+          <Contact />
+        </>
+      </Layout>
     </>
   )
 }
