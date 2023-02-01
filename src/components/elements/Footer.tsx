@@ -4,7 +4,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "rea
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col  gap-5 justify-start w-full px-5 py-5 ">
+    <footer className="flex flex-col  gap-5 justify-start w-full px-5 py-5 md:py-10 md:border-t md:border-t-slate-700 ">
       <div className="flex flex-col gap-3 mr-auto">
         <div className="flex flex-row items-center gap-1">
           <GiTwoCoins className="text-2xl" />
@@ -28,12 +28,12 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col gap-5">
-          <div className="flex justify-center w-full text-white gap-5">
-            <FaFacebook className="text-2xl hover:text-secondary-500" />
-            <FaTwitter className="text-2xl hover:text-secondary-500" />
-            <FaInstagram className="text-2xl hover:text-secondary-500" />
-            <FaLinkedinIn className="text-2xl hover:text-secondary-500" />
-            <FaYoutube className="text-2xl hover:text-secondary-500" />
+          <div className="flex justify-center w-full text-gray-400 gap-5">
+            <FaFacebook className="text-2xl hover:text-secondary-500 cursor-pointer" />
+            <FaTwitter className="text-2xl hover:text-secondary-500 cursor-pointer" />
+            <FaInstagram className="text-2xl hover:text-secondary-500 cursor-pointer" />
+            <FaLinkedinIn className="text-2xl hover:text-secondary-500 cursor-pointer" />
+            <FaYoutube className="text-2xl hover:text-secondary-500 cursor-pointer" />
           </div>
           <hr className=" border-text-dark w-[10%] mx-auto" />
 

@@ -14,32 +14,23 @@ type LayoutProps = {
   logoPrimaryColor?: string
 }
 const Layout = (props: LayoutProps) => {
-  useContractEvent({
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    eventName: "TradeCreated",
-    abi: trustMeContractABI,
-    listener: (event) => {
-      alert("Trade created!")
-    },
-  })
+  // useContractEvent({
+  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //   eventName: "TradeCreated",
+  //   abi: trustMeContractABI,
+  //   listener: (event) => {
+  //     alert("Trade created!")
+  //   },
+  // })
 
-  useContractEvent({
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    eventName: "TradeExpired",
-    abi: trustMeContractABI,
-    listener(node, label, owner) {
-      alert("Trade Expired!")
-    },
-  })
-
-  useContractEvent({
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    eventName: "TradeExpired",
-    abi: trustMeContractABI,
-    listener(node, label, owner) {
-      alert("Trade Expired!")
-    },
-  })
+  // useContractEvent({
+  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //   eventName: "TradeExpired",
+  //   abi: trustMeContractABI,
+  //   listener(node, label, owner) {
+  //     alert("Trade Expired!")
+  //   },
+  // })
 
   useEffect(() => {
     // alchemy.ws.on(
@@ -63,7 +54,7 @@ const Layout = (props: LayoutProps) => {
     // )
 
     trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
-      console.log("Trade created!")
+      alert("Trade created!")
       console.log(tradeId, buyer, seller)
     })
   }, [])
