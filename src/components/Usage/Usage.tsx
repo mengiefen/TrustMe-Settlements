@@ -66,7 +66,7 @@ export const Usage = () => {
 
   return (
     <div className="my-12 md:mb-20">
-      <h2 className="text-2xl text-center text-text  tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold">
+      <h2 className="text-2xl text-center text-text  tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold mb-5">
         How to Use
       </h2>
       {/* <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto md:mb-5" /> */}

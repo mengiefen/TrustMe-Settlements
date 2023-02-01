@@ -57,7 +57,7 @@ const Layout = (props: LayoutProps) => {
        md:px-10 lg:px-20`}
     >
       {tradeCreated.isTradeCreated && <FlashMessage message="Trade created!" type="success" />}
-      {tradeExpired.isTradeExpired && <FlashMessage message="Trade expired!" type="error" />}
+      {tradeExpired.isTradeExpired && <FlashMessage message="Trade expired!" type="alert" />}
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
       {router.pathname === "/" && <Footer />}
