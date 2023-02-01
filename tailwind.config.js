@@ -11,6 +11,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "320px",
+        sm: "576px",
+        md: "768px",
+        lg: "992px",
+        xl: "1200px",
+      },
+
       colors: {
         "menu-dark": "rgba(0, 0, 0, 0.1)",
         bg: "#202741",
