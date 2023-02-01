@@ -21,7 +21,7 @@ export const useEthereum = () => {
   return ethereum
 }
 
-export const useFormatAddress = (address: `0x${string}` | undefined) => {
+export const useFormatAddress = (address: `0x${string}` | undefined | string) => {
   if (address != undefined) {
     return address?.slice(0, 4) + "..." + address?.slice(-4)
   }

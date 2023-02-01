@@ -8,21 +8,22 @@ export const getTradeList = async (amount: number, address: `0x${string}` | unde
   const tradeIds = await getTradesIDsByUser(address as string)
 
   const trades: Trade[] = []
-  tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
-    const trade = await getTrade(Number(tradeId._hex))
-    await trades.push({
-      id: Number(trade.id),
-      seller: trade.seller,
-      buyer: trade.buyer,
-      tokenToSell: await getSymbol(trade.tokenToSell),
-      tokenToBuy: await getSymbol(trade.tokenToBuy),
-      amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-      amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-      deadline: Number(trade.deadline),
-      status: getStatus(trade.status),
+  await Promise.all(
+    tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
+      const trade = await getTrade(Number(tradeId._hex))
+      await trades.push({
+        id: Number(trade.id),
+        seller: trade.seller,
+        buyer: trade.buyer,
+        tokenToSell: await getSymbol(trade.tokenToSell),
+        tokenToBuy: await getSymbol(trade.tokenToBuy),
+        amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
+        amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
+        deadline: Number(trade.deadline),
+        status: getStatus(trade.status),
+      })
     })
-  })
+  )
 
-  // setTradeList(trades)
   return trades
 }

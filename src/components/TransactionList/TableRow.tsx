@@ -2,7 +2,6 @@ import React from "react"
 import { FaSearch, FaUserCircle } from "react-icons/fa"
 import { MdOutlineArrowForward } from "react-icons/md"
 import TradeStatus from "../elements/TradeStatus"
-import trades from "./data"
 import Link from "next/link"
 
 interface RowProps {
@@ -12,6 +11,7 @@ interface RowProps {
   amountOfTokenToBuy: string
   amountOfTokenToSell: string
   status: string
+  txId: number
 }
 
 const TableRow = ({
@@ -21,6 +21,7 @@ const TableRow = ({
   amountOfTokenToSell,
   TransferTokenId = "TKN",
   status,
+  txId,
 }: RowProps) => {
   return (
     <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg">
@@ -43,16 +44,20 @@ const TableRow = ({
             <TradeStatus status={status} />
           </div>
           <div className="col-span-1 overflow-hidden mx-auto">
-            <Link href="/TransactionDetail">
+            <Link href={`/list/${txId}`}>
               <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
             </Link>
           </div>
         </div>
         {status === "Pending" && (
-          <button className="outline-none border-none py-1 px-2 flex items-center justify-center bg-orange-100 text-md font-normal">
+          <Link
+            href={`/list/${txId}`}
+            className="outline-none border-none py-1 px-2 flex items-center justify-center bg-orange-100 text-md font-normal"
+          >
             <span className="text-bg mr-2">Pending Transaction </span>
+
             <MdOutlineArrowForward className="text-bg hover:translate-x-[1px] transition duration-300" />
-          </button>
+          </Link>
         )}
       </div>
     </div>
