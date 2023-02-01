@@ -7,20 +7,17 @@ import { publicProvider } from "wagmi/providers/public"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { Alchemy, Network } from "alchemy-sdk"
-import { ethers } from "ethers"
 
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ""
 const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || ""
 
-
-const { chains, provider, webSocketProvider} = configureChains(
+const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, goerli, polygon],
   [
-    
     alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
     infuraProvider({ apiKey: INFURA_API_KEY }),
     publicProvider(),
-  ],
+  ]
 )
 
 // Set up client
@@ -43,7 +40,7 @@ const client = createClient({
     }),
   ],
   provider,
-  webSocketProvider
+  webSocketProvider,
 })
 
 // Alchemy SDK

@@ -1,9 +1,10 @@
-import React, { ReactComponentElement, ReactElement, useEffect, useState } from "react"
+import React, { ReactComponentElement, ReactElement, useState } from "react"
 import Header from "@/components/elements/Header"
 import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
-import { trustMeContract } from "../constants/interact"
 import FlashMessage from "@/components/FlashMessage"
+import { trustMeContract } from "@/helpers/getterHelpers"
+import TrustMeContractAbi from "@/constants/abi.json"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -13,20 +14,23 @@ type LayoutProps = {
 const Layout = (props: LayoutProps) => {
   const [tradeCreated, setTradeCreated] = useState({
     isTradeCreated: false,
-    tradeId: "",
+    tradeId: 0,
     buyer: "",
     seller: "",
   })
 
   const [tradeExpired, setTradeExpired] = useState({
     isTradeExpired: false,
-    tradeId: "",
+    tradeId: 0,
     buyer: "",
     seller: "",
   })
 
-  useEffect(() => {
-    trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
+  // events
+  ;(async () => {
+    const _trustMeContract = await trustMeContract()
+    _trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
+      console.log("TradeCreated", tradeId, buyer, seller)
       setTradeCreated({
         isTradeCreated: true,
         tradeId: tradeId,
@@ -34,8 +38,11 @@ const Layout = (props: LayoutProps) => {
         seller: seller,
       })
     })
-
-    trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
+  })()
+  ;(async () => {
+    const _trustMeContract = await trustMeContract()
+    _trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
+      console.log("TradeExpired", tradeId, buyer, seller)
       setTradeExpired({
         isTradeExpired: true,
         tradeId: tradeId,
@@ -43,12 +50,13 @@ const Layout = (props: LayoutProps) => {
         seller: seller,
       })
     })
-  }, [])
+  })()
 
   const router = useRouter()
   const pathname = router.pathname
   const background = pathname !== "/" ? `bg-text${props.bg}` : ""
   const logoColor = pathname !== "/" ? `text-bg${props.logoPrimaryColor}` : ""
+
   return (
     <main
       className={`${

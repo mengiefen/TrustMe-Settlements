@@ -29,12 +29,6 @@ export const useFormatAddress = (address: `0x${string}` | undefined | string) =>
   return ""
 }
 
-const useConnectWallet = () => {}
-
-const useDisconnectWallet = () => {
-  const { disconnect } = useDisconnect()
-}
-
 export const useFormatDate = (unixTime: number) => {
   const date = new Date(unixTime * 1000)
 

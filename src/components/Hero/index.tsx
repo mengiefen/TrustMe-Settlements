@@ -1,35 +1,17 @@
-import React, { useEffect } from "react"
+import React from "react"
 import Image from "next/image"
 import HeroImage from "../../assets/9.png"
 import Button from "../elements/Button"
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  Connector,
-  useWebSocketProvider,
-  useContractEvent,
-} from "wagmi"
+import { useAccount, useConnect, useDisconnect, Connector } from "wagmi"
 import { useFormatAddress } from "@/hooks/hooks"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-import ensRegistryABI from "./ab.json"
 
 const Hero = () => {
   const isMounted = useIsMounted()
-  const { address, isConnected } = useAccount({
-    onConnect({ address, connector, isReconnected }) {
-      // update the store with this state variables
-      console.log("Connected", { address, connector, isReconnected })
-    },
-
-    onDisconnect() {
-      //Update the store with this event
-      console.log("Disconnected")
-    },
-  })
+  const { address, isConnected } = useAccount({})
 
   const {
     buttonText,
@@ -46,38 +28,7 @@ const Hero = () => {
 
   const formattedAddress = useFormatAddress(userAddress)
 
-  const { connectAsync, connectors, data } = useConnect({
-    onSuccess(data) {
-      console.log("Connected", data)
-    },
-
-    onSettled(data, error) {
-      console.log("Settled", { data, error })
-    },
-
-    onMutate(connector) {
-      console.log("Before connect", connector)
-    },
-
-    onError(error) {
-      console.log("Error", error)
-    },
-  })
-
-  const webSocketProvider = useWebSocketProvider({
-    chainId: 5,
-  })
-
-  console.log(webSocketProvider)
-
-  useContractEvent({
-    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-    abi: ensRegistryABI,
-    eventName: "Transfer",
-    listener(node, label, owner) {
-      console.log(node, label, owner)
-    },
-  })
+  const { connectAsync, connectors, data } = useConnect({})
 
   const handleConnect = async (connector: Connector) => {
     if (isMounted) {

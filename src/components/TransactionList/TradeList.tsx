@@ -18,7 +18,7 @@ const TradeList = () => {
 
   useEffect(() => {
     const fetchTradeList = async () => {
-      const data = await getTradeList(16, address)
+      const data = await getTradeList(8, address)
       setTradeList(data)
       setPendingTrades(data.filter((trade: Trade) => trade.status === "Pending"))
       setLoading(false)
@@ -27,11 +27,6 @@ const TradeList = () => {
       fetchTradeList()
     }
   }, [isLoading])
-
-  // getTradeList(9, address).then((trades) => {
-  //   setTradeList(trades)
-  //   setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
-  // })
 
   return (
     <div className="w-screen px-5 md:px-10">
