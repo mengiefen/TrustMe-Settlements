@@ -4,7 +4,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "rea
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col gap-5 justify-start w-screen px-5 py-5">
+    <footer className="flex flex-col  gap-5 justify-start w-full px-5 py-5 ">
       <div className="flex flex-col gap-3 mr-auto">
         <div className="flex flex-row items-center gap-1">
           <GiTwoCoins className="text-2xl" />
@@ -12,33 +12,36 @@ const Footer = () => {
             Trust<span className="text-secondary-500 font-bold">Me</span>
           </h1>
         </div>
-        <hr className="border-secondary-500 w-[50%] ml-auto" />
+        <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto" />
       </div>
+      <div className="my-5 gap-5 flex flex-col md:flex-row md:justify-between md:items-center">
+        <div className="w-full flex gap-[20%]">
+          <ul className="leading-9 text-md md:text-lg tracking-wide md:leading-10">
+            <li>Home</li>
+            <li>About Us</li>
+            <li>Contact Us</li>
+          </ul>
+          <ul className="leading-9 text-md md:text-lg tracking-wide md:leading-10">
+            <li>Services</li>
+            <li>How to use</li>
+          </ul>
+        </div>
 
-      <div className="w-full flex gap-[20%]">
-        <ul className="leading-9 text-md md:text-md tracking-wide">
-          <li>Home</li>
-          <li>About Us</li>
-          <li>Contact Us</li>
-        </ul>
-        <ul className="leading-9 text-md md:text-lg tracking-wide">
-          <li>Services</li>
-          <li>How to use</li>
-        </ul>
+        <div className="flex flex-col gap-5">
+          <div className="flex justify-center w-full text-white gap-5">
+            <FaFacebook className="text-2xl hover:text-secondary-500" />
+            <FaTwitter className="text-2xl hover:text-secondary-500" />
+            <FaInstagram className="text-2xl hover:text-secondary-500" />
+            <FaLinkedinIn className="text-2xl hover:text-secondary-500" />
+            <FaYoutube className="text-2xl hover:text-secondary-500" />
+          </div>
+          <hr className=" border-text-dark w-[10%] mx-auto" />
+
+          <p className="text-sm text-text-dark text-center tracking-wide">
+            © 2023 TrustMe. All rights reserved
+          </p>
+        </div>
       </div>
-
-      <div className="flex justify-center w-full text-white gap-5">
-        <FaFacebook className="text-2xl hover:text-secondary-500" />
-        <FaTwitter className="text-2xl hover:text-secondary-500" />
-        <FaInstagram className="text-2xl hover:text-secondary-500" />
-        <FaLinkedinIn className="text-2xl hover:text-secondary-500" />
-        <FaYoutube className="text-2xl hover:text-secondary-500" />
-      </div>
-      <hr className=" border-text-dark w-[10%] mx-auto" />
-
-      <p className="text-sm text-text-dark text-center tracking-wide">
-        © 2023 TrustMe. All rights reserved
-      </p>
     </footer>
   )
 }
