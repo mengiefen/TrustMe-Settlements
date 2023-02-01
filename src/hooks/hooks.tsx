@@ -71,7 +71,7 @@ const changeTo12Hour = (hours: number, minutes: number, seconds: number) => {
     ampm = "PM"
   }
 
-  return `${hours12}:${minutes}:${seconds} ${ampm}`
+  return `${hours12}:${minutes} ${ampm}`
 }
 
 export const useIsMounted = () => {

@@ -6,7 +6,7 @@ export interface Trade {
   tokenToBuy: string
   amountOfTokenToSell: string
   amountOfTokenToBuy: string
-  deadline: number
+  deadline: string
   status: string
 }
 
