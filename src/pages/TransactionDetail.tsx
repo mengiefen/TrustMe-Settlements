@@ -51,7 +51,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
 
   useEffect(() => {
-    fetchTrade(0).then((trade) =>{
+    fetchTrade(4).then((trade) =>{
       setCurrentTrade(trade)
     })
     // fetchSymbol()

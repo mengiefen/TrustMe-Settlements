@@ -1,7 +1,7 @@
 import { getStatus } from "../utils"
 import { formatEther } from "ethers/lib/utils.js"
 import { getSymbol } from "../utils"
-import { Trade } from "../components/Transactions/type"
+import { Trade } from "../components/TransactionList/type"
 import { BigNumber } from "ethers"
 import { trustMeContract } from "../constants/interact"
 import { Alchemy, Network } from "alchemy-sdk"

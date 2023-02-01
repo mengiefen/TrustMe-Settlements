@@ -8,6 +8,7 @@ import { InjectedConnector } from "@wagmi/core"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
+import router from "next/router"
 
 type menuProps = {
   isActive: boolean
@@ -49,10 +50,12 @@ const MobileMenu = (props: menuProps) => {
     <div
       className={
         isActive
-          ? "w-screen h-screen flex flex-col bg-black bg-opacity-50 items-center justify-start pt-10"
+          ? `w-screen h-screen flex flex-col ${
+              router.pathname === "/" ? "bg-menu-dark" : "bg-gray-200"
+            } bg-opacity-50 items-center justify-start pt-10`
           : "hidden"
-      }
-    >
+      }
+    >
       <div className="flex flex-col bg-black w-11/12 px-[60px] py-5">
         <div className="flex flex-row justify-end">
           <ul className="flex flex-col items-end justify-end">

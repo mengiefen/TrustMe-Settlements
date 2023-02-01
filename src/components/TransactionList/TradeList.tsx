@@ -17,13 +17,24 @@ const TradeList = () => {
 
   useEffect(() => {
     if (isLoading === true) {
-      setLoading(false)
-      getTradeList(9, address).then((trades) => {
-        setTradeList(trades)
-        setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
-      })
+      setLoading(false);
+      (async () => {
+        Promise.all(await getTradeList(9, address)).then((trades) => {
+            setTradeList(trades);
+            setPendingTrades(
+                trades.filter(
+                    (trade: Trade) => trade.status === "Pending"
+                )
+            );
+        });
+      })
     }
-  }, [])
+  }, [isLoading])
+
+  // getTradeList(9, address).then((trades) => {
+  //   setTradeList(trades)
+  //   setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
+  // })
 
   return (
     <>
