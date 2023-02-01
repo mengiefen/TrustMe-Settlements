@@ -26,7 +26,12 @@ const TradeList = () => {
     if (isLoading) {
       fetchTradeList()
     }
-  }, [])
+  }, [isLoading])
+
+  // getTradeList(9, address).then((trades) => {
+  //   setTradeList(trades)
+  //   setPendingTrades(tradeList.filter((trade: Trade) => trade.status === "Pending"))
+  // })
 
   return (
     <div className="w-screen px-5 md:px-10">

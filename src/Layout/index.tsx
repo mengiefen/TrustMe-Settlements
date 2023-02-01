@@ -4,7 +4,6 @@ import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
 import trustMeContractABI from "../constants/abi.json"
 import { useContractEvent } from "wagmi"
-import { alchemy } from "../connector/mainnet_connect"
 import { utils } from "ethers"
 import { trustMeContract } from "../constants/interact"
 

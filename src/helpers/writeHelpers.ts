@@ -1,15 +1,15 @@
 import { trustMeContract } from "../constants/interact"
 
 async function confirmTrade(tradeId: number) {
-  return await trustMeContract.methods.confirmTrade(tradeId)
+  return await trustMeContract.confirmTrade(tradeId)
 }
 
 async function checkExpiredTrades() {
-  return await trustMeContract.methods.checkExpiredTrades()
+  return await trustMeContract.checkExpiredTrades()
 }
 
 async function withdraw(tradeId: number) {
-  return await trustMeContract.methods.withdraw(tradeId)
+  return await trustMeContract.withdraw(tradeId)
 }
 
 export const addTrade = async (
