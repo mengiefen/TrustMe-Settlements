@@ -52,21 +52,12 @@ const MobileMenu = (props: menuProps) => {
       className={
         isActive
           ? `w-screen h-screen flex flex-col ${
-<<<<<<< HEAD
-              router.pathname === "/" ? "bg-menu-dark" : "bg-gray-200"
-            } bg-opacity-50 items-center justify-start pt-10`
-          : "hidden"
-      }
-    >
-      <div className="flex flex-col bg-black w-11/12 px-[60px] py-5">
-=======
               router.pathname === "/" ? "bg-menu-dark text-white" : "bg-gray-200 text-bg"
             } bg-opacity-50 items-center justify-start pt-10`
           : "hidden"
       }
     >
       <div className="flex flex-col w-11/12 px-[60px] py-5">
->>>>>>> 1ac5cd68f2a29509157b11cd9cbdfcf1a48dd305
         <div className="flex flex-row justify-end">
           <ul className="flex flex-col items-end justify-end">
             <li className="py-2 hover:-translate-x-1 transition duration-300">

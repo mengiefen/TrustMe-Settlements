@@ -4,6 +4,7 @@ import WagmiProvider from "../connector/connect"
 import StoreProvider from "@/redux/StoreProvider"
 import { useContractEvent } from "wagmi"
 import trustMeContractABI from "../constants/abi.json"
+import { useEffect } from "react"
 
 const App = ({ Component, pageProps }: AppProps) => {
   useContractEvent({
@@ -23,6 +24,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       alert("Trade Expired!")
     },
   })
+
 
   return (
     <main className="font-poppins">

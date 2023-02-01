@@ -83,22 +83,4 @@ export const useIsMounted = () => {
 }
 
 
-const useCopyToClipboard = () => {
-  const [copySuccess, setCopySuccess] = useState('');
-
-  const copyToClipboard = (text:string) => {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        setCopySuccess('Copied!');
-      },
-      (error) => {
-        setCopySuccess('Failed to copy.');
-      }
-    );
-  };
-
-  return [copySuccess, copyToClipboard];
-};
-
-export default useCopyToClipboard;
 
