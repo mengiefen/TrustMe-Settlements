@@ -22,8 +22,8 @@ export const useEthereum = () => {
 }
 
 export const useFormatAddress = (address: `0x${string}` | undefined | string) => {
-  if (address != undefined) {
-    return address?.slice(0, 4) + "..." + address?.slice(-4)
+  if (address != undefined && address != "" && address != null) {
+    return address?.slice(0, 4) + " ... " + address?.slice(-4)
   }
 
   return ""
@@ -81,6 +81,3 @@ export const useIsMounted = () => {
   }, [])
   return mounted
 }
-
-
-

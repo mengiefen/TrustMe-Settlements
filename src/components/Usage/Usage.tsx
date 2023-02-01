@@ -87,7 +87,7 @@ export const Usage = () => {
           theme={{
             primary: "#02b6ce",
             secondary: "#9a5cb0",
-            cardBgColor: "linear-gradient(90deg, #03272c 0%, #240330 100%)",
+            cardBgColor: "linear-gradient(45deg, #03272c 0%, #240330 100%)",
             cardForeColor: "white",
             textColor: "white",
             titleColor: "white",

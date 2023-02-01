@@ -1,11 +1,9 @@
-import React, { ReactComponentElement, ReactElement, useEffect } from "react"
+import React, { ReactComponentElement, ReactElement, useEffect, useState } from "react"
 import Header from "@/components/elements/Header"
 import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
-import trustMeContractABI from "../constants/abi.json"
-import { useContractEvent } from "wagmi"
-import { utils } from "ethers"
 import { trustMeContract } from "../constants/interact"
+import FlashMessage from "@/components/FlashMessage"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -13,47 +11,40 @@ type LayoutProps = {
   logoPrimaryColor?: string
 }
 const Layout = (props: LayoutProps) => {
-  // useContractEvent({
-  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-  //   eventName: "TradeCreated",
-  //   abi: trustMeContractABI,
-  //   listener: (event) => {
-  //     alert("Trade created!")
-  //   },
-  // })
+  const [tradeCreated, setTradeCreated] = useState({
+    isTradeCreated: false,
+    tradeId: "",
+    buyer: "",
+    seller: "",
+  })
 
-  // useContractEvent({
-  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-  //   eventName: "TradeExpired",
-  //   abi: trustMeContractABI,
-  //   listener(node, label, owner) {
-  //     alert("Trade Expired!")
-  //   },
-  // })
+  const [tradeExpired, setTradeExpired] = useState({
+    isTradeExpired: false,
+    tradeId: "",
+    buyer: "",
+    seller: "",
+  })
 
   useEffect(() => {
-    // alchemy.ws.on(
-    //   {
-    //     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    //     topics: [utils.id("TradeCreated(uint256,address,address)")],
-    //   },
-    //   () => {
-    //     alert("Trade created!")
-    //   }
-    // )
-
-    // alchemy.ws.on(
-    //   {
-    //     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    //     topics: [utils.id("TradeExpired(uint256,address,address)")],
-    //   },
-    //   () => {
-    //     alert("Trade Expired!")
-    //   }
-    // )
-
     trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
+      setTradeCreated({
+        isTradeCreated: true,
+        tradeId: tradeId,
+        buyer: buyer,
+        seller: seller,
+      })
       alert("Trade created!")
+      console.log(tradeId, buyer, seller)
+    })
+
+    trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
+      setTradeExpired({
+        isTradeExpired: true,
+        tradeId: tradeId,
+        buyer: buyer,
+        seller: seller,
+      })
+      alert("Trade expired!")
       console.log(tradeId, buyer, seller)
     })
   }, [])
@@ -69,6 +60,8 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
+      {tradeCreated.isTradeCreated && <FlashMessage message="Trade created!" type="success" />}
+      {tradeExpired.isTradeExpired && <FlashMessage message="Trade expired!" type="error" />}
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
       {router.pathname === "/" && <Footer />}
