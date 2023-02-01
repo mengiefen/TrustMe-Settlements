@@ -1,7 +1,12 @@
 import AddTradeForm from "../components/elements/AddTradeForm"
 import React from "react"
+import Layout from "@/Layout"
 const addTrade = () => {
-  return <AddTradeForm />
+  return (
+    <Layout>
+      <AddTradeForm />
+    </Layout>
+  )
 }
 
 export default addTrade

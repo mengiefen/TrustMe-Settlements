@@ -29,7 +29,7 @@ const TradeList = () => {
   }, [])
 
   return (
-    <>
+    <div className="w-screen px-5 md:px-10">
       <UserDetail
         userAddress={useFormatAddress(address)}
         transactionCount={tradeList.length + pendingTrades.length}
@@ -56,12 +56,20 @@ const TradeList = () => {
           </div>
 
           <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg">
-            <div className="flex flex-col border  border-secondary-200 rounded-lg overflow-hidden">
-              <div className="grid grid-cols-12 p-2 items-center gap-1 shadow">
-                <div className="col-span-2">CP</div>
-                <div className="col-span-3 overflow-clip  text-secondary-900">Receiver</div>
-                <div className="col-span-3 text-secondary-900 flex-col">Sender</div>
-                <div className="col-span-3 overflow-hidden text-center">Status</div>
+            <div className="flex flex-col border  border-secondary-400 rounded-lg overflow-hidden">
+              <div className="grid grid-cols-12 p-2 items-center gap-1 shadow bg-secondary-50">
+                <div className="col-span-2 text-secondary-900 md:text-lg md:uppercase md:font-semibold">
+                  CP
+                </div>
+                <div className="col-span-3 overflow-clip  text-secondary-900 md:text-lg md:uppercase md:font-semibold">
+                  Receiver
+                </div>
+                <div className="col-span-3 text-secondary-900 flex-col md:text-lg md:uppercase md:font-semibold">
+                  Sender
+                </div>
+                <div className="col-span-3 text-secondary-900 overflow-hidden text-center md:text-lg md:uppercase md:font-semibold">
+                  Status
+                </div>
                 <div className="col-span-1 overflow-hidden"></div>
               </div>
             </div>
@@ -101,7 +109,7 @@ const TradeList = () => {
           {tradeList.length > 5 && <Pagination />}
         </>
       )}
-    </>
+    </div>
   )
 }
 
