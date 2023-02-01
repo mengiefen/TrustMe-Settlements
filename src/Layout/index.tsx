@@ -67,7 +67,8 @@ const Layout = (props: LayoutProps) => {
     <main
       className={`${
         router.pathname === "/" ? "bg-bg text-text" : "bg-text text-bg"
-      } flex flex-col justify-between items-center overflow-hidden w-screen md:px-10 lg:px-20`}
+      } flex flex-col justify-between items-center overflow-hidden w-screen
+       md:px-10 lg:px-20`}
     >
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}

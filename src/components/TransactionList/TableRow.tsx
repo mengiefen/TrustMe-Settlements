@@ -31,13 +31,17 @@ const TableRow = ({
           <div className="col-span-3 overflow-clip  text-secondary-900">
             <div className="flex flex-col">
               {amountOfTokenToBuy}
-              <span className="font-bold mr-1 text-gray-400 text-[10px]">{ReceiveTokenId}</span>
+              <span className="font-bold mr-1 text-gray-400 text-[10px] md:text-md">
+                {ReceiveTokenId}
+              </span>
             </div>
           </div>
           <div className="col-span-3 text-secondary-900 flex-col">
             <div className="flex flex-col">
               {amountOfTokenToSell}
-              <span className="font-bold mr-1 text-[10px] text-gray-400">{TransferTokenId}</span>
+              <span className="font-bold mr-1 text-[10px] md:text-md text-gray-400">
+                {TransferTokenId}
+              </span>
             </div>
           </div>
           <div className="col-span-3 overflow-hidden">
@@ -45,7 +49,7 @@ const TableRow = ({
           </div>
           <div className="col-span-1 overflow-hidden mx-auto">
             <Link href={`/list/${txId}`}>
-              <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
+              <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300 md:text-2xl" />
             </Link>
           </div>
         </div>

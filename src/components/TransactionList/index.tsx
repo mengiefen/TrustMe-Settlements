@@ -14,10 +14,8 @@ const UserCircle = (
 
 const TransactionList = () => {
   return (
-    <Layout bg="bg-bg border-bg border-b-[0.5px]">
-      <div className="mx-5">
-        <TradeList />
-      </div>
+    <Layout>
+      <TradeList />
     </Layout>
   )
 }

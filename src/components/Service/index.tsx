@@ -11,6 +11,7 @@ const Service = () => {
       <h2 className="text-2xl text-center text-text md:mb-5 tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold">
         Services
       </h2>
+      <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto" />
       <Carousel />
     </div>
   )
