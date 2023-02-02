@@ -4,7 +4,6 @@ import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
 import FlashMessage from "@/components/FlashMessage"
 import { trustMeContract } from "@/helpers/getterHelpers"
-import TrustMeContractAbi from "@/constants/abi.json"
 import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 
@@ -20,49 +19,100 @@ const Layout = (props: LayoutProps) => {
     buyer: "",
     seller: "",
   })
-
   const [tradeExpired, setTradeExpired] = useState({
     isTradeExpired: false,
     tradeId: 0,
     buyer: "",
     seller: "",
   })
+  const [tradeConfirmed, setTradeConfirmed] = useState({
+    isTradeConfirmed: false,
+    tradeId: 0,
+    buyer: "",
+    seller: "",
+  })
+  const [tradeCanceled, setTradeCanceled] = useState({
+    isTradeCanceled: false,
+    tradeId: 0,
+    buyer: "",
+    seller: "",
+  })
+  const [tradeWithdrawn, setTradeWithdraw] = useState({
+    isTradeWithdrawn: false,
+    tradeId: 0,
+    buyer: "",
+    seller: "",
+  })
 
-  const {
-    buttonText,
-    address: userAddress,
-    connected,
-  } = useSelector((state: RootState) => state.wallets)
-
-  const isUsersAvailableEvent = (addressSeller : string, addressBuyer : string, connectedAddress: string) => {
-    if(addressSeller.length === 0 || addressBuyer.length === 0) return false
-    if(addressSeller === connectedAddress || addressBuyer === connectedAddress) return true
-    return false
-  }
+  const { address: userAddress } = useSelector((state: RootState) => state.wallets)
 
   // events
   ;(async () => {
     const _trustMeContract = await trustMeContract()
     _trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
-      console.log("TradeCreated", tradeId, buyer, seller)
-      setTradeCreated({
-        isTradeCreated: true,
-        tradeId: tradeId,
-        buyer: buyer,
-        seller: seller,
-      })
+      if (buyer == userAddress || seller == userAddress) {
+        setTradeCreated({
+          isTradeCreated: true,
+          tradeId: tradeId,
+          buyer: buyer,
+          seller: seller,
+        })
+      }
     })
   })()
   ;(async () => {
     const _trustMeContract = await trustMeContract()
     _trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
-      console.log("TradeExpired", tradeId, buyer, seller)
-      setTradeExpired({
-        isTradeExpired: true,
-        tradeId: tradeId,
-        buyer: buyer,
-        seller: seller,
-      })
+      if (buyer == userAddress || seller == userAddress) {
+        setTradeExpired({
+          isTradeExpired: true,
+          tradeId: tradeId,
+          buyer: buyer,
+          seller: seller,
+        })
+      }
+    })
+  })()
+  ;(async () => {
+    const _trustMeContract = await trustMeContract()
+    _trustMeContract.on("TradeConfirmed", (tradeId, buyer, seller) => {
+      console.log("TradeConfirmed", tradeId, buyer, seller)
+      if (buyer == userAddress || seller == userAddress) {
+        setTradeConfirmed({
+          isTradeConfirmed: true,
+          tradeId: tradeId,
+          buyer: buyer,
+          seller: seller,
+        })
+      }
+    })
+  })()
+  ;(async () => {
+    const _trustMeContract = await trustMeContract()
+    _trustMeContract.on("TradeCanceled", (tradeId, buyer, seller) => {
+      console.log("TradeCanceled", tradeId, buyer, seller)
+      if (buyer == userAddress || seller == userAddress) {
+        setTradeCanceled({
+          isTradeCanceled: true,
+          tradeId: tradeId,
+          buyer: buyer,
+          seller: seller,
+        })
+      }
+    })
+  })()
+  ;(async () => {
+    const _trustMeContract = await trustMeContract()
+    _trustMeContract.on("TradeWithdrawn", (tradeId, buyer, seller) => {
+      console.log("TradeWithdrawn", tradeId, buyer, seller)
+      if (buyer == userAddress || seller == userAddress) {
+        setTradeWithdraw({
+          isTradeWithdrawn: true,
+          tradeId: tradeId,
+          buyer: buyer,
+          seller: seller,
+        })
+      }
     })
   })()
 
@@ -78,8 +128,18 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      {tradeCreated.isTradeCreated && isUsersAvailableEvent(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade created!" type="success" />}
-      {tradeExpired.isTradeExpired && isUsersAvailableEvent(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade expired!" type="error" />}
+      {tradeCreated.isTradeCreated ? (
+        <FlashMessage message="Trade created!" type="success" />
+      ) : tradeCanceled.isTradeCanceled ? (
+        <FlashMessage message="Trade Canceled!" type="error" />
+      ) : tradeConfirmed.isTradeConfirmed ? (
+        <FlashMessage message="Trade Confirmed!" type="success" />
+      ) : tradeExpired.isTradeExpired ? (
+        <FlashMessage message="Trade expired!" type="info" />
+      ) : tradeWithdrawn.isTradeWithdrawn ? (
+        <FlashMessage message="Trade withdrawn!" type="success" />
+      ) : null}
+
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
       {router.pathname === "/" && <Footer />}
