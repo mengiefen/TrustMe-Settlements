@@ -1,4 +1,17 @@
+import storage from "redux-persist/lib/storage"
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
+import {
+  persistStore,
+  persistReducer,
+  createPersistoid,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist"
+
 import tradesReducer from "./trade/tradesSlice"
 import walletsReducer from "./wallet/walletSlice"
 
@@ -7,14 +20,30 @@ const rootReducer = combineReducers({
   wallets: walletsReducer,
 })
 
+const persistConfig = {
+  key: "trustMe",
+  version: 1,
+  storage,
+  whitelist: ["wallets", "trades"],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 export const makeStore = () => {
   return configureStore({
-    reducer: rootReducer,
+    reducer: persistedReducer,
     devTools: true,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }),
   })
 }
 
 export const store = makeStore()
+export const persister = persistStore(store)
 
 export type RootState = ReturnType<typeof store.getState>
 

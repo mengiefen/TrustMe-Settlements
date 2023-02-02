@@ -43,7 +43,7 @@ const ButtonIcon = (status = "Expired") => {
     case "Pending":
       return <MdPendingActions className="text-yellow-600 " />
     case "Cancelled":
-      return <MdOutlineCancel className="text-red-600 md:text-2xl " />
+      return <MdOutlineCancel className="text-red-600" />
     default:
       return <MdOutlineLockClock className="text-gray-700 " />
   }

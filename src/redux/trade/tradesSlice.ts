@@ -39,12 +39,12 @@ import { Trade } from "@/components/TransactionList/type"
 // }
 
 type TradesState = {
-  trades: Trade[]
+  data: Trade[]
   status: "loading" | "succeeded" | "failed"
 }
 
 const initialState = {
-  trades: [],
+  data: [],
   status: "loading",
 } as TradesState
 
@@ -52,29 +52,58 @@ const tradesSlice = createSlice({
   name: "trades",
   initialState,
   reducers: {
-    updateTrades: (state, action: PayloadAction<Trade[]>) => {
-      console.log("action.payload", action.payload)
-      state.trades = [...action.payload]
+    fetchTradesPending: (state) => {
+      state.status = "loading"
+    },
+
+    fetchTrades: (state, action: PayloadAction<Trade[]>) => {
+      state.data = [...action.payload]
       state.status = "succeeded"
     },
+    fetchTradesFailed: (state) => {
+      state.status = "failed"
+    },
+
+    updateCanceledTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
+    },
+
+    updateExpiredTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
+    },
+
+    updateConfirmedTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
+    },
+
+    updateCreatedTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      state.data.push(trade)
+    },
+
+    updateWithdrawnTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
+    },
   },
-
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(fetchUserTrades.pending, (state, action) => {
-  //       state.status = "loading"
-  //     })
-  //     .addCase(fetchUserTrades.fulfilled, (state, action: PayloadAction<TrustMe[]>) => {
-  //       state.status = "succeeded"
-  //       // state.trades = action.payload
-  //     })
-
-  //     .addCase(fetchUserTrades.rejected, (state, action) => {
-  //       state.status = "failed"
-  //     })
-  // },
 })
 
-export const { updateTrades } = tradesSlice.actions
+export const {
+  fetchTrades,
+  fetchTradesFailed,
+  fetchTradesPending,
+  updateCanceledTrade,
+  updateConfirmedTrade,
+  updateCreatedTrade,
+  updateExpiredTrade,
+  updateWithdrawnTrade,
+} = tradesSlice.actions
 
 export default tradesSlice.reducer
