@@ -1,88 +1,62 @@
-import { getStatus } from "../utils"
-import { formatEther } from "ethers/lib/utils.js"
-import { getSymbol } from "../utils"
-import { Trade } from "../components/TransactionList/type"
-import { BigNumber } from "ethers"
-import { trustMeContract } from "../constants/interact"
+import { ethers, Signer } from "ethers"
 import { alchemy } from "@/connector/connect"
+import TrustMeAbi from "../../abi.json"
+import Erc20Abi from "../../erc20Abi.json"
+import { fetchSigner } from "@wagmi/core"
+import { ERC20, TrustMe } from "typechain"
+import { formatEther } from "ethers/lib/utils.js"
 
-// // Returns the current block number
-// export const getBlockNumber = async () => {
-//   const blockNumber = await alchemy.core.getBlockNumber()
-//   return blockNumber
-// }
+export const getSigner = async () => {
+  const signer = await fetchSigner()
+  return signer
+}
+export const TRUST_ME_CONTRACT_ADDRESS = "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E"
 
-// alchemy.core.getTokenBalances(CONTRACT_ADDRESS).then((balances) => {
-//   console.log("Balances:", balances)
-// })
+export const trustMeContract = async () => {
+  const trustMeInstance: TrustMe = new ethers.Contract(
+    TRUST_ME_CONTRACT_ADDRESS,
+    TrustMeAbi,
+    (await getSigner()) as Signer
+  ) as TrustMe
+  return trustMeInstance
+}
 
-// // Returns the token balances for a specific owner address given a list of contracts
-// export const getTokenBalances = async (ownerAddress: string, contractAddresses: string[]) => {
-//   const balances = await alchemy.core.getTokenBalances(ownerAddress, contractAddresses)
-
-//   return balances
-// }
-
+export const erc20Contract = async (address: string) => {
+  const erc20Instance = new ethers.Contract(
+    address,
+    Erc20Abi,
+    (await getSigner()) as Signer
+  ) as ERC20
+  return erc20Instance
+}
 export async function getPendingTrades() {
-  const pendingTradesIDs = await trustMeContract.getPendingTradesIDs()
+  const trustMe = await trustMeContract()
+  const pendingTradesIDs = await trustMe.getPendingTradesIDs()
   return pendingTradesIDs
 }
 
 export async function getTrade(tradeId: number) {
-  const trade = await trustMeContract.getTrade(tradeId)
+  const trustMe = await trustMeContract()
+  const trade = await trustMe.getTrade(tradeId)
   return trade
 }
 
-export async function getTradeIdToTrade(tradeId: number) {
-  return await trustMeContract.getTradeIdToTrade(tradeId)
-}
-
 export const getTradeStatus = async (tradeID: number) => {
-  const tradeStatus = await trustMeContract.getTradeStatus(tradeID)
+  const trustMe = await trustMeContract()
+  const tradeStatus = await trustMe.getTradeStatus(tradeID)
   return tradeStatus
 }
-
 export const getTradesIDsByUser = async (address: string) => {
-  const tradeIds = await trustMeContract.getTradesIDsByUser(address)
+  const trustMe = await trustMeContract()
+  const tradeIds = await trustMe.getTradesIDsByUser(address)
 
   return tradeIds
 }
 
 export const getUserToTradesIDs = async (userAddress: string, id: number) => {
-  const tradeStatus = await trustMeContract.userToTradesIDs(userAddress, id)
+  const trustMe = await trustMeContract()
+  const tradeStatus = await trustMe.userToTradesIDs(userAddress, id)
   return tradeStatus
-}
-
-export const getTradesList = async (amount: number, address: `0x${string}` | undefined) => {
-  const userAddress = "0x04E1B236182b9703535ecB490697b79B45453Ba1"
-  const tradeIds = await getTradesIDsByUser(userAddress)
-
-  const trades: Trade[] = []
-  tradeIds.slice(0, amount).map(async (tradeId: BigNumber) => {
-    const trade = await getTrade(Number(tradeId._hex))
-    await trades.push({
-      id: Number(trade.id),
-      seller: trade.seller,
-      buyer: trade.buyer,
-      tokenToSell: getSymbol(trade.tokenToSell),
-      tokenToBuy: getSymbol(trade.tokenToBuy),
-      amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-      amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-      deadline: Number(trade.deadline),
-      status: getStatus(trade.status),
-    })
-  })
-
-  return trades
-}
-
-// Using the Alchemy SDK
-interface TokenMetadataResponse {
-  name: string
-  symbol: string
-  decimals: number
-  logo: string
-  address: string
 }
 
 export const getConnectedUserTokens = async (address: string) => {
@@ -113,4 +87,11 @@ export const getConnectedUserTokens = async (address: string) => {
     })
   }
   return tokenMetadata
+}
+
+// return balance in ether format
+const getSignerBalance = async (address: string) => {
+  const signer = await getSigner()
+  const balance = await signer?.getBalance()
+  return formatEther(balance as any)
 }
