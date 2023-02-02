@@ -26,6 +26,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const [txWait, setTxWait] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(false)
+  const router = useRouter()
 
   const setState = async (id: number) => {
     const trade = await getTrade(id)
@@ -63,9 +64,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     await withdraw.wait()
     setTxWait(false)
   }
-
-  const router = useRouter()
-  console.log(router)
 
   useEffect(() => {
     let tradeObj: Trade
