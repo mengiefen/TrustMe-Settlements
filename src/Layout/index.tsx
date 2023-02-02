@@ -4,6 +4,8 @@ import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
 import { trustMeContract } from "../constants/interact"
 import FlashMessage from "@/components/FlashMessage"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -24,6 +26,18 @@ const Layout = (props: LayoutProps) => {
     buyer: "",
     seller: "",
   })
+
+  const {
+    buttonText,
+    address: userAddress,
+    connected,
+  } = useSelector((state: RootState) => state.wallets)
+
+  const isReleavant = (add_seller : string, add_buyer : string, userConnected: string) => {
+    if(add_seller.length === 0 || add_buyer.length === 0) return false
+    if(add_seller === userConnected || add_buyer === userConnected) return true
+    return false
+  }
 
   useEffect(() => {
     trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
@@ -56,8 +70,8 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      {tradeCreated.isTradeCreated && <FlashMessage message="Trade created!" type="success" />}
-      {tradeExpired.isTradeExpired && <FlashMessage message="Trade expired!" type="error" />}
+      {tradeCreated.isTradeCreated && isReleavant(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade created!" type="success" />}
+      {tradeExpired.isTradeExpired && isReleavant(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade expired!" type="error" />}
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
       {router.pathname === "/" && <Footer />}
