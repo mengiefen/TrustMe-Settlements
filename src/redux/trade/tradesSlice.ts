@@ -39,12 +39,12 @@ import { Trade } from "@/components/TransactionList/type"
 // }
 
 type TradesState = {
-  trades: Trade[]
+  data: Trade[]
   status: "loading" | "succeeded" | "failed"
 }
 
 const initialState = {
-  trades: [],
+  data: [],
   status: "loading",
 } as TradesState
 
@@ -57,7 +57,7 @@ const tradesSlice = createSlice({
     },
 
     fetchTrades: (state, action: PayloadAction<Trade[]>) => {
-      state.trades = [...action.payload]
+      state.data = [...action.payload]
       state.status = "succeeded"
     },
     fetchTradesFailed: (state) => {
@@ -66,36 +66,44 @@ const tradesSlice = createSlice({
 
     updateCanceledTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
-      const index = state.trades.findIndex((t) => t.id === trade.id)
-      state.trades[index] = trade
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
     },
 
     updateExpiredTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
-      const index = state.trades.findIndex((t) => t.id === trade.id)
-      state.trades[index] = trade
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
     },
 
     updateConfirmedTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
-      const index = state.trades.findIndex((t) => t.id === trade.id)
-      state.trades[index] = trade
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
     },
 
     updateCreatedTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
-      const index = state.trades.findIndex((t) => t.id === trade.id)
-      state.trades[index] = trade
+      state.data.push(trade)
     },
 
     updateWithdrawnTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
-      const index = state.trades.findIndex((t) => t.id === trade.id)
-      state.trades[index] = trade
+      const index = state.data.findIndex((t) => t.id === trade.id)
+      state.data[index] = trade
     },
   },
 })
 
-export const { fetchTrades, fetchTradesFailed, fetchTradesPending } = tradesSlice.actions
+export const {
+  fetchTrades,
+  fetchTradesFailed,
+  fetchTradesPending,
+  updateCanceledTrade,
+  updateConfirmedTrade,
+  updateCreatedTrade,
+  updateExpiredTrade,
+  updateWithdrawnTrade,
+} = tradesSlice.actions
 
 export default tradesSlice.reducer
