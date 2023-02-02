@@ -52,29 +52,50 @@ const tradesSlice = createSlice({
   name: "trades",
   initialState,
   reducers: {
-    updateTrades: (state, action: PayloadAction<Trade[]>) => {
-      console.log("action.payload", action.payload)
+    fetchTradesPending: (state) => {
+      state.status = "loading"
+    },
+
+    fetchTrades: (state, action: PayloadAction<Trade[]>) => {
       state.trades = [...action.payload]
       state.status = "succeeded"
     },
+    fetchTradesFailed: (state) => {
+      state.status = "failed"
+    },
+
+    updateCanceledTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.trades.findIndex((t) => t.id === trade.id)
+      state.trades[index] = trade
+    },
+
+    updateExpiredTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.trades.findIndex((t) => t.id === trade.id)
+      state.trades[index] = trade
+    },
+
+    updateConfirmedTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.trades.findIndex((t) => t.id === trade.id)
+      state.trades[index] = trade
+    },
+
+    updateCreatedTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.trades.findIndex((t) => t.id === trade.id)
+      state.trades[index] = trade
+    },
+
+    updateWithdrawnTrade: (state, action: PayloadAction<Trade>) => {
+      const trade = action.payload
+      const index = state.trades.findIndex((t) => t.id === trade.id)
+      state.trades[index] = trade
+    },
   },
-
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(fetchUserTrades.pending, (state, action) => {
-  //       state.status = "loading"
-  //     })
-  //     .addCase(fetchUserTrades.fulfilled, (state, action: PayloadAction<TrustMe[]>) => {
-  //       state.status = "succeeded"
-  //       // state.trades = action.payload
-  //     })
-
-  //     .addCase(fetchUserTrades.rejected, (state, action) => {
-  //       state.status = "failed"
-  //     })
-  // },
 })
 
-export const { updateTrades } = tradesSlice.actions
+export const { fetchTrades, fetchTradesFailed, fetchTradesPending } = tradesSlice.actions
 
 export default tradesSlice.reducer
