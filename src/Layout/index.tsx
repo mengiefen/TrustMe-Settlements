@@ -5,6 +5,8 @@ import { useRouter } from "next/router"
 import FlashMessage from "@/components/FlashMessage"
 import { trustMeContract } from "@/helpers/getterHelpers"
 import TrustMeContractAbi from "@/constants/abi.json"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -25,6 +27,18 @@ const Layout = (props: LayoutProps) => {
     buyer: "",
     seller: "",
   })
+
+  const {
+    buttonText,
+    address: userAddress,
+    connected,
+  } = useSelector((state: RootState) => state.wallets)
+
+  const isUsersAvailableEvent = (addressSeller : string, addressBuyer : string, connectedAddress: string) => {
+    if(addressSeller.length === 0 || addressBuyer.length === 0) return false
+    if(addressSeller === connectedAddress || addressBuyer === connectedAddress) return true
+    return false
+  }
 
   // events
   ;(async () => {
@@ -64,8 +78,8 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      {tradeCreated.isTradeCreated && <FlashMessage message="Trade created!" type="success" />}
-      {tradeExpired.isTradeExpired && <FlashMessage message="Trade expired!" type="alert" />}
+      {tradeCreated.isTradeCreated && isUsersAvailableEvent(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade created!" type="success" />}
+      {tradeExpired.isTradeExpired && isUsersAvailableEvent(tradeCreated.seller, tradeCreated.buyer, userAddress) && <FlashMessage message="Trade expired!" type="error" />}
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
       {router.pathname === "/" && <Footer />}
