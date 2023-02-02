@@ -4,21 +4,26 @@ import SearchBox from "@/components/TransactionList/SearchBox"
 import UserDetail from "./UserDetail"
 import Button from "../elements/Button"
 import Pagination from "./Pagination"
-import { getTradeList } from "./fetchTrades"
+import { getTradeList, getTradesFromStorage } from "./fetchTrades"
 import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
 import { useAccount } from "wagmi"
 import Spinner from "../elements/Spinner"
+import { useDispatch } from "react-redux"
+import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice"
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any
   const [tradeList, setTradeList] = React.useState([]) as any
   const [isLoading, setLoading] = React.useState(true)
   const { address } = useAccount()
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(fetchTradesPending())
     const fetchTradeList = async () => {
-      const data = await getTradeList(8, address)
+      const data = await getTradeList(address)
+      dispatch(fetchTrades(data))
       setTradeList(data)
       setPendingTrades(data.filter((trade: Trade) => trade.status === "Pending"))
       setLoading(false)
