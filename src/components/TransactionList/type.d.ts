@@ -4,6 +4,8 @@ export interface Trade {
   buyer: string
   tokenToSell: string
   tokenToBuy: string
+  symbolToSell: string
+  symbolToBuy: string
   amountOfTokenToSell: string
   amountOfTokenToBuy: string
   deadline: number

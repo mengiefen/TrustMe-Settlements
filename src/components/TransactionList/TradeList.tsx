@@ -9,12 +9,13 @@ import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
 import { useAccount } from "wagmi"
 import Spinner from "../elements/Spinner"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice"
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any
-  const [tradeList, setTradeList] = React.useState([]) as any
+  // const [tradeList, setTradeList] = React.useState([]) as any
+  const tradeList = useSelector((state: any) => state.trades.data)
   const [isLoading, setLoading] = React.useState(true)
   const { address } = useAccount()
   const dispatch = useDispatch()
@@ -24,14 +25,13 @@ const TradeList = () => {
     const fetchTradeList = async () => {
       const data = await getTradeList(address)
       dispatch(fetchTrades(data))
-      setTradeList(data)
       setPendingTrades(data.filter((trade: Trade) => trade.status === "Pending"))
       setLoading(false)
     }
     if (isLoading) {
       fetchTradeList()
     }
-  }, [isLoading])
+  }, [isLoading, address, dispatch])
 
   return (
     <div className="w-screen px-5 md:px-10">
@@ -87,8 +87,8 @@ const TradeList = () => {
                 amountOfTokenToBuy={trade.amountOfTokenToBuy}
                 amountOfTokenToSell={trade.amountOfTokenToSell}
                 status={trade.status}
-                TransferTokenId={trade.tokenToSell}
-                ReceiveTokenId={trade.tokenToBuy}
+                TransferTokenId={trade.symbolToSell}
+                ReceiveTokenId={trade.symbolToBuy}
                 txId={trade.id}
               />
             )
@@ -104,8 +104,8 @@ const TradeList = () => {
                   amountOfTokenToBuy={trade.amountOfTokenToBuy}
                   amountOfTokenToSell={trade.amountOfTokenToSell}
                   status={trade.status}
-                  TransferTokenId={trade.tokenToSell}
-                  ReceiveTokenId={trade.tokenToBuy}
+                  TransferTokenId={trade.symbolToSell}
+                  ReceiveTokenId={trade.symbolToBuy}
                   txId={trade.id}
                 />
               )

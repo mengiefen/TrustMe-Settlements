@@ -67,19 +67,19 @@ const tradesSlice = createSlice({
     updateCanceledTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
       const index = state.data.findIndex((t) => t.id === trade.id)
-      state.data[index] = trade
+      state.data[index].status = "Canceled"
     },
 
     updateExpiredTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
       const index = state.data.findIndex((t) => t.id === trade.id)
-      state.data[index] = trade
+      state.data[index].status = "Expired"
     },
 
     updateConfirmedTrade: (state, action: PayloadAction<Trade>) => {
       const trade = action.payload
       const index = state.data.findIndex((t) => t.id === trade.id)
-      state.data[index] = trade
+      state.data[index].status = "Confirmed"
     },
 
     updateCreatedTrade: (state, action: PayloadAction<Trade>) => {

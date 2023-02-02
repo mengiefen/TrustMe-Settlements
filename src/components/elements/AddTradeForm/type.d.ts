@@ -1,4 +1,5 @@
 export type FormData = {
+  sellerAddress: ReactNode
   buyerAddress: string
   sellerTokenAddress: string
   sellerTokenAmount: string

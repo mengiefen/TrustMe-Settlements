@@ -4,8 +4,16 @@ import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
 import FlashMessage from "@/components/FlashMessage"
 import { trustMeContract } from "@/helpers/getterHelpers"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import {
+  updateCreatedTrade,
+  updateExpiredTrade,
+  updateConfirmedTrade,
+  updateCanceledTrade,
+  updateWithdrawnTrade,
+} from "@/redux/trade/tradesSlice"
 import { RootState } from "@/redux/store"
+import { fetchTrade } from "@/helpers/fetchTrade"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -45,11 +53,12 @@ const Layout = (props: LayoutProps) => {
   })
 
   const { address: userAddress } = useSelector((state: RootState) => state.wallets)
+  const dispatch = useDispatch()
 
   // events
   ;(async () => {
     const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeCreated", (tradeId, buyer, seller) => {
+    _trustMeContract.on("TradeCreated", async (tradeId, buyer, seller) => {
       if (buyer == userAddress || seller == userAddress) {
         setTradeCreated({
           isTradeCreated: true,
@@ -57,6 +66,10 @@ const Layout = (props: LayoutProps) => {
           buyer: buyer,
           seller: seller,
         })
+
+        // await fetchTrade(Number(tradeId)).then((trade) => {
+        //   dispatch(updateCreatedTrade(trade))
+        // })
       }
     })
   })()
@@ -70,6 +83,8 @@ const Layout = (props: LayoutProps) => {
           buyer: buyer,
           seller: seller,
         })
+
+        // dispatch(updateExpiredTrade(tradeId))
       }
     })
   })()
@@ -84,6 +99,8 @@ const Layout = (props: LayoutProps) => {
           buyer: buyer,
           seller: seller,
         })
+
+        // dispatch(updateConfirmedTrade(tradeId))
       }
     })
   })()
@@ -98,6 +115,8 @@ const Layout = (props: LayoutProps) => {
           buyer: buyer,
           seller: seller,
         })
+
+        // dispatch(updateCanceledTrade(tradeId))
       }
     })
   })()
@@ -112,6 +131,8 @@ const Layout = (props: LayoutProps) => {
           buyer: buyer,
           seller: seller,
         })
+
+        // dispatch(updateWithdrawnTrade(tradeId))
       }
     })
   })()

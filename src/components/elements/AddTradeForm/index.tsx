@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from "react"
+import React, { FormEvent, useEffect, FC } from "react"
 import { Network, Alchemy } from "alchemy-sdk"
 import { ethers } from "ethers"
 import { useAccount, useSigner } from "wagmi"
@@ -10,17 +10,10 @@ import { TrustMe } from "typechain"
 import abi from "../../../../abi.json"
 
 import erc20Abi from "../../../../erc20Abi.json"
-import {
-  FormData,
-  FormProps1,
-  FormProps2,
-  FormProps3,
-  FormProps4,
-  FormWrapperProps,
-  TokenMetadata,
-} from "./type"
+import { FormData, FormProps1, FormProps2, FormProps3, FormProps4, TokenMetadata } from "./type"
 import FormWrapper from "./FormWrapper"
 import Pending from "./Pending"
+import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai"
 const settings = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
   network: Network.ETH_GOERLI,
@@ -31,6 +24,7 @@ const alchemy = new Alchemy(settings)
 
 // INITIAL DATA
 const INITIAL_DATA: FormData = {
+  sellerAddress: "",
   buyerAddress: "",
   sellerTokenAddress: "",
   sellerTokenAmount: "",
@@ -40,6 +34,10 @@ const INITIAL_DATA: FormData = {
   timePeriod: "",
 }
 
+type ReviewDataProps = {
+  formData: FormData
+}
+
 export default function AddTradeForm() {
   const [sellerTokenMetadata, setSellerTokenMetadata] = React.useState<TokenMetadata[]>([])
   const [buyerTokenMetadata, setBuyerTokenMetadata] = React.useState<TokenMetadata[]>([])
@@ -47,6 +45,9 @@ export default function AddTradeForm() {
   const [pending, setPending] = useState(false)
   const [formData, setFormData] = useState(INITIAL_DATA)
   const { address } = useAccount()
+  const [isApproving, setIsApproving] = useState(false)
+  const [isAdding, setIsAdding] = useState(false)
+  const [isButtonClicked, setIsButtonClicked] = useState(false)
 
   async function checkSellerTokens() {
     try {
@@ -212,13 +213,68 @@ export default function AddTradeForm() {
     </FormWrapper>
   )
 
+  const ReviewData: FC<ReviewDataProps> = ({
+    formData: {
+      buyerAddress,
+      sellerTokenAddress,
+      sellerTokenAmount,
+      buyerTokenAddress,
+      buyerTokenAmount,
+      datePeriod,
+      timePeriod,
+    },
+  }) => (
+    <FormWrapper title="Review Data">
+      <div className="flex flex-col">
+        <h2 className="text-lg font-bold">Review your Settlement</h2>
+        <div className="flex flex-col space-y-3 ">
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Your Address</p>
+            <p className="text-xs ">{address}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Counter Party Address</p>
+            <p className="text-xs">{buyerAddress}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Your Token Address</p>
+            <p className="text-xs">{sellerTokenAddress}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold"> Token Amount</p>
+            <p className="text-sm">{sellerTokenAmount}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Counter Party Token Address</p>
+            <p className="text-xs">{buyerTokenAddress}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold"> Token Amount</p>
+            <p className="text-sm">{buyerTokenAmount}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Expiry Date</p>
+            <p className="text-sm">{datePeriod}</p>
+          </div>
+          <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
+            <p className="text-sm font-bold">Expiry Time</p>
+            <p className="text-sm">{timePeriod}</p>
+          </div>
+        </div>
+      </div>
+    </FormWrapper>
+  )
+
   const { steps, currentStepindex, isFirstStep, back, next, isLastStep, step } = useMultistepForm([
     <BuyerAddress {...formData} updateFields={updateFields} />,
     <SellerTokenAddress {...formData} updateFields={updateFields} />,
     <BuyerTokenAddress {...formData} updateFields={updateFields} />,
     <TimePeriod {...formData} updateFields={updateFields} />,
+    <ReviewData formData={formData} />,
   ])
+
   const { data: signer } = useSigner()
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!isLastStep) return next()
@@ -235,12 +291,16 @@ export default function AddTradeForm() {
     ) as TrustMe
 
     const erc20Contract = new ethers.Contract(formData.sellerTokenAddress, erc20Abi, signer!)
-    setPending(true)
+
+    setIsApproving(true)
     const _tx = await erc20Contract.approve(
       trustMeContract.address,
       ethers.utils.parseEther(formData.sellerTokenAmount.toString())
     )
     await _tx.wait()
+    setIsApproving(false)
+
+    setIsAdding(true)
 
     const tx = await trustMeContract.addTrade(
       formData.buyerAddress,
@@ -251,17 +311,20 @@ export default function AddTradeForm() {
       deadline
     )
     const txReceipt = await tx.wait()
-    setPending(false)
+    setIsAdding(false)
     console.log(txReceipt)
   }
   return (
-    <div>
+    <div
+      className="w-screen
+    "
+    >
       <form className="flex items-center justify-center py-5 " onSubmit={onSubmit}>
-        <div className="w-[500px] h-[470px] bg-text rounded-md flex flex-col border-[1px] px-[15px]">
+        <div className="w-full h-full bg-text rounded-md flex flex-col border-[1px] px-[15px]">
           <div className="flex justify-end mt-3">{pending ? <Pending /> : null}</div>
           <h3 className="py-5 text-center font-bold text-lg">Create New Settlement</h3>
           {step}
-          <div className="mt-1 flex gap-2 justify-end">
+          <div className="mt-1 flex gap-2 justify-between">
             {!isFirstStep && (
               <button
                 className="px-4 py-2 text-white text-sm rounded shadow-md bg-blue-500"
@@ -274,8 +337,37 @@ export default function AddTradeForm() {
             <button
               className="px-4 py-2 text-white text-sm rounded shadow-md bg-blue-500"
               type="submit"
+              onClick={() => {
+                if (isLastStep) {
+                  setIsButtonClicked(true)
+                }
+              }}
+              // disabled={isButtonClicked && isLastStep}
             >
-              {isLastStep ? "Finish" : "Next"}
+              {!isLastStep && !isAdding && !isApproving && !isButtonClicked && <span>Next</span>}
+              {isLastStep && !isAdding && !isApproving && !isButtonClicked && (
+                <>
+                  <span>Submit for Approval</span>
+                </>
+              )}
+              {isApproving && isLastStep && (
+                <>
+                  <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                  <span>Approving...</span>
+                </>
+              )}
+              {isAdding && isLastStep && (
+                <>
+                  <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                  <span>Adding...</span>
+                </>
+              )}
+              {isButtonClicked && isLastStep && !isAdding && !isApproving && (
+                <>
+                  <AiOutlineCheck className="text-green h-5 w-5" />
+                  <span>Success</span>
+                </>
+              )}
             </button>
           </div>
         </div>
