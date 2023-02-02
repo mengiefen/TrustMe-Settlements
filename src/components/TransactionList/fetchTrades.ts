@@ -5,12 +5,10 @@ import { Trade } from "./type"
 import { getTradesIDsByUser, getTrade } from "@/helpers/getterHelpers"
 
 export const getTradeList = async (address: `0x${string}` | undefined) => {
-  const tradeIds = await getTradesIDsByUser(address as string)
   const trades: Trade[] = await getTradesFromStorage()
-  console.log("tradeIds", tradeIds.length)
-  console.log("trades", trades.length)
 
-  if (tradeIds.length !== trades.length) {
+  if (trades.length === 0) {
+    const tradeIds = await getTradesIDsByUser(address as string)
     await Promise.all(
       tradeIds.slice(trades.length, tradeIds.length).map(async (tradeId: BigNumber) => {
         const trade = await getTrade(Number(tradeId._hex))
@@ -35,7 +33,7 @@ export const getTradeList = async (address: `0x${string}` | undefined) => {
 export const getTradesFromStorage = async () => {
   const trades = JSON.parse(
     JSON.parse(localStorage.getItem("persist:trustMe") || "[]").trades
-  ).trades
+  ).data
 
   return trades
 }
