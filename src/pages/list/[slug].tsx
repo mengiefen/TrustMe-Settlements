@@ -11,14 +11,16 @@ import { useFormatAddress, useFormatDate } from "@/hooks/hooks"
 import { useRouter } from "next/router"
 import { fetchTrade } from "@/helpers/fetchTrade"
 import { Trade } from "@/components/TransactionList/type"
+import { getTradeByIdFromStore } from "@/redux/selectors"
+import { useSelector } from "react-redux"
 
 type TransactionDetailProps = {
   tradeId: number
 }
 
 const TransactionDetail = (props: TransactionDetailProps) => {
+  const router = useRouter()
   const [currentTrade, setCurrentTrade] = useState({}) as any
-
   const { address, isConnected } = useAccount()
   const [buttonClicked, setButtonClicked] = useState(false)
   const [isPending, setIsPending] = useState(false)
@@ -26,7 +28,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const [txWait, setTxWait] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(false)
-  const router = useRouter()
+  const tradeList = useSelector((state) => state.trades.data)
 
   const setState = async (id: number) => {
     const trade = await getTrade(id)
@@ -72,7 +74,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       const slug = parseInt(router.query.slug as string)
       const fetchData = async () => {
         try {
-          tradeObj = await fetchTrade(slug)
+          if (tradeList.length > 0) {
+            // fetches from store
+            tradeObj = tradeList.find((trade: Trade) => trade.id === slug)
+          } else {
+            //fetches from api
+            tradeObj = await fetchTrade(slug)
+          }
           setCurrentTrade(tradeObj)
           setIsLoading(false)
         } catch (err) {
@@ -185,8 +193,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </button>
                 </div>
               )}
-
-              {/* {console.log("buyer", currentTrade.buyer, "My address", address)} */}
 
               {isPending && currentTrade.seller === address && (
                 <div className="mt-5 flex flex-1">

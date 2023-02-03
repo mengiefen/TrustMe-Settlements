@@ -12,7 +12,7 @@ export const getStatus = (value: number) => {
     case 1:
       return "Completed"
     case 2:
-      return "Cancelled"
+      return "Canceled"
     case 3:
       return "Expired"
     case 4:

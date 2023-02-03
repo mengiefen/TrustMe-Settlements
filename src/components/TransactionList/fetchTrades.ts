@@ -34,7 +34,7 @@ export const getTradeList = async (address: `0x${string}` | undefined) => {
 
 export const getTradesFromStorage = async () => {
   const trades = JSON.parse(
-    JSON.parse(localStorage.getItem("persist:trustMe") || "[]").trades
+    JSON.parse(sessionStorage.getItem("persist:trustMe") || "[]").trades
   ).data
 
   return trades

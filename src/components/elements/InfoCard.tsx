@@ -17,8 +17,10 @@ const InfoCard = (props: InfoCardProps) => {
           ? "flex flex-col py-[5px] px-[10px] border-b-2 border-green-500 shadow-lg bg-green-200 items-start justify-between rounded-md w-full h-full md:py-4"
           : value == "Pending"
           ? "flex flex-col py-[5px] px-[10px] border-b-2 border-yellow-500 shadow-lg bg-yellow-100 items-start justify-between rounded-md w-full h-full md:py-4"
-          : value == "Cancelled"
+          : value == "Canceled"
           ? "flex flex-col py-[5px] px-[10px] border-b-2 border-red-500 shadow-lg bg-red-200 items-start justify-between rounded-md w-full h-full md:py-4"
+          : value == "Withdrawn"
+          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-purple-500 shadow-lg bg-purple-200 items-start justify-between rounded-md w-full h-full md:py-4"
           : "flex flex-col py-[5px] px-[15px] border-b-2 border-secondary-200 shadow-lg bg-text items-start justify-between rounded-md w-full h-full md:py-4"
       }
     >

@@ -29,7 +29,7 @@ const color = (status = "Expired") => {
       return "text-green-600  md:border-green-300 md:bg-green-100"
     case "Pending":
       return "text-yellow-600 md:border-yellow-300 md:bg-yellow-100 "
-    case "Cancelled":
+    case "Canceled":
       return "text-red-600 md:border-red-300 md:bg-red-100"
     default:
       return "text-gray-700  md:border-slate-300 md:bg-gray-200"
@@ -42,7 +42,7 @@ const ButtonIcon = (status = "Expired") => {
       return <BsCheckCircle className="text-green-600  " />
     case "Pending":
       return <MdPendingActions className="text-yellow-600 " />
-    case "Cancelled":
+    case "Canceled":
       return <MdOutlineCancel className="text-red-600" />
     default:
       return <MdOutlineLockClock className="text-gray-700 " />
