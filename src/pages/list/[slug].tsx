@@ -7,12 +7,13 @@ import { parseEther } from "ethers/lib/utils.js"
 // import { BiTransfer } from "react-icons/bi"
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai"
 import InfoCard from "../../components/elements/InfoCard"
-import { useFormatAddress, useFormatDate } from "@/hooks/hooks"
+import { getFormatAddress, getFormatDate } from "@/utils"
 import { useRouter } from "next/router"
 import { fetchTrade } from "@/helpers/fetchTrade"
 import { Trade } from "@/components/TransactionList/type"
-import { getTradeByIdFromStore } from "@/redux/selectors"
 import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
+import Spinner from "@/components/elements/Spinner"
 
 type TransactionDetailProps = {
   tradeId: number
@@ -21,14 +22,13 @@ type TransactionDetailProps = {
 const TransactionDetail = (props: TransactionDetailProps) => {
   const router = useRouter()
   const [currentTrade, setCurrentTrade] = useState({}) as any
-  const { address, isConnected } = useAccount()
   const [buttonClicked, setButtonClicked] = useState(false)
   const [isPending, setIsPending] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
   const [txWait, setTxWait] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [refresh, setRefresh] = useState(false)
-  const tradeList = useSelector((state) => state.trades.data)
+  const tradeList = useSelector((state: RootState) => state.trades.data)
+  const { address } = useSelector((state: RootState) => state.wallets)
 
   const setState = async (id: number) => {
     const trade = await getTrade(id)
@@ -68,7 +68,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   }
 
   useEffect(() => {
-    let tradeObj: Trade
+    let tradeObj: Trade | undefined
 
     if (router.isReady) {
       const slug = parseInt(router.query.slug as string)
@@ -79,7 +79,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             tradeObj = tradeList.find((trade: Trade) => trade.id === slug)
           } else {
             //fetches from api
-            tradeObj = await fetchTrade(slug)
+            tradeObj = await fetchTrade(address, slug)
           }
           setCurrentTrade(tradeObj)
           setIsLoading(false)
@@ -100,163 +100,165 @@ const TransactionDetail = (props: TransactionDetailProps) => {
           console.log(err)
         })
     }
-  }, [router.isReady, router.query.slug, currentTrade.status])
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  }, [router.isReady, router.query.slug, tradeList, address, currentTrade.status])
 
   return (
     <Layout>
-      <div className="w-full px-5 md:px-0">
-        <div className="flex flex-row items-center justify-start w-screenpt-10 pb-2 md:py-5">
-          <h3 className="text-dark mx-1 font-semibold text-secondary-900 md:text-2xl">
-            Transaction Detail
-          </h3>
+      {isLoading ? (
+        <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full h-full uppercase">
+          <Spinner /> Loading...
         </div>
-        <div className="grid grid-cols-1 w-full gap-x-2 gap-y-2 md:grid-cols-4 md:gap-x-5">
-          <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
-            <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
-              <InfoCard label={"TRANSACTION ID"} value={currentTrade.id} />
+      ) : (
+        <div className="w-full px-5 md:px-0">
+          <div className="flex flex-row items-center justify-start w-screenpt-10 pb-2 md:py-5">
+            <h3 className="text-dark mx-1 font-semibold text-secondary-900 md:text-2xl">
+              Transaction Detail
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 w-full gap-x-2 gap-y-2 md:grid-cols-4 md:gap-x-5">
+            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
+                <InfoCard label={"TRANSACTION ID"} value={currentTrade.id} />
+              </div>
+              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+                <InfoCard label={"TXN STATUS"} value={currentTrade.status} />
+              </div>
             </div>
-            <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-              <InfoCard label={"TXN STATUS"} value={currentTrade.status} />
+
+            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
+                <InfoCard label={"YOUR ADDRESS"} value={getFormatAddress(currentTrade.seller)} />
+              </div>
+              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+                <InfoCard label={"CP ADDRESS"} value={getFormatAddress(currentTrade.buyer)} />
+              </div>
+            </div>
+
+            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
+                <InfoCard label={"DATE CREATED"} value={getFormatDate(currentTrade.deadline)} />
+              </div>
+              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+                <InfoCard label={"EXPIRY DATE"} value={getFormatDate(currentTrade.deadline)} />
+              </div>
+            </div>
+
+            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
+                <InfoCard
+                  label={"TOKEN TO TRANSFER"}
+                  value={`${currentTrade.symbolToSell}  ${currentTrade.amountOfTokenToSell}`}
+                />
+              </div>
+              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+                <InfoCard
+                  label={"TOKEN TO RECEIVE"}
+                  value={`${currentTrade.symbolToBuy}   ${currentTrade.amountOfTokenToBuy} `}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
-            <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
-              <InfoCard label={"YOUR ADDRESS"} value={useFormatAddress(currentTrade.buyer)} />
+          <div className="flex flex-col items-center justify-end pt-5">
+            <div className="flex items-center justify-center w-full h-11/12 py-10 px-10">
+              {/* <Spinner/> */}
             </div>
-            <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-              <InfoCard label={"CP ADDRESS"} value={useFormatAddress(currentTrade.seller)} />
-            </div>
-          </div>
+            <div className="flex flex-row items-center">
+              <>
+                {isExpired && currentTrade.seller === address && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
+                      onClick={() => {
+                        handleWithdrawTrade(currentTrade?.id)
+                        setButtonClicked(true)
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>Withdraw</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>Withdraw in progress</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>Withdrawn</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
-          <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
-            <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
-              <InfoCard label={"DATE CREATED"} value={useFormatDate(currentTrade.deadline)} />
-            </div>
-            <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-              <InfoCard label={"EXPIRY DATE"} value={useFormatDate(currentTrade.deadline)} />
-            </div>
-          </div>
+                {isPending && currentTrade.seller === address && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
+                      onClick={() => {
+                        handleCancelTrade(currentTrade?.id)
+                        setButtonClicked(true)
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>Cancel</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>Cancelling</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>Cancelled</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
-          <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
-            <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
-              <InfoCard
-                label={"TOKEN TO TRANSFER"}
-                value={`${currentTrade.symbolToSell}  ${currentTrade.amountOfTokenToSell}`}
-              />
-            </div>
-            <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-              <InfoCard
-                label={"TOKEN TO RECEIVE"}
-                value={`${currentTrade.symbolToBuy}   ${currentTrade.amountOfTokenToBuy} `}
-              />
+                {isPending && currentTrade.buyer === address && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
+                      onClick={() => {
+                        handleConfirmTrade(currentTrade?.id)
+                        setButtonClicked(true)
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>Confirm</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>Waiting for approval...</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>Confirmed</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </>
             </div>
           </div>
         </div>
-
-        <div className="flex flex-col items-center justify-end pt-5">
-          <div className="flex items-center justify-center w-full h-11/12 py-10 px-10">
-            {/* <Spinner/> */}
-          </div>
-          <div className="flex flex-row items-center">
-            <>
-              {isExpired && currentTrade.seller === address && (
-                <div className="mt-5 flex flex-1">
-                  <button
-                    className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
-                    onClick={() => {
-                      handleWithdrawTrade(currentTrade?.id)
-                      setButtonClicked(true)
-                    }}
-                  >
-                    {!txWait && !buttonClicked && (
-                      <>
-                        <span>Withdraw</span>
-                      </>
-                    )}
-                    {txWait && (
-                      <>
-                        <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                        <span>Withdraw in progress</span>
-                      </>
-                    )}
-                    {!txWait && buttonClicked && (
-                      <>
-                        <AiOutlineCheck className="text-green h-5 w-5" />
-                        <span>Withdrawn</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-
-              {isPending && currentTrade.seller === address && (
-                <div className="mt-5 flex flex-1">
-                  <button
-                    className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
-                    onClick={() => {
-                      handleCancelTrade(currentTrade?.id)
-                      setButtonClicked(true)
-                    }}
-                  >
-                    {!txWait && !buttonClicked && (
-                      <>
-                        <span>Cancel</span>
-                      </>
-                    )}
-                    {txWait && (
-                      <>
-                        <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                        <span>Cancelling</span>
-                      </>
-                    )}
-                    {!txWait && buttonClicked && (
-                      <>
-                        <AiOutlineCheck className="text-green h-5 w-5" />
-                        <span>Cancelled</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-
-              {isPending && currentTrade.buyer === address && (
-                <div className="mt-5 flex flex-1">
-                  <button
-                    className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
-                    onClick={() => {
-                      handleConfirmTrade(currentTrade?.id)
-                      setButtonClicked(true)
-                    }}
-                  >
-                    {!txWait && !buttonClicked && (
-                      <>
-                        <span>Confirm</span>
-                      </>
-                    )}
-                    {txWait && (
-                      <>
-                        <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                        <span>Waiting for approval...</span>
-                      </>
-                    )}
-                    {!txWait && buttonClicked && (
-                      <>
-                        <AiOutlineCheck className="text-green h-5 w-5" />
-                        <span>Confirmed</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-            </>
-          </div>
-        </div>
-      </div>
+      )}
     </Layout>
   )
 }

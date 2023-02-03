@@ -3,31 +3,19 @@ import { getStatus, getSymbol } from "@/utils"
 import { BigNumber } from "ethers"
 import { Trade } from "./type"
 import { getTradesIDsByUser, getTrade } from "@/helpers/getterHelpers"
+import { fetchTrade } from "@/helpers/fetchTrade"
 
-export const getTradeList = async (address: `0x${string}` | undefined) => {
-  const trades: Trade[] = await getTradesFromStorage()
+export const getTradeList = async (tradeList: Trade[], address: `0x${string}` | undefined) => {
+  const trades: Trade[] = [...tradeList]
+  const tradeIds = await getTradesIDsByUser(address as string)
+  if (tradeIds.length === trades.length) return trades
 
-  if (trades.length === 0) {
-    const tradeIds = await getTradesIDsByUser(address as string)
-    await Promise.all(
-      tradeIds.slice(trades.length, tradeIds.length).map(async (tradeId: BigNumber) => {
-        const trade = await getTrade(Number(tradeId._hex))
-        await trades.push({
-          id: Number(trade.id),
-          seller: trade.seller,
-          buyer: trade.buyer,
-          tokenToSell: trade.tokenToSell,
-          tokenToBuy: trade.tokenToBuy,
-          symbolToBuy: await getSymbol(trade.tokenToBuy),
-          symbolToSell: await getSymbol(trade.tokenToSell),
-          amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-          amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-          deadline: Number(trade.deadline),
-          status: getStatus(trade.status),
-        })
-      })
-    )
-  }
+  await Promise.all(
+    tradeIds.slice(tradeList.length, tradeIds.length).map(async (tradeId: BigNumber) => {
+      const trade = (await fetchTrade(address as string, Number(tradeId._hex))) as Trade
+      trades.push(trade)
+    })
+  )
 
   return trades
 }

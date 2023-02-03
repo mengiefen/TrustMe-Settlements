@@ -19,11 +19,13 @@ const tradesSlice = createSlice({
   initialState,
   reducers: {
     fetchTradesPending: (state) => {
+      if (state.status === "succeeded") return
       state.status = "loading"
     },
 
     fetchTrades: (state, action: PayloadAction<Trade[]>) => {
-      state.data = [...action.payload]
+      if (state.status === "succeeded") return
+      state.data = action.payload
       state.status = "succeeded"
     },
     fetchTradesFailed: (state) => {

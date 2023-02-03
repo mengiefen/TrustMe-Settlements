@@ -10,6 +10,7 @@ export interface Trade {
   amountOfTokenToBuy: string
   deadline: number
   status: string
+  isOutgoing: boolean
 }
 
 export interface TradeRow extends Trade {

@@ -2,8 +2,6 @@ import React from "react"
 import { CgArrowsExchangeAlt } from "react-icons/cg"
 import { BsLink, BsPlus } from "react-icons/bs"
 import Link from "next/link"
-import { useAccount } from "wagmi"
-import { useFormatAddress } from "@/hooks/hooks"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { UserDetailProps } from "./type"
 

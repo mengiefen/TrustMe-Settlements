@@ -11,20 +11,11 @@ import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 
 const Hero = () => {
   const isMounted = useIsMounted()
-  const { address, isConnected } = useAccount({})
+  const { isConnected } = useAccount({})
 
-  const {
-    buttonText,
-    address: userAddress,
-    connected,
-  } = useSelector((state: RootState) => state.wallets)
+  const { buttonText, address: userAddress } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
   const { disconnect } = useDisconnect()
-
-  const [flash, setFlash] = React.useState({
-    message: "",
-    type: "",
-  })
 
   const formattedAddress = useFormatAddress(userAddress)
 
@@ -34,9 +25,6 @@ const Hero = () => {
     if (isMounted) {
       const data = await connectAsync({ connector })
       await dispatch(connectWallet(data.account))
-      setFlash({ ...flash, message: "You successfully connected to Metamask", type: "success" })
-    } else {
-      setFlash({ ...flash, message: "Please install Metamask", type: "alert" })
     }
   }
 
@@ -64,8 +52,8 @@ const Hero = () => {
             <span className="font-bold text-secondary-500 leading-10 md:leading-[4rem]">Me</span>
           </h1>
           <p className="text-center text-text md:text-left font-light leading-6 md:text-lg md:font-normal">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel
-            tincidunt luctus, nisl nisl aliquam nisl, nec aliquam nisl nisl sit amet lorem.
+            TrustMe allows you to instantly settle peer-to-peer transactions in digital assets on a
+            “Delivery-versus-Payment” basis”. Simple, safe and efficient - TrustMe.
           </p>
 
           {isMounted && (
@@ -85,7 +73,7 @@ const Hero = () => {
               />
 
               <div className="flex flex-col items-center justify-center w-[80%] mt-5">
-                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:font-bold">
+                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:tracking-wider">
                   {formattedAddress}
                 </p>
               </div>

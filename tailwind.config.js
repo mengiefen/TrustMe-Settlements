@@ -75,6 +75,7 @@ module.exports = {
         "text-light": "#fbfcf5",
         text: "#f4f8f9",
         "text-dark": "#cbcac8",
+        transparent: "transparent",
       },
     },
 

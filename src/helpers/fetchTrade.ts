@@ -1,11 +1,24 @@
 import { getTrade } from "./getterHelpers"
-import { Trade } from "@/components/TransactionList/type"
-import { formatEther } from "ethers/lib/utils"
-import { getSymbol } from "@/utils"
+import { getResolvedTokens, getResolvedUserAddress } from "./resolveData"
 
-export const fetchTrade = async (id: number) => {
+export const fetchTrade = async (userAddress: string, id: number) => {
   const trade = await getTrade(id)
-  const tradeObj: Trade = {
+
+  const { seller, buyer, isOutgoing } = getResolvedUserAddress(
+    userAddress,
+    trade.buyer,
+    trade.seller
+  )
+
+  const data = await getResolvedTokens(
+    isOutgoing,
+    trade.tokenToBuy,
+    trade.tokenToSell,
+    trade.amountOfTokenToBuy,
+    trade.amountOfTokenToSell
+  )
+
+  const tradeObj = {
     id: Number(trade.id),
     status:
       trade.status == 0
@@ -17,15 +30,10 @@ export const fetchTrade = async (id: number) => {
         : trade.status == 3
         ? "Expired"
         : "Withdrawn",
-    seller: trade.seller.toString(),
-    buyer: trade.buyer.toString(),
+    seller,
+    buyer,
     deadline: Number(trade.deadline),
-    amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-    amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-    tokenToSell: trade.tokenToSell,
-    tokenToBuy: trade.tokenToBuy,
-    symbolToSell: await getSymbol(trade.tokenToSell),
-    symbolToBuy: await getSymbol(trade.tokenToBuy),
+    ...data,
   }
   return tradeObj
 }

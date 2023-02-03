@@ -4,7 +4,7 @@ import SearchBox from "@/components/TransactionList/SearchBox"
 import UserDetail from "./UserDetail"
 import Button from "../elements/Button"
 import Pagination from "./Pagination"
-import { getTradeList, getTradesFromStorage } from "./fetchTrades"
+import { getTradeList } from "./fetchTrades"
 import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
 import { useAccount } from "wagmi"
@@ -14,7 +14,6 @@ import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice"
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any
-  // const [tradeList, setTradeList] = React.useState([]) as any
   const tradeList = useSelector((state: any) => state.trades.data)
   const [isLoading, setLoading] = React.useState(true)
   const { address } = useAccount()
@@ -23,22 +22,18 @@ const TradeList = () => {
   useEffect(() => {
     dispatch(fetchTradesPending())
     const fetchTradeList = async () => {
-      const data = await getTradeList(address)
+      const data = await getTradeList(tradeList, address)
       dispatch(fetchTrades(data))
       setPendingTrades(data.filter((trade: Trade) => trade.status === "Pending"))
       setLoading(false)
     }
-    if (isLoading) {
-      fetchTradeList()
-    }
-  }, [isLoading, address, dispatch])
+
+    fetchTradeList()
+  }, [dispatch, tradeList, address])
 
   return (
     <div className="w-screen px-5 md:px-10">
-      <UserDetail
-        userAddress={useFormatAddress(address)}
-        transactionCount={tradeList.length + pendingTrades.length}
-      />
+      <UserDetail userAddress={useFormatAddress(address)} transactionCount={tradeList.length} />
 
       {isLoading ? (
         <div className="flex justify-center items-center h-full mt-10">
@@ -84,6 +79,7 @@ const TradeList = () => {
             return (
               <TableRow
                 key={index}
+                buyerAddress={trade.buyer}
                 amountOfTokenToBuy={trade.amountOfTokenToBuy}
                 amountOfTokenToSell={trade.amountOfTokenToSell}
                 status={trade.status}
@@ -101,6 +97,7 @@ const TradeList = () => {
               return (
                 <TableRow
                   key={index}
+                  buyerAddress={trade.buyer}
                   amountOfTokenToBuy={trade.amountOfTokenToBuy}
                   amountOfTokenToSell={trade.amountOfTokenToSell}
                   status={trade.status}

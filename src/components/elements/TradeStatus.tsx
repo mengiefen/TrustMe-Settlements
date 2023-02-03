@@ -31,6 +31,8 @@ const color = (status = "Expired") => {
       return "text-yellow-600 md:border-yellow-300 md:bg-yellow-100 "
     case "Canceled":
       return "text-red-600 md:border-red-300 md:bg-red-100"
+    case "Withdrawn":
+      return "text-secondary-600 md:border-secondary-300 md:bg-secondary-100"
     default:
       return "text-gray-700  md:border-slate-300 md:bg-gray-200"
   }

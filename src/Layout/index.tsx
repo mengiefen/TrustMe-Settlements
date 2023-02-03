@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, ReactElement, useState } from "react"
+import React, { ReactComponentElement, ReactElement, useEffect, useState } from "react"
 import Header from "@/components/elements/Header"
 import Footer from "@/components/elements/Footer"
 import { useRouter } from "next/router"
@@ -15,6 +15,8 @@ import {
 import { RootState } from "@/redux/store"
 import { fetchTrade } from "@/helpers/fetchTrade"
 import { BigNumber } from "ethers"
+import { useAccount } from "wagmi"
+import { connectWallet } from "@/redux/wallet/walletSlice"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -23,6 +25,7 @@ type LayoutProps = {
 }
 const Layout = (props: LayoutProps) => {
   const { connected } = useSelector((state: RootState) => state.wallets)
+  const { address, isConnected } = useAccount()
   const [tradeCreated, setTradeCreated] = useState({
     isTradeCreated: false,
     tradeId: 0,
@@ -56,6 +59,9 @@ const Layout = (props: LayoutProps) => {
 
   const { address: userAddress } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
+  useEffect(() => {
+    if (isConnected) dispatch(connectWallet(address))
+  }, [dispatch, address, isConnected])
 
   if (connected) {
     // events
@@ -66,7 +72,7 @@ const Layout = (props: LayoutProps) => {
         async (tradeId: BigNumber, buyer: string, seller: string) => {
           if (buyer == userAddress || seller == userAddress) {
             if (!tradeCreated.isTradeCreated) {
-              await fetchTrade(Number(tradeId)).then((trade) => {
+              await fetchTrade(address as string, Number(tradeId)).then((trade) => {
                 dispatch(updateCreatedTrade(trade))
               })
             }

@@ -1,6 +1,7 @@
 import React from "react"
 import Link from "next/link"
 import { GiTwoCoins } from "react-icons/gi"
+import HeaderDropDown from "./HeaderDropDown"
 
 const DesktopMenu = () => {
   return (
@@ -19,24 +20,28 @@ const DesktopMenu = () => {
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/" className="py-3  text-lg">
+          <Link href="/list" className="py-3 text-md xl:text-lg ">
+            Transactions
+          </Link>
+        </li>
+        <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+          <Link href="" className="py-3 text-md xl:text-lg ">
             Services
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/" className="py-3  text-lg">
+          <Link href="" className="py-3 text-md xl:text-lg ">
             About us
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/" className="py-3  text-lg">
+          <Link href="" className="py-3 text-md xl:text-lg ">
             Contact us
           </Link>
         </li>
+
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/list" className="pb-3 text-xl">
-            Transactions
-          </Link>
+          <HeaderDropDown />
         </li>
       </ul>
     </div>

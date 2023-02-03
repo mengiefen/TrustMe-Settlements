@@ -27,3 +27,36 @@ export const getSymbol = async (tokenAddress: string) => {
   const symbol = await tokenContract.symbol()
   return symbol
 }
+
+export const getFormatDate = (unixTime: number) => {
+  const date = new Date(unixTime * 1000)
+
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
+
+  return `${day}/${month}/${year} ${changeTo12Hour(hours, minutes, seconds)}`
+}
+
+const changeTo12Hour = (hours: number, minutes: number, seconds: number) => {
+  let hours12 = hours
+  let ampm = "AM"
+
+  if (hours12 > 12) {
+    hours12 = hours12 - 12
+    ampm = "PM"
+  }
+
+  return `${hours12}:${minutes} ${ampm}`
+}
+
+export const getFormatAddress = (address: `0x${string}` | undefined | string) => {
+  if (address != undefined && address != "" && address != null) {
+    return address?.slice(0, 4) + " ... " + address?.slice(-4)
+  }
+
+  return ""
+}
