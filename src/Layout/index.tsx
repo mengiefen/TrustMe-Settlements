@@ -14,6 +14,7 @@ import {
 } from "@/redux/trade/tradesSlice"
 import { RootState } from "@/redux/store"
 import { fetchTrade } from "@/helpers/fetchTrade"
+import { BigNumber } from "ethers"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -21,6 +22,7 @@ type LayoutProps = {
   logoPrimaryColor?: string
 }
 const Layout = (props: LayoutProps) => {
+  const { connected } = useSelector((state: RootState) => state.wallets)
   const [tradeCreated, setTradeCreated] = useState({
     isTradeCreated: false,
     tradeId: 0,
@@ -55,87 +57,149 @@ const Layout = (props: LayoutProps) => {
   const { address: userAddress } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
 
-  // events
-  ;(async () => {
-    const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeCreated", async (tradeId, buyer, seller) => {
-      if (buyer == userAddress || seller == userAddress) {
-        setTradeCreated({
-          isTradeCreated: true,
-          tradeId: tradeId,
-          buyer: buyer,
-          seller: seller,
-        })
+  if (connected) {
+    // events
+    ;(async () => {
+      const _trustMeContract = await trustMeContract()
+      _trustMeContract.on(
+        "TradeCreated",
+        async (tradeId: BigNumber, buyer: string, seller: string) => {
+          if (buyer == userAddress || seller == userAddress) {
+            if (!tradeCreated.isTradeCreated) {
+              await fetchTrade(Number(tradeId)).then((trade) => {
+                dispatch(updateCreatedTrade(trade))
+              })
+            }
 
-        // await fetchTrade(Number(tradeId)).then((trade) => {
-        //   dispatch(updateCreatedTrade(trade))
-        // })
-      }
-    })
-  })()
-  ;(async () => {
-    const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeExpired", (tradeId, buyer, seller) => {
-      if (buyer == userAddress || seller == userAddress) {
-        setTradeExpired({
-          isTradeExpired: true,
-          tradeId: tradeId,
-          buyer: buyer,
-          seller: seller,
-        })
-
-        // dispatch(updateExpiredTrade(tradeId))
-      }
-    })
-  })()
-  ;(async () => {
-    const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeConfirmed", (tradeId, buyer, seller) => {
-      console.log("TradeConfirmed", tradeId, buyer, seller)
-      if (buyer == userAddress || seller == userAddress) {
-        setTradeConfirmed({
-          isTradeConfirmed: true,
-          tradeId: tradeId,
-          buyer: buyer,
-          seller: seller,
-        })
-
-        // dispatch(updateConfirmedTrade(tradeId))
-      }
-    })
-  })()
-  ;(async () => {
-    const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeCanceled", (tradeId, buyer, seller) => {
-      console.log("TradeCanceled", tradeId, buyer, seller)
-      if (buyer == userAddress || seller == userAddress) {
-        setTradeCanceled({
-          isTradeCanceled: true,
-          tradeId: tradeId,
-          buyer: buyer,
-          seller: seller,
-        })
-
-        // dispatch(updateCanceledTrade(tradeId))
-      }
-    })
-  })()
-  ;(async () => {
-    const _trustMeContract = await trustMeContract()
-    _trustMeContract.on("TradeWithdrawn", (tradeId, buyer, seller) => {
-      console.log("TradeWithdrawn", tradeId, buyer, seller)
-      if (buyer == userAddress || seller == userAddress) {
+            setTradeCreated({
+              isTradeCreated: true,
+              tradeId: Number(tradeId),
+              buyer: buyer,
+              seller: seller,
+            })
+          }
+        }
+      )
+      setTimeout(() => {
         setTradeWithdraw({
-          isTradeWithdrawn: true,
-          tradeId: tradeId,
-          buyer: buyer,
-          seller: seller,
+          isTradeWithdrawn: false,
+          tradeId: 0,
+          buyer: "",
+          seller: "",
         })
+      }, 3000)
+    })()
+    ;(async () => {
+      const _trustMeContract = await trustMeContract()
+      _trustMeContract.once(
+        "TradeExpired",
+        (tradeId: BigNumber, buyer: string, seller: string) => {
+          if (buyer == userAddress || seller == userAddress) {
+            if (!tradeExpired.isTradeExpired) {
+              dispatch(updateExpiredTrade(Number(tradeId)))
+            }
+            setTradeExpired({
+              isTradeExpired: true,
+              tradeId: Number(tradeId),
+              buyer: buyer,
+              seller: seller,
+            })
+          }
+        }
+      )
 
-        // dispatch(updateWithdrawnTrade(tradeId))
-      }
-    })
-  })()
+      setTimeout(() => {
+        setTradeWithdraw({
+          isTradeWithdrawn: false,
+          tradeId: 0,
+          buyer: "",
+          seller: "",
+        })
+      }, 3000)
+    })()
+    ;(async () => {
+      const _trustMeContract = await trustMeContract()
+      _trustMeContract.once(
+        "TradeConfirmed",
+        (tradeId: BigNumber, buyer: string, seller: string) => {
+          if (buyer == userAddress || seller == userAddress) {
+            if (!tradeConfirmed.isTradeConfirmed) {
+              dispatch(updateConfirmedTrade(Number(tradeId)))
+            }
+            setTradeConfirmed({
+              isTradeConfirmed: true,
+              tradeId: Number(tradeId),
+              buyer: buyer,
+              seller: seller,
+            })
+          }
+        }
+      )
+
+      setTimeout(() => {
+        setTradeWithdraw({
+          isTradeWithdrawn: false,
+          tradeId: 0,
+          buyer: "",
+          seller: "",
+        })
+      }, 3000)
+    })()
+    ;(async () => {
+      const _trustMeContract = await trustMeContract()
+      _trustMeContract.once(
+        "TradeCanceled",
+        (tradeId: BigNumber, buyer: string, seller: string) => {
+          if (buyer == userAddress || seller == userAddress) {
+            if (!tradeCanceled.isTradeCanceled) {
+              dispatch(updateCanceledTrade(Number(tradeId)))
+            }
+            setTradeCanceled({
+              isTradeCanceled: true,
+              tradeId: Number(tradeId),
+              buyer: buyer,
+              seller: seller,
+            })
+          }
+        }
+      )
+
+      setTimeout(() => {
+        setTradeWithdraw({
+          isTradeWithdrawn: false,
+          tradeId: 0,
+          buyer: "",
+          seller: "",
+        })
+      }, 3000)
+    })()
+    ;(async () => {
+      const _trustMeContract = await trustMeContract()
+      _trustMeContract.once(
+        "TradeWithdrawn",
+        (tradeId: BigNumber, buyer: string, seller: string) => {
+          if (!tradeWithdrawn.isTradeWithdrawn) {
+            dispatch(updateWithdrawnTrade(Number(tradeId)))
+          }
+          setTradeWithdraw({
+            isTradeWithdrawn: true,
+            tradeId: Number(tradeId),
+            buyer: buyer,
+            seller: seller,
+          })
+        }
+      )
+
+      setTimeout(() => {
+        setTradeWithdraw({
+          isTradeWithdrawn: false,
+          tradeId: 0,
+          buyer: "",
+          seller: "",
+        })
+      }, 3000)
+    })()
+  }
 
   const router = useRouter()
   const pathname = router.pathname
