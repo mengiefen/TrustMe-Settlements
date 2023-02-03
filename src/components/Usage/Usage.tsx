@@ -1,3 +1,4 @@
+import useWindowSize from "@/hooks/useWindowSize"
 import React from "react"
 import { Chrono } from "react-chrono"
 import { TimelineItemModel } from "react-chrono/dist/models"
@@ -64,6 +65,8 @@ export const Usage = () => {
     },
   ]
 
+  const { width } = useWindowSize()
+
   return (
     <div className="my-12 md:mb-20">
       <h2 className="text-2xl text-center text-text  tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold mb-5">
@@ -80,7 +83,7 @@ export const Usage = () => {
       >
         <Chrono
           items={items}
-          mode="VERTICAL_ALTERNATING"
+          mode={width > 992 ? "VERTICAL_ALTERNATING" : "VERTICAL"}
           allowDynamicUpdate
           cardHeight={100}
           lineWidth={3}

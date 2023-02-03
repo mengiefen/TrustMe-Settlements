@@ -15,11 +15,12 @@ const Header = ({
   bg = "bg-slate-800 border-bg border-b-[0.5px]",
   logoPrimaryColor = "text-text",
 }: HeaderProps) => {
+  const router = useRouter()
   const [isActive, setIsActive] = React.useState(false)
   const showMenu = () => {
     setIsActive(!isActive)
   }
-  const router = useRouter()
+
   return (
     <div className="flex flex-col">
       <nav className={`w-screen h-[70px] md:h-[85px] ${bg} px-5 my-auto ${logoPrimaryColor}}`}>

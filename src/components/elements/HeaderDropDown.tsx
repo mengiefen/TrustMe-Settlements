@@ -2,29 +2,32 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { getFormatAddress } from "@/utils"
 import { FaCaretDown } from "react-icons/fa"
-import { useAccount, useBalance, useConnect, useDisconnect } from "wagmi"
+import { useBalance, useConnect, useDisconnect } from "wagmi"
 import React, { useState } from "react"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
+import { clearTrades } from "@/redux/trade/tradesSlice"
+import { useRouter } from "next/router"
 
 const HeaderDropDown = () => {
-  const { address, connected, buttonText } = useSelector((state: RootState) => state.wallets)
+  const { address, connected } = useSelector((state: RootState) => state.wallets)
   const { disconnect } = useDisconnect()
   const { connectAsync, connectors } = useConnect({})
-  const { data } = useBalance({ address })
+  const router = useRouter()
+  const { data, isSuccess } = useBalance({ address })
 
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
 
-  const handleDisconnect = (e: React.SyntheticEvent) => {
+  const handleDisconnect = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     disconnect()
     setShowMenu(false)
-    sessionStorage.removeItem("persist:trustMe")
-    dispatch(disconnectWallet())
+    await dispatch(disconnectWallet())
+    await dispatch(clearTrades())
+    // router.push("/")
   }
 
   const handleConnect = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
     const connector = connectors[0]
     const res = await connectAsync({ connector })
     await dispatch(connectWallet(res.account))
@@ -53,7 +56,7 @@ const HeaderDropDown = () => {
         className="py-2 border border-gray-700 shadow-2xl shadow-secondary-500 w-full bg-menu-dark z-100 absolute mt-2"
         style={{ display: showMenu ? "block" : "none" }}
       >
-        {connected && (
+        {connected && isSuccess && (
           <ul className="py-2 text-text-dark bg-transparent">
             <li className="block hover:bg-bg-light hover:text-secondary-400 p-2 px-4">
               Balance:{"  "}

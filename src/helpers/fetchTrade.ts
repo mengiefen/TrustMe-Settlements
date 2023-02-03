@@ -4,7 +4,7 @@ import { getResolvedTokens, getResolvedUserAddress } from "./resolveData"
 export const fetchTrade = async (userAddress: string, id: number) => {
   const trade = await getTrade(id)
 
-  const { seller, buyer, isOutgoing } = getResolvedUserAddress(
+  const { buyer, seller, isOutgoing } = getResolvedUserAddress(
     userAddress,
     trade.buyer,
     trade.seller
@@ -33,7 +33,13 @@ export const fetchTrade = async (userAddress: string, id: number) => {
     seller,
     buyer,
     deadline: Number(trade.deadline),
-    ...data,
+    tokenToSell: data.tokenToSell,
+    tokenToBuy: data.tokenToBuy,
+    amountOfTokenToSell: data.amountOfTokenToSell,
+    amountOfTokenToBuy: data.amountOfTokenToBuy,
+    symbolToBuy: data.symbolToBuy,
+    symbolToSell: data.symbolToSell,
+    isOutgoing: data.isOutgoing,
   }
   return tradeObj
 }

@@ -8,11 +8,13 @@ import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
+import { clearTrades } from "@/redux/trade/tradesSlice"
+import { useRouter } from "next/router"
 
 const Hero = () => {
   const isMounted = useIsMounted()
   const { isConnected } = useAccount({})
-
+  const router = useRouter()
   const { buttonText, address: userAddress } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
   const { disconnect } = useDisconnect()
@@ -28,9 +30,11 @@ const Hero = () => {
     }
   }
 
-  const handleDisconnect = () => {
-    disconnect()
-    dispatch(disconnectWallet())
+  const handleDisconnect = async () => {
+    await disconnect()
+    await dispatch(disconnectWallet())
+    // await dispatch(clearTrades())?
+    // router.push("/")
   }
 
   return (
@@ -86,16 +90,3 @@ const Hero = () => {
 }
 
 export default Hero
-
-// const useConnectAndUpdateStore = () => {
-//   const account = useAccount({
-//   	onConnect({address, connector, isConnected}){
-//   		console.log(connected, {address, connector, isReconnected});
-//   	}
-
-//   	onDisconnect() {
-//   		console.log(disconnected)
-//   	}
-//   })
-
-// }

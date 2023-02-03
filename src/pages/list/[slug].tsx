@@ -165,7 +165,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             </div>
             <div className="flex flex-row items-center">
               <>
-                {isExpired && currentTrade.seller === address && (
+                {isExpired && currentTrade.isOutgoing && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
@@ -195,7 +195,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.seller === address && (
+                {isPending && currentTrade.isOutgoing && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
@@ -225,7 +225,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.buyer === address && (
+                {isPending && !currentTrade.isOutgoing && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
@@ -254,6 +254,31 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                     </button>
                   </div>
                 )}
+
+                {/* <div className="px-2">
+              <Button
+                label="Reject"
+                variant="tertiary"
+                buttonType="submit"
+                size="medium"
+                bg="bg-bg"
+              />
+            </div>
+            <div className="px-2">
+              <Button
+                label="Withdraw"
+                buttonType="submit"
+                size="medium"
+                bg="bg-bg"
+              />
+            </div>
+          </div>
+          <div className="flex flex-row w-full items-center justify-center px-2 mt-3">
+            <button className=" flex flex-row w-full bg-secondary-900 items-center justify-center rounded-sm h-[40px]">
+              <BiTransfer />
+              <span className="text-white px-2 font-medium ">Transfer</span>
+            </button>
+          </div> */}
               </>
             </div>
           </div>

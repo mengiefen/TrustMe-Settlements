@@ -14,8 +14,8 @@ export const getResolvedUserAddress = (
     buyer = tradeBuyer
     seller = tradeSeller
   } else {
-    seller = tradeSeller
-    buyer = tradeBuyer
+    seller = tradeBuyer
+    buyer = tradeSeller
   }
 
   return { buyer, seller, isOutgoing: tradeSeller === userAddress }

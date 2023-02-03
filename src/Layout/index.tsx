@@ -17,6 +17,7 @@ import { fetchTrade } from "@/helpers/fetchTrade"
 import { BigNumber } from "ethers"
 import { useAccount } from "wagmi"
 import { connectWallet } from "@/redux/wallet/walletSlice"
+import { useIsMounted } from "@/hooks/useIsMounted"
 
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>
@@ -59,9 +60,12 @@ const Layout = (props: LayoutProps) => {
 
   const { address: userAddress } = useSelector((state: RootState) => state.wallets)
   const dispatch = useDispatch()
+
   useEffect(() => {
     if (isConnected) dispatch(connectWallet(address))
   }, [dispatch, address, isConnected])
+
+  const isMounted = useIsMounted()
 
   if (connected) {
     // events
