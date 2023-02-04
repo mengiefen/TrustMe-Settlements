@@ -51,9 +51,7 @@ const TableRow = ({
             }
             <div className="flex flex-col">
               {amountOfTokenToBuy}
-              <span className="font-bold mr-1 text-gray-400 text-[10px] md:text-md">
-                {ReceiveTokenId}
-              </span>
+              <span className="mr-1 text-gray-400 text-[20px]">{ReceiveTokenId}</span>
             </div>
           </div>
           <div className="col-span-3 text-secondary-900 flex items-center">
@@ -62,9 +60,7 @@ const TableRow = ({
             }
             <div className="flex flex-col">
               {amountOfTokenToSell}
-              <span className="font-bold mr-1 text-[10px] md:text-md text-gray-400">
-                {TransferTokenId}
-              </span>
+              <span className="mr-1 text-gray-400 text-[20px] ">{TransferTokenId}</span>
             </div>
           </div>
 
@@ -83,7 +79,7 @@ const TableRow = ({
             href={`/list/${txId}`}
             className="outline-none border-none py-1 px-2 flex items-center justify-center bg-secondary-50 text-sm font-normal"
           >
-            <span className="mr-2 text-orange-800">Pending Transaction </span>
+            <span className="mr-2 text-orange-900">Confirmation required</span>
 
             <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-bg" />
           </Link>

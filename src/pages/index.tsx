@@ -22,7 +22,7 @@ export default function Home() {
       <Layout>
         <>
           <Hero />
-          <Service />
+          {/* <Service /> */}
 
           <Usage />
           <Contact />

@@ -92,11 +92,11 @@ export default function AddTradeForm() {
   }
 
   const BuyerAddress = ({ buyerAddress }: FormProps1) => (
-    <FormWrapper title="Counter Party Address">
+    <FormWrapper title="Counterparty Address">
       <input
         className="p-2 rounded w-full"
         type="text"
-        placeholder="Counter Party Address"
+        placeholder="Counterparty Address"
         name="sellerTokenAddress"
         required
         value={buyerAddress}
@@ -106,9 +106,9 @@ export default function AddTradeForm() {
   )
 
   const SellerTokenAddress = ({ sellerTokenAddress, sellerTokenAmount }: FormProps2) => (
-    <FormWrapper title="Seller Token Details">
+    <FormWrapper title="Details Asset to Send">
       <>
-        <label>Seller Token Address</label>
+        <label>Asset to Send</label>
         <select
           required
           name="tokenToTransfer"
@@ -134,9 +134,9 @@ export default function AddTradeForm() {
         </select>
       </>
       <>
-        <label>Seller Token Amount</label>
+        <label>Amount Asset to Send</label>
         <input
-          placeholder="Token Amount"
+          placeholder="Asset Amount"
           autoFocus
           type="number"
           name="sellerTokenAmount"
@@ -150,8 +150,8 @@ export default function AddTradeForm() {
   )
 
   const BuyerTokenAddress = ({ buyerTokenAddress, buyerTokenAmount }: FormProps3) => (
-    <FormWrapper title="Buyer Token Details">
-      <label>Buyer Token Address</label>
+    <FormWrapper title="Details Asset to Receive">
+      <label>Asset to Receive</label>
       <select
         required
         name="tokenToTransfer"
@@ -176,7 +176,7 @@ export default function AddTradeForm() {
         ))}
       </select>
 
-      <label>Buyer Token Amount</label>
+      <label>Amount Asset to Receive</label>
       <input
         autoFocus
         type="number"
@@ -191,7 +191,7 @@ export default function AddTradeForm() {
 
   const TimePeriod = ({ datePeriod, timePeriod }: FormProps4) => (
     <FormWrapper title="Time Period">
-      <label>Expiry Date</label>
+      <label>Transaction Expiry Date</label>
       <input
         autoFocus
         type="date"
@@ -201,7 +201,7 @@ export default function AddTradeForm() {
         onChange={(e) => updateFields({ datePeriod: e.target.value })}
         className="p-2 rounded w-full"
       />
-      <label>Expiry Time</label>
+      <label>Transaction Expiry Time</label>
       <input
         className="p-2 rounded w-full"
         autoFocus
@@ -227,38 +227,38 @@ export default function AddTradeForm() {
   }) => (
     <FormWrapper title="Review Data">
       <div className="flex flex-col">
-        <h2 className="text-lg font-bold">Review your Settlement</h2>
+        <h2 className="text-lg font-bold">Review Your Transaction</h2>
         <div className="flex flex-col space-y-3 ">
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
             <p className="text-sm font-bold">Your Address</p>
             <p className="text-xs ">{address}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">Counter Party Address</p>
+            <p className="text-sm font-bold">Counterparty Address</p>
             <p className="text-xs">{buyerAddress}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">Your Token Address</p>
+            <p className="text-sm font-bold">Asset to Send</p>
             <p className="text-xs">{sellerTokenAddress}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold"> Token Amount</p>
+            <p className="text-sm font-bold"> Amount Asset to Send</p>
             <p className="text-sm">{sellerTokenAmount}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">Counter Party Token Address</p>
+            <p className="text-sm font-bold">Asset to Receive</p>
             <p className="text-xs">{buyerTokenAddress}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold"> Token Amount</p>
+            <p className="text-sm font-bold"> Amount Asset to Receive</p>
             <p className="text-sm">{buyerTokenAmount}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">Expiry Date</p>
+            <p className="text-sm font-bold">Transaction Expiry Date</p>
             <p className="text-sm">{datePeriod}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">Expiry Time</p>
+            <p className="text-sm font-bold">Transaction Expiry Time</p>
             <p className="text-sm">{timePeriod}</p>
           </div>
         </div>
@@ -323,7 +323,7 @@ export default function AddTradeForm() {
       <form className="flex items-center justify-center py-5 " onSubmit={onSubmit}>
         <div className="w-full h-full bg-text rounded-md flex flex-col border-[1px] px-[15px]">
           <div className="flex justify-end mt-3">{pending ? <Pending /> : null}</div>
-          <h3 className="py-5 text-center font-bold text-lg">Create New Settlement</h3>
+          <h3 className="py-5 text-center font-bold text-lg uppercase">Create New Transaction</h3>
           {step}
           <div className="mt-1 flex gap-2 justify-between">
             {!isFirstStep && (

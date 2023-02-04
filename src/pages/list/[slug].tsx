@@ -115,7 +115,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         <div className="w-full px-5 md:px-0">
           <div className="flex flex-row items-center justify-start w-screenpt-10 pb-2 md:py-5">
             <h3 className="text-dark mx-1 font-semibold text-secondary-900 md:text-2xl">
-              Transaction Detail
+              Transaction Details
             </h3>
           </div>
           <div className="grid grid-cols-1 w-full gap-x-2 gap-y-2 md:grid-cols-4 md:gap-x-5">
@@ -133,7 +133,10 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 <InfoCard label={"YOUR ADDRESS"} value={getFormatAddress(currentTrade.seller)} />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-                <InfoCard label={"CP ADDRESS"} value={getFormatAddress(currentTrade.buyer)} />
+                <InfoCard
+                  label={"COUNTERPARTY ADDRESS"}
+                  value={getFormatAddress(currentTrade.buyer)}
+                />
               </div>
             </div>
 
@@ -149,13 +152,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
-                  label={"TOKEN TO TRANSFER"}
+                  label={"ASSET TO SEND"}
                   value={`${currentTrade.symbolToSell}  ${currentTrade.amountOfTokenToSell}`}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
                 <InfoCard
-                  label={"TOKEN TO RECEIVE"}
+                  label={"ASSET TO RECEIVE"}
                   value={`${currentTrade.symbolToBuy}   ${currentTrade.amountOfTokenToBuy} `}
                 />
               </div>
@@ -179,19 +182,19 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                     >
                       {!txWait && !buttonClicked && (
                         <>
-                          <span>Withdraw</span>
+                          <span>WITHDRAW YOUR ASSETS</span>
                         </>
                       )}
                       {txWait && (
                         <>
                           <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                          <span>Withdraw in progress</span>
+                          <span>WITHDRAWAL IN PROGRESS</span>
                         </>
                       )}
                       {!txWait && buttonClicked && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
-                          <span>Withdrawn</span>
+                          <span>WITHDRAWN</span>
                         </>
                       )}
                     </button>
@@ -209,19 +212,19 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                     >
                       {!txWait && !buttonClicked && (
                         <>
-                          <span>Cancel</span>
+                          <span>CANCEL TRANSACTION</span>
                         </>
                       )}
                       {txWait && (
                         <>
                           <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                          <span>Cancelling</span>
+                          <span>CANCELLING...</span>
                         </>
                       )}
                       {!txWait && buttonClicked && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
-                          <span>Cancelled</span>
+                          <span>CANCELLED</span>
                         </>
                       )}
                     </button>
@@ -239,19 +242,19 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                     >
                       {!txWait && !buttonClicked && (
                         <>
-                          <span>Confirm</span>
+                          <span>CONFIRM TRANSACTION</span>
                         </>
                       )}
                       {txWait && (
                         <>
                           <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                          <span>Waiting for approval...</span>
+                          <span>WAITING FOR CONFIRMATION...</span>
                         </>
                       )}
                       {!txWait && buttonClicked && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
-                          <span>Confirmed</span>
+                          <span>CONFIRMED</span>
                         </>
                       )}
                     </button>

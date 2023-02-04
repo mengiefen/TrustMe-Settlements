@@ -59,13 +59,14 @@ const TradeList = () => {
             <div className="flex flex-col border  border-secondary-400 rounded-lg overflow-hidden">
               <div className="grid grid-cols-12 p-2 items-center gap-1 shadow bg-secondary-50">
                 <div className="col-span-2 text-secondary-900 md:text-lg md:uppercase md:font-semibold">
-                  CP
+                  <span className="hidden lg:inline">Counterparty</span>
+                  <span className="md:hidden">CP</span>
                 </div>
                 <div className="col-span-3 overflow-clip  text-secondary-900 md:text-lg md:uppercase md:font-semibold">
-                  Receiver
+                  You Receive
                 </div>
                 <div className="col-span-3 text-secondary-900 flex-col md:text-lg md:uppercase md:font-semibold">
-                  Sender
+                  You Send
                 </div>
                 <div className="col-span-3 text-secondary-900 overflow-hidden text-center md:text-lg md:uppercase md:font-semibold">
                   Status
@@ -76,21 +77,23 @@ const TradeList = () => {
           </div>
 
           {pendingTrades.map((trade: Trade, index: number) => {
-            return (
-              <TableRow
-                key={index}
-                buyerAddress={trade.buyer}
-                amountOfTokenToBuy={trade.amountOfTokenToBuy}
-                amountOfTokenToSell={trade.amountOfTokenToSell}
-                status={trade.status}
-                TransferTokenId={trade.symbolToSell}
-                ReceiveTokenId={trade.symbolToBuy}
-                txId={trade.id}
-              />
-            )
+            if (!trade.isCreatedByYou) {
+              return (
+                <TableRow
+                  key={index}
+                  buyerAddress={trade.buyer}
+                  amountOfTokenToBuy={trade.amountOfTokenToBuy}
+                  amountOfTokenToSell={trade.amountOfTokenToSell}
+                  status={trade.status}
+                  TransferTokenId={trade.symbolToSell}
+                  ReceiveTokenId={trade.symbolToBuy}
+                  txId={trade.id}
+                />
+              )
+            }
           })}
 
-          <h2 className="text-lg font-semibold text-secondary-900 my-2">Other Settlements</h2>
+          <h2 className="text-lg font-semibold text-secondary-900 my-2">Other Transactions</h2>
 
           {getLastTransactions(tradeList, 5).map((trade: Trade, index: number) => {
             if (trade.status !== "Pending") {

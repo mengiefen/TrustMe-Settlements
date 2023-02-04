@@ -55,7 +55,7 @@ const Hero = () => {
           </h1>
           <p className="text-center text-text md:text-left font-light leading-6 md:text-lg md:font-normal">
             TrustMe allows you to instantly settle peer-to-peer transactions in digital assets on a
-            “Delivery-versus-Payment” basis”. Simple, safe and efficient - TrustMe.
+            “Delivery-versus-Payment” basis”.
           </p>
 
           {isMounted && (
