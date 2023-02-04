@@ -5,7 +5,6 @@ import { FaCaretDown } from "react-icons/fa"
 import { useBalance, useConnect, useDisconnect } from "wagmi"
 import React, { useState } from "react"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-import { clearTrades } from "@/redux/trade/tradesSlice"
 import { useRouter } from "next/router"
 
 const HeaderDropDown = () => {
@@ -22,8 +21,7 @@ const HeaderDropDown = () => {
     e.preventDefault()
     disconnect()
     setShowMenu(false)
-    await dispatch(disconnectWallet())
-    await dispatch(clearTrades())
+    await dispatch(disconnectWallet())   
     // router.push("/")
   }
 
