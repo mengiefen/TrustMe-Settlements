@@ -8,7 +8,6 @@ import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-import { clearTrades } from "@/redux/trade/tradesSlice"
 import { useRouter } from "next/router"
 
 const Hero = () => {
@@ -32,8 +31,7 @@ const Hero = () => {
 
   const handleDisconnect = async () => {
     await disconnect()
-    await dispatch(disconnectWallet())
-    // await dispatch(clearTrades())?
+    await dispatch(disconnectWallet()) 
     // router.push("/")
   }
 
