@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from "redux-persist"
 
-import tradesReducer from "./trade/tradesSlice"
+import tradesReducer, { clearTrades } from "./trade/tradesSlice"
 import walletsReducer from "./wallet/walletSlice"
 
 const rootReducer = combineReducers({
@@ -36,7 +36,7 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, REGISTER],
         },
       }),
   })
@@ -48,3 +48,10 @@ export const persister = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch
+
+export const logout = () => {
+  store.dispatch(clearTrades())
+  // persister.purge()
+  localStorage.removeItem("persist:trustMe")
+  // sessionStorage.clear()
+}

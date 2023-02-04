@@ -11,9 +11,10 @@ import { getFormatAddress, getFormatDate } from "@/utils"
 import { useRouter } from "next/router"
 import { fetchTrade } from "@/helpers/fetchTrade"
 import { Trade } from "@/components/TransactionList/type"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "@/redux/store"
 import Spinner from "@/components/elements/Spinner"
+import { updateCreatedTrade } from "@/redux/trade/tradesSlice"
 
 type TransactionDetailProps = {
   tradeId: number
@@ -21,6 +22,7 @@ type TransactionDetailProps = {
 
 const TransactionDetail = (props: TransactionDetailProps) => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const [currentTrade, setCurrentTrade] = useState({}) as any
   const [buttonClicked, setButtonClicked] = useState(false)
   const [isPending, setIsPending] = useState(false)
@@ -74,12 +76,14 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       const slug = parseInt(router.query.slug as string)
       const fetchData = async () => {
         try {
-          if (tradeList.length > 0) {
+          if (tradeList.length > 0 && tradeList.find((trade: Trade) => trade.id === slug)) {
             // fetches from store
             tradeObj = tradeList.find((trade: Trade) => trade.id === slug)
+            console.log(tradeObj)
           } else {
             //fetches from api
             tradeObj = await fetchTrade(address, slug)
+            dispatch(updateCreatedTrade(tradeObj))
           }
           setCurrentTrade(tradeObj)
           setIsLoading(false)

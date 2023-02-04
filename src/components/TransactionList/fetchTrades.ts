@@ -9,21 +9,26 @@ export const getTradeList = async (tradeList: Trade[], address: `0x${string}` | 
   const trades: Trade[] = [...tradeList]
   const tradeIds = await getTradesIDsByUser(address as string)
   if (tradeIds.length === trades.length) return trades
-
-  await Promise.all(
-    tradeIds.slice(tradeList.length - 10, tradeIds.length).map(async (tradeId: BigNumber) => {
-      const trade = (await fetchTrade(address as string, Number(tradeId._hex))) as Trade
-      trades.push(trade)
-    })
-  )
+  if (tradeIds.length > tradeList.length) {
+    await Promise.all(
+      tradeIds.slice(tradeList.length, tradeIds.length).map(async (tradeId: BigNumber) => {
+        const trade = (await fetchTrade(address as string, Number(tradeId._hex))) as Trade
+        trades.push(trade)
+      })
+    )
+  }
 
   return trades
 }
 
-export const getTradesFromStorage = async () => {
-  const trades = JSON.parse(
-    JSON.parse(sessionStorage.getItem("persist:trustMe") || "[]").trades
-  ).data
+export const getLastTransactions = (tradeList: Trade[], amount: number) => {
+  const trades = [...tradeList]
+  if (trades.length > 10) {
+    return trades
+      .filter((trade) => trade.status !== "Pending")
+      .sort((a, b) => b.id - a.id)
+      .slice(0, amount)
+  }
 
   return trades
 }

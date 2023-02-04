@@ -1,28 +1,30 @@
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "@/redux/store"
+import { logout, RootState } from "@/redux/store"
 import { getFormatAddress } from "@/utils"
 import { FaCaretDown } from "react-icons/fa"
 import { useBalance, useConnect, useDisconnect } from "wagmi"
 import React, { useState } from "react"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 import { useRouter } from "next/router"
+import { useIsMounted } from "@/hooks/useIsMounted"
 
 const HeaderDropDown = () => {
   const { address, connected } = useSelector((state: RootState) => state.wallets)
   const { disconnect } = useDisconnect()
   const { connectAsync, connectors } = useConnect({})
   const router = useRouter()
-  const { data, isSuccess } = useBalance({ address })
+  const { data, isSuccess, isLoading: isBalanceLoading } = useBalance({ address })
 
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
 
-  const handleDisconnect = async (e: React.SyntheticEvent) => {
+  const handleDisconnect = (e: React.SyntheticEvent) => {
     e.preventDefault()
     disconnect()
     setShowMenu(false)
-    await dispatch(disconnectWallet())   
-    // router.push("/")
+    dispatch(disconnectWallet())
+    // logout()
+    router.push("/")
   }
 
   const handleConnect = async (e: React.SyntheticEvent) => {
@@ -31,6 +33,9 @@ const HeaderDropDown = () => {
     await dispatch(connectWallet(res.account))
     setShowMenu(false)
   }
+
+  const isMounted = useIsMounted()
+  if (!isMounted && isBalanceLoading) return null
 
   return (
     <div className="relative">

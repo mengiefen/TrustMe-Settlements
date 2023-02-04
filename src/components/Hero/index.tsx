@@ -29,9 +29,9 @@ const Hero = () => {
     }
   }
 
-  const handleDisconnect = async () => {
-    await disconnect()
-    await dispatch(disconnectWallet()) 
+  const handleDisconnect = () => {
+    disconnect()
+    dispatch(disconnectWallet())
     // router.push("/")
   }
 

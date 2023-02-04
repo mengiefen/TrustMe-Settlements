@@ -4,7 +4,7 @@ import SearchBox from "@/components/TransactionList/SearchBox"
 import UserDetail from "./UserDetail"
 import Button from "../elements/Button"
 import Pagination from "./Pagination"
-import { getTradeList } from "./fetchTrades"
+import { getLastTransactions, getTradeList } from "./fetchTrades"
 import { Trade } from "./type"
 import { useFormatAddress } from "@/hooks/hooks"
 import { useAccount } from "wagmi"
@@ -20,8 +20,8 @@ const TradeList = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchTradesPending())
     const fetchTradeList = async () => {
+      dispatch(fetchTradesPending())
       const data = await getTradeList(tradeList, address)
       dispatch(fetchTrades(data))
       setPendingTrades(data.filter((trade: Trade) => trade.status === "Pending"))
@@ -92,7 +92,7 @@ const TradeList = () => {
 
           <h2 className="text-lg font-semibold text-secondary-900 my-2">Other Settlements</h2>
 
-          {tradeList.map((trade: Trade, index: number) => {
+          {getLastTransactions(tradeList, 5).map((trade: Trade, index: number) => {
             if (trade.status !== "Pending") {
               return (
                 <TableRow

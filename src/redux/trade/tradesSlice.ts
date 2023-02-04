@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { BigNumber } from "ethers"
-import { TrustMe } from "typechain"
+import sessionStorage from "redux-persist/lib/storage/session"
+
 import { getTradesIDsByUser, getTrade } from "../../helpers/getterHelpers"
 import { Trade } from "@/components/TransactionList/type"
 
@@ -65,6 +65,10 @@ const tradesSlice = createSlice({
       const index = state.data.findIndex((t) => t.id === id)
       state.data[index].status = "Withdrawn"
     },
+
+    clearTrades: (state) => {
+      state = initialState
+    },
   },
 })
 
@@ -77,6 +81,7 @@ export const {
   updateCreatedTrade,
   updateExpiredTrade,
   updateWithdrawnTrade,
+  clearTrades,
 } = tradesSlice.actions
 
 export default tradesSlice.reducer
