@@ -15,27 +15,27 @@ const DesktopMenu = () => {
       </div>
       <ul className="flex md:gap-3 lg:gap-5 items-center justify-end">
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/" className="py-3  text-lg">
+          <Link href="/" className="py-3">
             Home
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="/list" className="py-3 text-md xl:text-lg ">
+          <Link href="/list" className="py-3">
             Transactions
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="" className="py-3 text-md xl:text-lg ">
+          <Link href="" className="py-3">
             Services
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="" className="py-3 text-md xl:text-lg ">
+          <Link href="" className="py-3">
             About us
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="" className="py-3 text-md xl:text-lg ">
+          <Link href="" className="py-3">
             Contact us
           </Link>
         </li>

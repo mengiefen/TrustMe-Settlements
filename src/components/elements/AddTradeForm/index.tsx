@@ -62,6 +62,7 @@ export default function AddTradeForm() {
       return
     }
   }
+
   async function checkBuyerTokens(_address: string) {
     try {
       setLoading(true)
