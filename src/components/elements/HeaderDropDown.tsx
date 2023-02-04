@@ -80,11 +80,14 @@ const HeaderDropDown = () => {
                 0,
                 6
               )} ${data?.symbol}`}</span>
-
-              <span className="text-secondary-500 p-2">
-                Network:{"  "}{" "}
-                <span className="bg-purplish-900 text-text py-1 px-2 rounded">{chain.name} </span>
-              </span>
+              {chain && (
+                <span className="text-secondary-500 p-2">
+                  Network:{"  "}{" "}
+                  <span className="bg-purplish-900 text-text py-1 px-2 rounded">
+                    {chain?.name}{" "}
+                  </span>
+                </span>
+              )}
             </li>
             <strong className="mt-5 pb-2 px-4 text-xl uppercase ">Your Assets:</strong>
             {tokens.map((token) => (
