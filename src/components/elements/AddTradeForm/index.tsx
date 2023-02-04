@@ -14,6 +14,7 @@ import { FormData, FormProps1, FormProps2, FormProps3, FormProps4, TokenMetadata
 import FormWrapper from "./FormWrapper"
 import Pending from "./Pending"
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai"
+import { getSymbol } from "@/utils"
 const settings = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
   network: Network.ETH_GOERLI,
@@ -94,7 +95,7 @@ export default function AddTradeForm() {
   const BuyerAddress = ({ buyerAddress }: FormProps1) => (
     <FormWrapper title="Counterparty Address">
       <input
-        className="p-2 rounded w-full"
+        className="py-3 px-3 bg-bg border-2 outline-none border-secondary-700 focus:border-secondary-900 w-full text-white"
         type="text"
         placeholder="Counterparty Address"
         name="sellerTokenAddress"
@@ -108,24 +109,24 @@ export default function AddTradeForm() {
   const SellerTokenAddress = ({ sellerTokenAddress, sellerTokenAmount }: FormProps2) => (
     <FormWrapper title="Details Asset to Send">
       <>
-        <label>Asset to Send</label>
+        <label className="md:mt-2">Asset to Send</label>
         <select
           required
           name="tokenToTransfer"
           onChange={(e) => {
             updateFields({ sellerTokenAddress: e.target.value })
           }}
-          className="block appearance-none w-full h-full border border-gray-100 p-3 pr-8 rounded "
+          className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
           value={sellerTokenAddress}
         >
           <option value="" selected disabled>
-            --select--
+            --SELECT--
           </option>
           {sellerTokenMetadata.map((item, index) => (
             <option
               key={index}
               disabled={loading ? true : false}
-              className="items-center text-small p-3"
+              className="items-center text-sm md:text-md p-3 hover:bg-slate-600"
               value={loading ? "" : item.address}
             >
               {loading ? "Loading..." : item.symbol}
@@ -134,7 +135,7 @@ export default function AddTradeForm() {
         </select>
       </>
       <>
-        <label>Amount Asset to Send</label>
+        <label className="md:mt-2">Amount Asset to Send</label>
         <input
           placeholder="Asset Amount"
           autoFocus
@@ -143,7 +144,7 @@ export default function AddTradeForm() {
           required
           value={sellerTokenAmount}
           onChange={(e) => updateFields({ sellerTokenAmount: e.target.value })}
-          className="p-2 rounded w-full"
+          className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
         />
       </>
     </FormWrapper>
@@ -158,7 +159,7 @@ export default function AddTradeForm() {
         onChange={(e) => {
           updateFields({ buyerTokenAddress: e.target.value })
         }}
-        className="block appearance-none w-full p-2 h-full border border-gray-100 pr-8 rounded "
+        className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
         value={buyerTokenAddress}
       >
         <option value="" selected disabled className="items-center text-small p-2">
@@ -184,7 +185,7 @@ export default function AddTradeForm() {
         required
         value={buyerTokenAmount}
         onChange={(e) => updateFields({ buyerTokenAmount: e.target.value })}
-        className="p-2 rounded w-full"
+        className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
       />
     </FormWrapper>
   )
@@ -199,11 +200,11 @@ export default function AddTradeForm() {
         required
         value={datePeriod}
         onChange={(e) => updateFields({ datePeriod: e.target.value })}
-        className="p-2 rounded w-full"
+        className="py-3 px-3 bg-slate-700 border-2 outline-non border-secondary-900 focus:border-secondary-700 w-full text-white"
       />
       <label>Transaction Expiry Time</label>
       <input
-        className="p-2 rounded w-full"
+        className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
         autoFocus
         type="time"
         name="timePeriod"
@@ -226,7 +227,7 @@ export default function AddTradeForm() {
     },
   }) => (
     <FormWrapper title="Review Data">
-      <div className="flex flex-col">
+      <div className="flex flex-col text-gray-200">
         <h2 className="text-lg font-bold">Review Your Transaction</h2>
         <div className="flex flex-col space-y-3 ">
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
@@ -239,7 +240,7 @@ export default function AddTradeForm() {
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
             <p className="text-sm font-bold">Asset to Send</p>
-            <p className="text-xs">{sellerTokenAddress}</p>
+            <p className="text-xs">{sellerTokenAddress} </p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
             <p className="text-sm font-bold"> Amount Asset to Send</p>
@@ -267,11 +268,11 @@ export default function AddTradeForm() {
   )
 
   const { steps, currentStepindex, isFirstStep, back, next, isLastStep, step } = useMultistepForm([
-    <BuyerAddress {...formData} updateFields={updateFields} />,
-    <SellerTokenAddress {...formData} updateFields={updateFields} />,
-    <BuyerTokenAddress {...formData} updateFields={updateFields} />,
-    <TimePeriod {...formData} updateFields={updateFields} />,
-    <ReviewData formData={formData} />,
+    <BuyerAddress {...formData} updateFields={updateFields} key={1} />,
+    <SellerTokenAddress {...formData} updateFields={updateFields} key={2} />,
+    <BuyerTokenAddress {...formData} updateFields={updateFields} key={3} />,
+    <TimePeriod {...formData} updateFields={updateFields} key={4} />,
+    <ReviewData formData={formData} key={5} />,
   ])
 
   const { data: signer } = useSigner()
@@ -316,19 +317,25 @@ export default function AddTradeForm() {
     console.log(txReceipt)
   }
   return (
-    <div
-      className="w-screen
-    "
-    >
-      <form className="flex items-center justify-center py-5 " onSubmit={onSubmit}>
-        <div className="w-full h-full bg-text rounded-md flex flex-col border-[1px] px-[15px]">
+    <div className="w-full h-[calc(100vh-70px)] md:h-[calc(100vh-85px)] flex items-center justify-center ">
+      <form
+        className="w-full flex items-center justify-center py-5 md:w-[70%] xl:w-[65%] h-full px-5 md:px-10"
+        onSubmit={onSubmit}
+      >
+        <div
+          className="w-full h-full sm:bg-slate-800 rounded-md flex flex-col sm:border-[1px]
+         sm:border-slate-700 p-[15px] sm:shadow-[0px_500px_500px_0px] sm:shadow-secondary-600 "
+        >
           <div className="flex justify-end mt-3">{pending ? <Pending /> : null}</div>
-          <h3 className="py-5 text-center font-bold text-lg uppercase">Create New Transaction</h3>
-          {step}
-          <div className="mt-1 flex gap-2 justify-between">
+          <h3 className="py-5 font-semibold text-xl uppercase text-secondary-200">
+            Create New Transaction
+          </h3>
+          <span className="text-gray-400"> {step}</span>
+          <div className="flex gap-2 justify-between mx-5 md:mx-10] mt-10">
             {!isFirstStep && (
               <button
-                className="px-4 py-2 text-white text-sm rounded shadow-md bg-blue-500"
+                className="py-2 text-white text-sm rounded shadow-md bg-purplish-800 
+                shadow:border-l-secondary-800 px-5 md:px-10 md:py-3 md:text-lg"
                 type="submit"
                 onClick={back}
               >
@@ -336,7 +343,8 @@ export default function AddTradeForm() {
               </button>
             )}
             <button
-              className="px-4 py-2 text-white text-sm rounded shadow-md bg-blue-500"
+              className="py-2 text-white text-sm rounded shadow-md bg-secondary-800 
+             shadow:border-l-secondary-800 px-5 md:px-10 md:py-3 md:text-lg flex items-center gap-2"
               type="submit"
               onClick={() => {
                 if (isLastStep) {

@@ -76,22 +76,24 @@ const TradeList = () => {
             </div>
           </div>
 
-          {pendingTrades.map((trade: Trade, index: number) => {
-            if (!trade.isCreatedByYou) {
-              return (
-                <TableRow
-                  key={index}
-                  buyerAddress={trade.buyer}
-                  amountOfTokenToBuy={trade.amountOfTokenToBuy}
-                  amountOfTokenToSell={trade.amountOfTokenToSell}
-                  status={trade.status}
-                  TransferTokenId={trade.symbolToSell}
-                  ReceiveTokenId={trade.symbolToBuy}
-                  txId={trade.id}
-                />
-              )
-            }
-          })}
+          {pendingTrades
+            .sort((a: Trade, b: Trade) => b.id - a.id)
+            .map((trade: Trade, index: number) => {
+              if (!trade.isCreatedByYou) {
+                return (
+                  <TableRow
+                    key={index}
+                    buyerAddress={trade.buyer}
+                    amountOfTokenToBuy={trade.amountOfTokenToBuy}
+                    amountOfTokenToSell={trade.amountOfTokenToSell}
+                    status={trade.status}
+                    TransferTokenId={trade.symbolToSell}
+                    ReceiveTokenId={trade.symbolToBuy}
+                    txId={trade.id}
+                  />
+                )
+              }
+            })}
 
           <h2 className="text-lg font-semibold text-secondary-900 my-2">Other Transactions</h2>
 

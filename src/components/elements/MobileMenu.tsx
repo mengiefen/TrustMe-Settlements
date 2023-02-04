@@ -68,7 +68,9 @@ const MobileMenu = (props: menuProps) => {
       className={
         isActive
           ? `w-screen h-screen flex flex-col ${
-              router.pathname === "/" ? "bg-menu-dark text-white" : "bg-gray-200 text-bg"
+              router.pathname === "/" || router.pathname == "/addTrade"
+                ? "bg-menu-dark text-white"
+                : "bg-gray-200 text-bg"
             } bg-opacity-50 items-center justify-start pt-10`
           : "hidden"
       }

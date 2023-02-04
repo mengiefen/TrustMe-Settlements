@@ -4,7 +4,7 @@ import Button from "../elements/Button"
 const Contact = () => {
   return (
     <div className="w-full min-h-[50%] flex flex-col items-center justify-center contact-bg mb-12 md:mb-20 max-w-screen-md ">
-      <div className="bg-bg-light border border-slate-600 shadow-2xl shadow-slate-600 rounded-tl-xl rounded-br-xl md:rounded-br-3xl md:rounded-tl-3xl w-[90%] min-h-[200px] p-3 sm:p-10">
+      <div className="bg-bg-light border border-slate-600 sm:shadow-[0px_500px_500px_0px] sm:shadow-secondary-900  rounded-tl-xl rounded-br-xl md:rounded-br-3xl md:rounded-tl-3xl w-[90%] min-h-[200px] p-3 sm:p-10">
         <h1 className="text-xl text-text my-5 tracking-wide leading-10 sm:text-2xl md:text-3xl sm:mb-10">
           Get the latest updates
         </h1>

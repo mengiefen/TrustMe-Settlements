@@ -24,9 +24,10 @@ const HeaderDropDown = () => {
   const handleDisconnect = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setShowMenu(false)
+    await router.push("/")
     await disconnect()
     await dispatch(disconnectWallet())
-    await router.push("/")
+    // redirecting to home page
   }
 
   const handleConnect = async (e: React.SyntheticEvent) => {

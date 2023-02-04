@@ -51,7 +51,7 @@ const Hero = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5">
+    <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5 ">
       <div
         className="flex flex-col md:flex-row-reverse items-center justify-center w-[80%]
                        mb-5 md:gap-5 lg:gap-10 md:w-full"

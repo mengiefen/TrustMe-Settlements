@@ -216,7 +216,7 @@ const Layout = (props: LayoutProps) => {
   return (
     <main
       className={`${
-        router.pathname === "/" ? "bg-bg text-text" : "bg-text text-bg"
+        pathname == "/" || pathname == "/addTrade" ? "bg-bg text-text" : "bg-text text-bg"
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >

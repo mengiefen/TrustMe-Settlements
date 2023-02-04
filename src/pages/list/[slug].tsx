@@ -14,7 +14,12 @@ import { Trade } from "@/components/TransactionList/type"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "@/redux/store"
 import Spinner from "@/components/elements/Spinner"
-import { updateCreatedTrade } from "@/redux/trade/tradesSlice"
+import {
+  updateCreatedTrade,
+  updateConfirmedTrade,
+  updateCanceledTrade,
+} from "@/redux/trade/tradesSlice"
+import FlashMessage from "@/components/FlashMessage"
 
 type TransactionDetailProps = {
   tradeId: number
@@ -29,44 +34,66 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const [isExpired, setIsExpired] = useState(false)
   const [txWait, setTxWait] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const tradeList = useSelector((state: RootState) => state.trades.data)
+  const [isError, setIsError] = useState({ status: false, message: "" })
+  const tradeList = useSelector((state: RootState) => state.trades.data) as any
   const { address } = useSelector((state: RootState) => state.wallets)
 
-  const setState = async (id: number) => {
-    const trade = await getTrade(id)
-    if (trade.status === 0) {
-      setIsPending(true)
-    } else if (trade.status === 3) {
-      setIsExpired(true)
-    }
-  }
-
   const handleCancelTrade = async (id: string) => {
-    setTxWait(true)
-    const contract = await trustMeContract()
-    const cancel = await contract.cancelTrade(id)
-    await cancel.wait()
-    setTxWait(false)
+    try {
+      setTxWait(true)
+      const contract = await trustMeContract()
+      const cancel = await contract.cancelTrade(id)
+      await cancel.wait()
+      await dispatch(updateCanceledTrade(parseInt(id)))
+      setTxWait(false)
+      router.push("/list")
+    } catch (err) {
+      router.push("/list")
+      setTxWait(false)
+      setIsError({
+        status: true,
+        message: "Transaction reverted",
+      })
+    }
   }
 
   const handleConfirmTrade = async (id: string) => {
     setTxWait(true)
     const contract = await trustMeContract()
-    console.log(currentTrade)
-    const erc20 = await erc20Contract(currentTrade.tokenToBuy)
 
-    await erc20.approve(contract.address, parseEther(currentTrade.amountOfTokenToBuy))
-    const confirm = await contract.confirmTrade(id)
-    await confirm.wait()
-    setTxWait(false)
+    const erc20 = await erc20Contract(currentTrade.tokenToSell)
+    try {
+      await erc20.approve(contract.address, parseEther(currentTrade.amountOfTokenToSell))
+      const confirm = await contract.confirmTrade(id)
+      await confirm.wait()
+      await dispatch(updateConfirmedTrade(parseInt(id)))
+      setTxWait(false)
+      router.push("/list")
+    } catch (err) {
+      setButtonClicked(false)
+      setTxWait(false)
+      setIsError({
+        status: true,
+        message: "Transaction reverted",
+      })
+    }
   }
 
   const handleWithdrawTrade = async (id: string) => {
-    setTxWait(true)
-    const contract = await trustMeContract()
-    const withdraw = await contract.withdraw(id)
-    await withdraw.wait()
-    setTxWait(false)
+    try {
+      setTxWait(true)
+      const contract = await trustMeContract()
+      const withdraw = await contract.withdraw(id)
+      await withdraw.wait()
+      setTxWait(false)
+      router.push("/list")
+    } catch (err) {
+      setTxWait(false)
+      setIsError({
+        status: true,
+        message: "Transaction reverted",
+      })
+    }
   }
 
   useEffect(() => {
@@ -86,9 +113,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
           }
           setCurrentTrade(tradeObj)
           setIsLoading(false)
-        } catch (err) {
-          console.log(err)
-        }
+        } catch (err) {}
       }
 
       fetchData()
@@ -100,7 +125,10 @@ const TransactionDetail = (props: TransactionDetailProps) => {
           }
         })
         .catch((err) => {
-          console.log(err)
+          setIsError({
+            status: true,
+            message: "Unable to fetch trade",
+          })
         })
     }
   }, [router.isReady, router.query.slug, tradeList, address, currentTrade.status])
@@ -288,6 +316,8 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               </>
             </div>
           </div>
+
+          {isError.status && <FlashMessage message={isError.message} type="alert" />}
         </div>
       )}
     </Layout>

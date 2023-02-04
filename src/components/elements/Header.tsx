@@ -42,6 +42,7 @@ const Header = ({
               transition duration-300 overflow-hidden
               md:hover:bg-secondary-200
               focus:bg-secondary-200"
+                style={{ color: router.pathname == "/addTrade" ? "white" : "slate-800" }}
                 onClick={() => router.back()}
               >
                 <BiArrowBack />
