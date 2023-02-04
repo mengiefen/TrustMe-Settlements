@@ -25,3 +25,12 @@ export type UserDetailProps = {
   userAddress: string
   transactionCount: number
 }
+
+export interface TokenListType {
+  address: string
+  balance: string
+  decimals: number
+  name: string
+  symbol: string
+  logo: string
+}

@@ -7,8 +7,10 @@ import { useFormatAddress } from "@/hooks/hooks"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
-import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 import { useRouter } from "next/router"
+import { connectWallet, disconnectWallet, updateTokens } from "@/redux/wallet/walletSlice"
+import { getConnectedUserTokens } from "@/helpers/getterHelpers"
+import { TokenListType } from "../TransactionList/type"
 
 const Hero = () => {
   const isMounted = useIsMounted()
@@ -26,6 +28,19 @@ const Hero = () => {
     if (isMounted) {
       const data = await connectAsync({ connector })
       await dispatch(connectWallet(data.account))
+      const tokens = await getConnectedUserTokens(data.account)
+      await dispatch(
+        updateTokens(
+          tokens.map((token: TokenListType) => ({
+            address: token.address,
+            balance: token.balance,
+            decimals: token.decimals,
+            name: token.name,
+            symbol: token.symbol,
+            logo: token.logo,
+          }))
+        )
+      )
     }
   }
 

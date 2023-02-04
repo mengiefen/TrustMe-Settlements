@@ -5,10 +5,12 @@ import Button from "./Button"
 import { useAccount, useDisconnect, useConnect, Connector } from "wagmi"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { InjectedConnector } from "@wagmi/core"
-import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { useRouter } from "next/router"
+import { connectWallet, disconnectWallet, updateTokens } from "@/redux/wallet/walletSlice"
+import { getConnectedUserTokens } from "@/helpers/getterHelpers"
+import { TokenListType } from "../TransactionList/type"
 
 type menuProps = {
   isActive: boolean
@@ -44,6 +46,19 @@ const MobileMenu = (props: menuProps) => {
     if (isMounted) {
       const data = await connectAsync({ connector })
       await dispatch(connectWallet(data.account))
+      const tokens = await getConnectedUserTokens(data.account)
+      await dispatch(
+        updateTokens(
+          tokens.map((token: TokenListType) => ({
+            address: token.address,
+            balance: token.balance,
+            decimals: token.decimals,
+            name: token.name,
+            symbol: token.symbol,
+            logo: token.logo,
+          }))
+        )
+      )
     } else {
     }
   }

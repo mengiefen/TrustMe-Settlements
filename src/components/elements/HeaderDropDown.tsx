@@ -1,36 +1,53 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logout, RootState } from "@/redux/store"
 import { getFormatAddress } from "@/utils"
-import { FaCaretDown } from "react-icons/fa"
-import { useBalance, useConnect, useDisconnect } from "wagmi"
+import { FaArrowRight, FaCaretDown } from "react-icons/fa"
+import { useAccount, useBalance, useConnect, useDisconnect, useNetwork } from "wagmi"
 import React, { useState } from "react"
-import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
+import { connectWallet, disconnectWallet, updateTokens } from "@/redux/wallet/walletSlice"
 import { useRouter } from "next/router"
-import { useIsMounted } from "@/hooks/useIsMounted"
+
+import { getConnectedUserTokens } from "@/helpers/getterHelpers"
+import { TokenListType } from "../TransactionList/type"
 
 const HeaderDropDown = () => {
-  const { address, connected } = useSelector((state: RootState) => state.wallets)
+  const { address, connected, tokens } = useSelector((state: RootState) => state.wallets)
   const { disconnect } = useDisconnect()
   const { connectAsync, connectors } = useConnect({})
   const router = useRouter()
   const { data, isSuccess } = useBalance({ address })
-
+  const { connector } = useAccount()
+  const { chain } = useNetwork()
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
 
-  const handleDisconnect = (e: React.SyntheticEvent) => {
+  const handleDisconnect = async (e: React.SyntheticEvent) => {
     e.preventDefault()
-    disconnect()
     setShowMenu(false)
-    dispatch(disconnectWallet())
-    // logout()
-    router.push("/")
+    await disconnect()
+    await dispatch(disconnectWallet())
+    await router.push("/")
   }
 
   const handleConnect = async (e: React.SyntheticEvent) => {
     const connector = connectors[0]
     const res = await connectAsync({ connector })
     await dispatch(connectWallet(res.account))
+    const tokens = await getConnectedUserTokens(res.account)
+    await dispatch(
+      updateTokens(
+        tokens.map((token: TokenListType) => ({
+          address: token.address,
+          balance: token.balance,
+          decimals: token.decimals,
+          name: token.name,
+          symbol: token.symbol,
+          logo: token.logo,
+        }))
+      )
+    )
+
+    await router.push("list")
     setShowMenu(false)
   }
 
@@ -53,15 +70,33 @@ const HeaderDropDown = () => {
       </button>
 
       <div
-        className="py-2 border border-gray-700 shadow-2xl shadow-secondary-500 w-full bg-menu-dark z-100 absolute mt-2"
+        className="border border-gray-700 shadow-2xl shadow-secondary-500 w-full bg-slate-700 z-100 absolute mt-2"
         style={{ display: showMenu ? "block" : "none" }}
       >
         {connected && isSuccess && (
           <ul className="py-2 text-text-dark bg-transparent">
-            <li className="block hover:bg-bg-light hover:text-secondary-400 p-2 px-4">
-              Balance:{"  "}
-              {`${data?.formatted.substring(0, 6)} ${data?.symbol}`}
+            <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
+              <span className="bg-secondary-900 p-2 text-[30px] rounded-lg text-text">{`${data?.formatted.substring(
+                0,
+                6
+              )} ${data?.symbol}`}</span>
+
+              <span className="text-secondary-500 p-2">
+                Network:{"  "}{" "}
+                <span className="bg-purplish-900 text-text py-1 px-2 rounded">{chain.name} </span>
+              </span>
             </li>
+            <strong className="mt-5 pb-2 px-4 text-xl uppercase ">Your Assets:</strong>
+            {tokens.map((token) => (
+              <li
+                className="text-xl hover:bg-bg-light border-b border-slate-400 hover:text-secondary-400 p-2 px-4 grid grid-cols-12 items-center gap-2 justify-between"
+                key={token.address}
+              >
+                {/* <FaArrowRight className="col-span-2" /> */}
+                <span className="col-span-5">{token.symbol} </span>
+                <span className="col-span-5"> {token.balance} </span>
+              </li>
+            ))}
           </ul>
         )}
 
@@ -77,7 +112,7 @@ const HeaderDropDown = () => {
           ) : (
             <a
               href="#"
-              className="text-red-300 block px-4 py-2 hover:bg-bg-light hover:text-red-600 py-2"
+              className="block uppercase px-4 py-2 text-red-300 border border-red-400 hover:text-white hover:bg-red-600 mx-2"
               onClick={(e) => handleDisconnect(e)}
             >
               Disconnect Wallet
