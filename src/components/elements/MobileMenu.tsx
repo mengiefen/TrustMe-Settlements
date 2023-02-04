@@ -6,7 +6,6 @@ import { useAccount, useDisconnect, useConnect, Connector } from "wagmi"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import { InjectedConnector } from "@wagmi/core"
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice"
-import { clearTrades } from "@/redux/trade/tradesSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { useRouter } from "next/router"
@@ -38,7 +37,6 @@ const MobileMenu = (props: menuProps) => {
   const handleDisconnect = async () => {
     disconnect()
     dispatch(disconnectWallet())
-    await dispatch(clearTrades())
     // router.push("/")
   }
 
