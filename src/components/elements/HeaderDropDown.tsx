@@ -13,7 +13,7 @@ const HeaderDropDown = () => {
   const { disconnect } = useDisconnect()
   const { connectAsync, connectors } = useConnect({})
   const router = useRouter()
-  const { data, isSuccess, isLoading: isBalanceLoading } = useBalance({ address })
+  const { data, isSuccess } = useBalance({ address })
 
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
@@ -33,9 +33,6 @@ const HeaderDropDown = () => {
     await dispatch(connectWallet(res.account))
     setShowMenu(false)
   }
-
-  const isMounted = useIsMounted()
-  if (!isMounted && isBalanceLoading) return null
 
   return (
     <div className="relative">

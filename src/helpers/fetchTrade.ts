@@ -4,14 +4,14 @@ import { getResolvedTokens, getResolvedUserAddress } from "./resolveData"
 export const fetchTrade = async (userAddress: string, id: number) => {
   const trade = await getTrade(id)
 
-  const { buyer, seller, isOutgoing } = getResolvedUserAddress(
+  const { buyer, seller, isCreatedByYou } = getResolvedUserAddress(
     userAddress,
     trade.buyer,
     trade.seller
   )
 
   const data = await getResolvedTokens(
-    isOutgoing,
+    isCreatedByYou,
     trade.tokenToBuy,
     trade.tokenToSell,
     trade.amountOfTokenToBuy,
@@ -39,7 +39,7 @@ export const fetchTrade = async (userAddress: string, id: number) => {
     amountOfTokenToBuy: data.amountOfTokenToBuy,
     symbolToBuy: data.symbolToBuy,
     symbolToSell: data.symbolToSell,
-    isOutgoing: data.isOutgoing,
+    isCreatedByYou: data.isCreatedByYou,
   }
   return tradeObj
 }

@@ -79,7 +79,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
           if (tradeList.length > 0 && tradeList.find((trade: Trade) => trade.id === slug)) {
             // fetches from store
             tradeObj = tradeList.find((trade: Trade) => trade.id === slug)
-            console.log(tradeObj)
           } else {
             //fetches from api
             tradeObj = await fetchTrade(address, slug)
@@ -169,7 +168,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             </div>
             <div className="flex flex-row items-center">
               <>
-                {isExpired && currentTrade.isOutgoing && (
+                {isExpired && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"

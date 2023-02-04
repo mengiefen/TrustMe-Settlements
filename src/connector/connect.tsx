@@ -14,8 +14,8 @@ const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || ""
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, goerli, polygon],
   [
-    alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
-    // infuraProvider({ apiKey: INFURA_API_KEY }),
+    // alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
+    infuraProvider({ apiKey: INFURA_API_KEY }),
     publicProvider(),
   ]
 )

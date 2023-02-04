@@ -18,17 +18,17 @@ export const getResolvedUserAddress = (
     buyer = tradeSeller
   }
 
-  return { buyer, seller, isOutgoing: tradeSeller === userAddress }
+  return { buyer, seller, isCreatedByYou: tradeSeller === userAddress }
 }
 
 export const getResolvedTokens = async (
-  isOutgoing: boolean,
+  isCreatedByYou: boolean,
   tokenToBuy: string,
   tokenToSell: string,
   amountOfTokenToBuy: BigNumber,
   amountOfTokenToSell: BigNumber
 ) => {
-  if (isOutgoing) {
+  if (isCreatedByYou) {
     return {
       tokenToSell,
       tokenToBuy,
@@ -36,7 +36,7 @@ export const getResolvedTokens = async (
       amountOfTokenToBuy: formatEther(amountOfTokenToBuy),
       symbolToBuy: await getSymbol(tokenToBuy),
       symbolToSell: await getSymbol(tokenToSell),
-      isOutgoing,
+      isCreatedByYou,
     }
   }
 
@@ -47,6 +47,6 @@ export const getResolvedTokens = async (
     amountOfTokenToBuy: formatEther(amountOfTokenToSell),
     symbolToBuy: await getSymbol(tokenToSell),
     symbolToSell: await getSymbol(tokenToBuy),
-    isOutgoing,
+    isCreatedByYou,
   }
 }
