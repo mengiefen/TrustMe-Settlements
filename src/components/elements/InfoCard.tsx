@@ -10,22 +10,22 @@ const InfoCard = (props: InfoCardProps) => {
 
   return (
     <div
-      className={
+      className={`flex flex-col py-[5px] px-[10px] border-b-2 shadow-lg bg-menu-dark items-start justify-between rounded-md w-full h-full md:py-6  ${
         value == "Expired"
-          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-gray-500 shadow-lg bg-gray-300 items-start justify-between rounded-md w-full h-full md:py-4"
+          ? " border-gray-500 "
           : value == "Completed"
-          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-green-500 shadow-lg bg-green-200 items-start justify-between rounded-md w-full h-full md:py-4"
+          ? " border-green-500 "
           : value == "Pending"
-          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-yellow-500 shadow-lg bg-yellow-100 items-start justify-between rounded-md w-full h-full md:py-4"
+          ? " border-yellow-500 "
           : value == "Canceled"
-          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-red-500 shadow-lg bg-red-200 items-start justify-between rounded-md w-full h-full md:py-4"
+          ? " border-red-500 "
           : value == "Withdrawn"
-          ? "flex flex-col py-[5px] px-[10px] border-b-2 border-purple-500 shadow-lg bg-purple-200 items-start justify-between rounded-md w-full h-full md:py-4"
-          : "flex flex-col py-[5px] px-[15px] border-b-2 border-secondary-200 shadow-lg bg-text items-start justify-between rounded-md w-full h-full md:py-4"
-      }
+          ? " border-purple-500 "
+          : " border-secondary-200 "
+      }`}
     >
       <div className="flex items-center justify-start">
-        <span className="text-gray-500 text-xs font-light md:text-sm md:text-gray-700">
+        <span className="text-gray-300 text-xs md:text-sm md:text-gray-300">
           {label}
         </span>
       </div>

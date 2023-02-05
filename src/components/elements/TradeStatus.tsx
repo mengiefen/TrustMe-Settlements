@@ -34,30 +34,30 @@ type TradeStatusProps = {
 const color = (status = "Expired") => {
   switch (status) {
     case "Confirmed":
-      return "text-green-600  md:border-green-300 md:bg-green-100";
+      return "text-green-400  md:border-green-400";
     case "Pending":
-      return "text-yellow-600 md:border-yellow-300 md:bg-yellow-100 ";
+      return "text-yellow-400 md:border-yellow-400";
     case "Canceled":
-      return "text-red-600 md:border-red-300 md:bg-red-100";
+      return "text-red-400 md:border-red-400";
     case "Withdrawn":
-      return "text-secondary-600 md:border-purplish-300 md:bg-secondary-100";
+      return "text-secondary-400 md:border-secondary-300";
     default:
-      return "text-gray-700  md:border-slate-300 md:bg-gray-200";
+      return "text-slate-400  md:border-slate-400";
   }
 };
 
 const ButtonIcon = (status = "Expired") => {
   switch (status) {
     case "Confirmed":
-      return <BsCheckCircle className="text-green-600  " />;
+      return <BsCheckCircle className="text-green-400  " />;
     case "Pending":
-      return <MdPendingActions className="text-yellow-600 " />;
+      return <MdPendingActions className="text-yellow-400 " />;
     case "Canceled":
-      return <MdOutlineCancel className="text-red-600" />;
+      return <MdOutlineCancel className="text-red-400" />;
     case "Withdrawn":
-      return <BsCheck2All className="text-secondary-600" />;
+      return <BsCheck2All className="text-secondary-400" />;
     default:
-      return <MdOutlineLockClock className="text-gray-700 " />;
+      return <MdOutlineLockClock className="text-gray-400 " />;
   }
 };
 

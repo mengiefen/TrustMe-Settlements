@@ -3,10 +3,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineArrowForward } from "react-icons/md";
 import TradeStatus from "../elements/TradeStatus";
 import Link from "next/link";
-import {
-  RiArrowLeftDownLine,
-  RiArrowRightUpLine,
-} from "react-icons/ri";
+import { RiArrowLeftDownLine, RiArrowRightUpLine } from "react-icons/ri";
 import { getFormatAddress } from "@/utils";
 
 interface RowProps {
@@ -21,9 +18,7 @@ interface RowProps {
 }
 
 const TableRow = ({
-  userPic = (
-    <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />
-  ),
+  userPic = <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />,
   buyerAddress = "",
   amountOfTokenToBuy,
   ReceiveTokenId = "USDT",
@@ -33,8 +28,8 @@ const TableRow = ({
   txId,
 }: RowProps) => {
   return (
-    <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg">
-      <div className="flex flex-col border  border-secondary-200 rounded-lg overflow-hidden">
+    <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg ">
+      <div className="flex flex-col border-[0.1px]  border-slate-600 rounded-lg overflow-hidden shadow-cyan-900 shadow-[0_0px_10px_0px] hover:shadow-cyan-900 hover:shadow-[0_0px_20px_0px]">
         <div className="grid grid-cols-12 p-2 md:p-1 items-center gap-1 shadow">
           <div className="col-span-2 text-start mr-auto">
             <a
@@ -50,7 +45,7 @@ const TableRow = ({
             </a>
           </div>
 
-          <div className="col-span-3 overflow-clip  text-secondary-900 flex items-center">
+          <div className="col-span-3 overflow-clip  text-secondary-800 flex items-center">
             {
               <RiArrowLeftDownLine className="text-green-500 inline-block mr-1 md:mr-2 border border-green-400 rounded-full bg-green-100" />
             }
@@ -67,7 +62,7 @@ const TableRow = ({
             }
             <div className="flex flex-col">
               {amountOfTokenToSell}
-              <span className="mr-1 text-gray-400 text-[20px] ">
+              <span className="mr-1 text-gray-300 text-[20px] ">
                 {TransferTokenId}
               </span>
             </div>
@@ -78,7 +73,7 @@ const TableRow = ({
           </div>
           <div className="col-span-1 overflow-hidden mx-auto">
             <Link href={`/list/${txId}`}>
-              <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[2px] transition duration-150 text-2xl md:text-2xl" />
+              <MdOutlineArrowForward className="text-secondary-700 hover:translate-x-[2px] transition duration-150 text-2xl md:text-2xl" />
             </Link>
           </div>
         </div>
@@ -86,13 +81,13 @@ const TableRow = ({
         {status === "Pending" && (
           <Link
             href={`/list/${txId}`}
-            className="outline-none border-none py-1 px-2 flex items-center justify-center bg-secondary-50 text-sm font-normal"
+            className="outline-none border-none py-1 px-2 flex items-center justify-center bg-slate-900 text-sm font-normal"
           >
-            <span className="mr-2 text-orange-900">
+            <span className="mr-2 text-gray-400 hover:text-light-orange-400">
               Confirmation required
             </span>
 
-            <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-bg" />
+            <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-gray-400 hover:text-light-orange-400" />
           </Link>
         )}
       </div>
