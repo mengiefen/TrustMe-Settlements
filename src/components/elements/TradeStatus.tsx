@@ -33,14 +33,14 @@ type TradeStatusProps = {
 
 const color = (status = "Expired") => {
   switch (status) {
-    case "Completed":
+    case "Confirmed":
       return "text-green-600  md:border-green-300 md:bg-green-100";
     case "Pending":
       return "text-yellow-600 md:border-yellow-300 md:bg-yellow-100 ";
     case "Canceled":
       return "text-red-600 md:border-red-300 md:bg-red-100";
     case "Withdrawn":
-      return "text-secondary-600 md:border-secondary-300 md:bg-secondary-100";
+      return "text-secondary-600 md:border-purplish-300 md:bg-secondary-100";
     default:
       return "text-gray-700  md:border-slate-300 md:bg-gray-200";
   }
@@ -48,18 +48,16 @@ const color = (status = "Expired") => {
 
 const ButtonIcon = (status = "Expired") => {
   switch (status) {
-    case "Completed":
+    case "Confirmed":
       return <BsCheckCircle className="text-green-600  " />;
     case "Pending":
-      return (
-        <MdPendingActions className="text-yellow-600 " />
-      );
+      return <MdPendingActions className="text-yellow-600 " />;
     case "Canceled":
       return <MdOutlineCancel className="text-red-600" />;
+    case "Withdrawn":
+      return <BsCheck2All className="text-secondary-600" />;
     default:
-      return (
-        <MdOutlineLockClock className="text-gray-700 " />
-      );
+      return <MdOutlineLockClock className="text-gray-700 " />;
   }
 };
 
@@ -74,9 +72,7 @@ const TradeStatus = ({
           status,
         )}`}
       >
-        <span className="hidden md:inline-block text-xs">
-          {status}
-        </span>
+        <span className="hidden md:inline-block text-xs">{status}</span>
         {ButtonIcon(status)}
       </StatusButton>
     </div>

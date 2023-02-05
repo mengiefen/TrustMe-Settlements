@@ -1,23 +1,10 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 // import Button from "@/components/elements/Button"
-import { useAccount } from "wagmi";
-import {
-  getTrade,
-  trustMeContract,
-  erc20Contract,
-} from "@/helpers/getterHelpers";
+import { trustMeContract, erc20Contract } from "@/helpers/getterHelpers";
 import Layout from "@/Layout";
 import { parseEther } from "ethers/lib/utils.js";
 // import { BiTransfer } from "react-icons/bi"
-import {
-  AiOutlineCheck,
-  AiOutlineLoading,
-} from "react-icons/ai";
+import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
 import { getFormatAddress, getFormatDate } from "@/utils";
 import { useRouter } from "next/router";
@@ -30,6 +17,7 @@ import {
   updateCreatedTrade,
   updateConfirmedTrade,
   updateCanceledTrade,
+  updateWithdrawnTrade,
 } from "@/redux/trade/tradesSlice";
 import FlashMessage from "@/components/FlashMessage";
 
@@ -37,14 +25,10 @@ type TransactionDetailProps = {
   tradeId: number;
 };
 
-const TransactionDetail = (
-  props: TransactionDetailProps,
-) => {
+const TransactionDetail = (props: TransactionDetailProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [currentTrade, setCurrentTrade] = useState(
-    {},
-  ) as any;
+  const [currentTrade, setCurrentTrade] = useState({}) as any;
   const [buttonClicked, setButtonClicked] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
@@ -54,12 +38,8 @@ const TransactionDetail = (
     status: false,
     message: "",
   });
-  const tradeList = useSelector(
-    (state: RootState) => state.trades.data,
-  ) as any;
-  const { address } = useSelector(
-    (state: RootState) => state.wallets,
-  );
+  const tradeList = useSelector((state: RootState) => state.trades.data) as any;
+  const { address } = useSelector((state: RootState) => state.wallets);
 
   const handleCancelTrade = async (id: string) => {
     try {
@@ -84,9 +64,7 @@ const TransactionDetail = (
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-      const erc20 = await erc20Contract(
-        currentTrade.tokenToSell,
-      );
+      const erc20 = await erc20Contract(currentTrade.tokenToSell);
       await erc20.approve(
         contract.address,
         parseEther(currentTrade.amountOfTokenToSell),
@@ -113,6 +91,7 @@ const TransactionDetail = (
       const contract = await trustMeContract();
       const withdraw = await contract.withdraw(id);
       await withdraw.wait();
+      await dispatch(updateWithdrawnTrade(parseInt(id)));
       setTxWait(false);
       router.push("/list");
     } catch (err) {
@@ -133,14 +112,10 @@ const TransactionDetail = (
         try {
           if (
             tradeList.length > 0 &&
-            tradeList.find(
-              (trade: Trade) => trade.id === slug,
-            )
+            tradeList.find((trade: Trade) => trade.id === slug)
           ) {
             // fetches from store
-            tradeObj = tradeList.find(
-              (trade: Trade) => trade.id === slug,
-            );
+            tradeObj = tradeList.find((trade: Trade) => trade.id === slug);
           } else {
             //fetches from api
             tradeObj = await fetchTrade(address, slug);
@@ -190,16 +165,10 @@ const TransactionDetail = (
           <div className="grid grid-cols-1 w-full gap-x-2 gap-y-2 md:grid-cols-4 md:gap-x-5">
             <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
-                <InfoCard
-                  label={"TRANSACTION ID"}
-                  value={currentTrade.id}
-                />
+                <InfoCard label={"TRANSACTION ID"} value={currentTrade.id} />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
-                <InfoCard
-                  label={"TXN STATUS"}
-                  value={currentTrade.status}
-                />
+                <InfoCard label={"TXN STATUS"} value={currentTrade.status} />
               </div>
             </div>
 
@@ -207,17 +176,13 @@ const TransactionDetail = (
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"YOUR ADDRESS"}
-                  value={getFormatAddress(
-                    currentTrade.seller,
-                  )}
+                  value={getFormatAddress(currentTrade.seller)}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"COUNTERPARTY ADDRESS"}
-                  value={getFormatAddress(
-                    currentTrade.buyer,
-                  )}
+                  value={getFormatAddress(currentTrade.buyer)}
                 />
               </div>
             </div>
@@ -226,17 +191,13 @@ const TransactionDetail = (
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"DATE CREATED"}
-                  value={getFormatDate(
-                    currentTrade.deadline,
-                  )}
+                  value={getFormatDate(currentTrade.deadline)}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"EXPIRY DATE"}
-                  value={getFormatDate(
-                    currentTrade.deadline,
-                  )}
+                  value={getFormatDate(currentTrade.deadline)}
                 />
               </div>
             </div>
@@ -263,110 +224,95 @@ const TransactionDetail = (
             </div>
             <div className="flex flex-row items-center">
               <>
-                {isExpired &&
-                  currentTrade.isCreatedByYou && (
-                    <div className="mt-5 flex flex-1">
-                      <button
-                        className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
-                        onClick={() => {
-                          handleWithdrawTrade(
-                            currentTrade?.id,
-                          );
-                          setButtonClicked(true);
-                        }}
-                      >
-                        {!txWait && !buttonClicked && (
-                          <>
-                            <span>
-                              WITHDRAW YOUR ASSETS
-                            </span>
-                          </>
-                        )}
-                        {txWait && (
-                          <>
-                            <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                            <span>
-                              WITHDRAWAL IN PROGRESS
-                            </span>
-                          </>
-                        )}
-                        {!txWait && buttonClicked && (
-                          <>
-                            <AiOutlineCheck className="text-green h-5 w-5" />
-                            <span>WITHDRAWN</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
+                {isExpired && currentTrade.isCreatedByYou && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
+                      onClick={() => {
+                        handleWithdrawTrade(currentTrade?.id);
+                        setButtonClicked(true);
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>WITHDRAW YOUR ASSETS</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>WITHDRAWAL IN PROGRESS</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>WITHDRAWN</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
-                {isPending &&
-                  currentTrade.isCreatedByYou && (
-                    <div className="mt-5 flex flex-1">
-                      <button
-                        className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
-                        onClick={() => {
-                          handleCancelTrade(
-                            currentTrade?.id,
-                          );
-                          setButtonClicked(true);
-                        }}
-                      >
-                        {!txWait && !buttonClicked && (
-                          <>
-                            <span>CANCEL TRANSACTION</span>
-                          </>
-                        )}
-                        {txWait && (
-                          <>
-                            <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                            <span>CANCELLING...</span>
-                          </>
-                        )}
-                        {!txWait && buttonClicked && (
-                          <>
-                            <AiOutlineCheck className="text-green h-5 w-5" />
-                            <span>CANCELLED</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
+                {isPending && currentTrade.isCreatedByYou && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
+                      onClick={() => {
+                        handleCancelTrade(currentTrade?.id);
+                        setButtonClicked(true);
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>CANCEL TRANSACTION</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>CANCELLING...</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>CANCELLED</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
-                {isPending &&
-                  !currentTrade.isCreatedByYou && (
-                    <div className="mt-5 flex flex-1">
-                      <button
-                        className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
-                        onClick={() => {
-                          handleConfirmTrade(
-                            currentTrade?.id,
-                          );
-                          setButtonClicked(true);
-                        }}
-                      >
-                        {!txWait && !buttonClicked && (
-                          <>
-                            <span>CONFIRM TRANSACTION</span>
-                          </>
-                        )}
-                        {txWait && (
-                          <>
-                            <AiOutlineLoading className="animate-spin h-5 w-5 " />
-                            <span>
-                              WAITING FOR CONFIRMATION...
-                            </span>
-                          </>
-                        )}
-                        {!txWait && buttonClicked && (
-                          <>
-                            <AiOutlineCheck className="text-green h-5 w-5" />
-                            <span>CONFIRMED</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
+                {isPending && !currentTrade.isCreatedByYou && (
+                  <div className="mt-5 flex flex-1">
+                    <button
+                      className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
+                      onClick={() => {
+                        handleConfirmTrade(currentTrade?.id);
+                        setButtonClicked(true);
+                      }}
+                    >
+                      {!txWait && !buttonClicked && (
+                        <>
+                          <span>CONFIRM TRANSACTION</span>
+                        </>
+                      )}
+                      {txWait && (
+                        <>
+                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <span>WAITING FOR CONFIRMATION...</span>
+                        </>
+                      )}
+                      {!txWait && buttonClicked && (
+                        <>
+                          <AiOutlineCheck className="text-green h-5 w-5" />
+                          <span>CONFIRMED</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
                 {/* <div className="px-2">
               <Button
@@ -397,10 +343,7 @@ const TransactionDetail = (
           </div>
 
           {isError.status && (
-            <FlashMessage
-              message={isError.message}
-              type="alert"
-            />
+            <FlashMessage message={isError.message} type="alert" />
           )}
         </div>
       )}

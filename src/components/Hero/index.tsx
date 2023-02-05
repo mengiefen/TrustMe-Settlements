@@ -2,17 +2,12 @@ import React from "react";
 import Image from "next/image";
 import HeroImage from "../../assets/9.png";
 import Button from "../elements/Button";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  Connector,
-} from "wagmi";
+import { useAccount, useConnect, useDisconnect, Connector } from "wagmi";
 import { useFormatAddress } from "@/hooks/hooks";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useRouter } from "next/router";
+
 import {
   connectWallet,
   disconnectWallet,
@@ -24,7 +19,7 @@ import { TokenListType } from "../TransactionList/type";
 const Hero = () => {
   const isMounted = useIsMounted();
   const { isConnected } = useAccount({});
-  const router = useRouter();
+
   const { buttonText, address: userAddress } = useSelector(
     (state: RootState) => state.wallets,
   );
@@ -39,9 +34,7 @@ const Hero = () => {
     if (isMounted) {
       const data = await connectAsync({ connector });
       await dispatch(connectWallet(data.account));
-      const tokens = await getConnectedUserTokens(
-        data.account,
-      );
+      const tokens = await getConnectedUserTokens(data.account);
       await dispatch(
         updateTokens(
           tokens.map((token: TokenListType) => ({
@@ -60,7 +53,6 @@ const Hero = () => {
   const handleDisconnect = () => {
     disconnect();
     dispatch(disconnectWallet());
-    // router.push("/")
   };
 
   return (
@@ -76,19 +68,18 @@ const Hero = () => {
         <div className="lg:max-w-[50%] md:max-w[55%] flex flex-col gap-3 md:gap-5">
           <h1
             className="text-3xl font-semibold text-center md:text-left text-text my-5 tracking-widest 
-                      md:tracking-wider md:text-4xl lg:text-5xl xl:text-6xl lg:font-normal"
+                      md:tracking-wider md:text-4xl lg:text-4xl xl:text-5xl lg:font-normal"
           >
             <span className="leading-10 md:leading-[4rem]">
               Settle your Trade with Trust
             </span>
             <span className="font-bold text-secondary-500 leading-10 md:leading-[4rem]">
-              Me
+              ME
             </span>
           </h1>
           <p className="text-center text-text md:text-left font-light leading-6 md:text-lg md:font-normal">
-            TrustMe allows you to instantly settle
-            peer-to-peer transactions in digital assets on a
-            “Delivery-versus-Payment” basis”.
+            TrustMe allows you to instantly settle peer-to-peer transactions in
+            digital assets on a “Delivery-versus-Payment” basis”.
           </p>
 
           {isMounted && (

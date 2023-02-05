@@ -31,12 +31,8 @@ const Header = ({
             {router.pathname == "/" ? (
               <>
                 <GiTwoCoins className="text-3xl" />
-
                 <h1 className="text-2xl  font-semibold tracking-wide">
-                  Trust
-                  <span className="text-secondary-600 font-bold">
-                    Me
-                  </span>
+                  Trust<span className="text-secondary-600 font-bold">ME</span>
                 </h1>
               </>
             ) : (
@@ -48,10 +44,7 @@ const Header = ({
               md:hover:bg-secondary-200
               focus:bg-secondary-200"
                 style={{
-                  color:
-                    router.pathname == "/addTrade"
-                      ? "white"
-                      : "slate-800",
+                  color: router.pathname == "/addTrade" ? "white" : "slate-800",
                 }}
                 onClick={() => router.back()}
               >
@@ -60,24 +53,15 @@ const Header = ({
             )}
           </div>
 
-          <button
-            type="button"
-            className="outline-none border-none p-0"
-          >
-            <FiMenu
-              className="text-3xl"
-              onClick={() => showMenu()}
-            />
+          <button type="button" className="outline-none border-none p-0">
+            <FiMenu className="text-3xl" onClick={() => showMenu()} />
           </button>
         </div>
 
         <DesktopMenu />
       </nav>
 
-      <MobileMenu
-        showMenu={() => showMenu()}
-        isActive={isActive}
-      />
+      <MobileMenu showMenu={() => showMenu()} isActive={isActive} />
     </div>
   );
 };

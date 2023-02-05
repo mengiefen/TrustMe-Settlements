@@ -1,14 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logout, RootState } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { getFormatAddress } from "@/utils";
-import { FaArrowRight, FaCaretDown } from "react-icons/fa";
-import {
-  useAccount,
-  useBalance,
-  useConnect,
-  useDisconnect,
-  useNetwork,
-} from "wagmi";
+import { FaCaretDown } from "react-icons/fa";
+import { useBalance, useConnect, useDisconnect, useNetwork } from "wagmi";
 import React, { useState } from "react";
 import {
   connectWallet,
@@ -16,7 +10,6 @@ import {
   updateTokens,
 } from "@/redux/wallet/walletSlice";
 import { useRouter } from "next/router";
-
 import { getConnectedUserTokens } from "@/helpers/getterHelpers";
 import { TokenListType } from "../TransactionList/type";
 
@@ -27,30 +20,27 @@ const HeaderDropDown = () => {
   const { disconnect } = useDisconnect();
   const { connectAsync, connectors } = useConnect({});
   const router = useRouter();
-  const { data, isSuccess } = useBalance({ address } as {});
-  const { connector } = useAccount();
+  const { data, isSuccess } = useBalance({ address } as {
+    address: `0x${string} | undefined`;
+  });
   const { chain } = useNetwork();
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch();
 
-  const handleDisconnect = async (
-    e: React.SyntheticEvent,
-  ) => {
+  const handleDisconnect = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setShowMenu(false);
     await router.push("/");
     await disconnect();
     await dispatch(disconnectWallet());
-    // redirecting to home page
   };
 
   const handleConnect = async (e: React.SyntheticEvent) => {
     const connector = connectors[0];
+    setShowMenu(false);
     const res = await connectAsync({ connector });
     await dispatch(connectWallet(res.account));
-    const tokens = await getConnectedUserTokens(
-      res.account,
-    );
+    const tokens = await getConnectedUserTokens(res.account);
     await dispatch(
       updateTokens(
         tokens.map((token: TokenListType) => ({
@@ -65,7 +55,6 @@ const HeaderDropDown = () => {
     );
 
     await router.push("list");
-    setShowMenu(false);
   };
 
   return (
@@ -95,7 +84,7 @@ const HeaderDropDown = () => {
         {connected && isSuccess && (
           <ul className="py-2 text-text-dark bg-transparent max-h-[500px] no-scrollbar overflow-y-scroll">
             <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
-              <span className="bg-secondary-900 p-2 text-[30px] rounded-lg text-text">{`${data?.formatted.substring(
+              <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${data?.formatted.substring(
                 0,
                 6,
               )} ${data?.symbol}`}</span>
@@ -108,11 +97,23 @@ const HeaderDropDown = () => {
                 </span>
               )}
             </li>
+            <strong className="mt-5 pb-2 px-4 text-lg uppercase ">
+              Your Assets
+            </strong>
+            {tokens.map((token) => (
+              <li
+                className="text-md hover:bg-bg-light border-b border-slate-400 hover:text-secondary-400 p-2 px-4 grid grid-cols-12 items-center gap-2 justify-between"
+                key={token.address}
+              >
+                <span className="col-span-5">{token.symbol} </span>
+                <span className="col-span-5"> {token.balance} </span>
+              </li>
+            ))}
             <div className="py-2">
               {!connected ? (
                 <a
                   href="#"
-                  className="text-secondary-300 block px-4 py-2 hover:bg-bg-light hover:text-secondary-600 py-2"
+                  className="text-secondary-300 block px-4 py-2 hover:bg-bg-light hover:text-secondary-600"
                   onClick={(e) => handleConnect(e)}
                 >
                   Connect Wallet
@@ -127,24 +128,6 @@ const HeaderDropDown = () => {
                 </a>
               )}
             </div>
-            <strong className="mt-5 pb-2 px-4 text-xl uppercase ">
-              Your Assets:
-            </strong>
-            {tokens.map((token) => (
-              <li
-                className="text-xl hover:bg-bg-light border-b border-slate-400 hover:text-secondary-400 p-2 px-4 grid grid-cols-12 items-center gap-2 justify-between"
-                key={token.address}
-              >
-                {/* <FaArrowRight className="col-span-2" /> */}
-                <span className="col-span-5">
-                  {token.symbol}{" "}
-                </span>
-                <span className="col-span-5">
-                  {" "}
-                  {token.balance}{" "}
-                </span>
-              </li>
-            ))}
           </ul>
         )}
       </div>
