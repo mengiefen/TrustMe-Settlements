@@ -29,10 +29,7 @@ export type FormProps1 = BuyerAddressType & {
 };
 export type FormProps2 = SellerTokenAddressType & {
   updateFields: (
-    fields: Pick<
-      FormData,
-      "sellerTokenAddress" | "sellerTokenAmount"
-    >,
+    fields: Pick<FormData, "sellerTokenAddress" | "sellerTokenAmount">,
   ) => void;
 };
 export type FormProps3 = BuyerTokenAddressType & {
@@ -46,10 +43,12 @@ export type FormWrapperProps = {
   title: string;
   children: React.ReactNode;
 };
+
 export type TokenMetadata = {
   decimals: number;
   name: string;
   symbol: string;
   logo: string;
   address: string;
+  balance: string;
 };

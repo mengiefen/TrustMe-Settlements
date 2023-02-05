@@ -1,20 +1,28 @@
+import { useBalance } from "wagmi";
 import { TokenListType } from "@/components/TransactionList/type";
-import {
-  createSlice,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface WalletState {
   buttonText: string;
   connected: boolean;
   address: string;
-  tokens: TokenListType[];
+  userBalances: {
+    connectedNetwork: string;
+    currencyBalance: string;
+    currencySymbol: string;
+    tokens: TokenListType[];
+  };
 }
 const initialState: WalletState = {
   buttonText: "Connect Wallet",
   connected: false,
   address: "",
-  tokens: [],
+  userBalances: {
+    connectedNetwork: "",
+    currencyBalance: "",
+    currencySymbol: "",
+    tokens: [],
+  },
 };
 
 const walletsSlice = createSlice({
@@ -33,17 +41,14 @@ const walletsSlice = createSlice({
       state.address = "";
     },
 
-    updateTokens: (state, action) => {
-      state.tokens = action.payload;
+    updateUseBalances: (state, action) => {
+      state.userBalances = action.payload;
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const {
-  connectWallet,
-  disconnectWallet,
-  updateTokens,
-} = walletsSlice.actions;
+export const { connectWallet, disconnectWallet, updateUseBalances } =
+  walletsSlice.actions;
 
 export default walletsSlice.reducer;

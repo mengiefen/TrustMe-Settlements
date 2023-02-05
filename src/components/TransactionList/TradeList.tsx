@@ -4,30 +4,38 @@ import SearchBox from "@/components/TransactionList/SearchBox";
 import UserDetail from "./UserDetail";
 import Button from "../elements/Button";
 import Pagination from "./Pagination";
-import {
-  getLastTransactions,
-  getTradeList,
-} from "./fetchTrades";
+import { getLastTransactions, getTradeList } from "./fetchTrades";
 import { Trade } from "./type";
 import { useFormatAddress } from "@/hooks/hooks";
 import { useAccount } from "wagmi";
 import Spinner from "../elements/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchTradesPending,
-  fetchTrades,
-} from "@/redux/trade/tradesSlice";
+import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice";
+
+// import { useQuery } from "@apollo/client";
+// import { GET_ALL_TRADES, GET_TRADE_BY_ID } from "@/helpers/getDataFromGraph";
 
 const TradeList = () => {
-  const [pendingTrades, setPendingTrades] = React.useState(
-    [],
-  ) as any;
-  const tradeList = useSelector(
-    (state: any) => state.trades.data,
-  );
+  const [pendingTrades, setPendingTrades] = React.useState([]) as any;
+  const tradeList = useSelector((state: any) => state.trades.data);
   const [isLoading, setLoading] = React.useState(true);
   const { address } = useAccount();
   const dispatch = useDispatch();
+
+  // const {
+  //   loading: isListFetchingLoading,
+  //   error: isListFetchingError,
+  //   data: tradeListsFromGraph,
+  // } = useQuery(GET_ALL_TRADES);
+  // console.log(tradeListsFromGraph);
+  // const {
+  //   loading: isTradeLoading,
+  //   error: isTradeFetchError,
+  //   data: tradeFromGraph,
+  // } = useQuery(GET_TRADE_BY_ID, {
+  //   variables: { id: 0 },
+  // });
+  // console.log(tradeFromGraph);
 
   useEffect(() => {
     const fetchTradeList = async () => {
@@ -35,9 +43,7 @@ const TradeList = () => {
       const data = await getTradeList(tradeList, address);
       dispatch(fetchTrades(data));
       setPendingTrades(
-        data.filter(
-          (trade: Trade) => trade.status === "Pending",
-        ),
+        data.filter((trade: Trade) => trade.status === "Pending"),
       );
       setLoading(false);
     };
@@ -78,9 +84,7 @@ const TradeList = () => {
             <div className="flex flex-col border  border-secondary-400 rounded-lg overflow-hidden">
               <div className="grid grid-cols-12 p-2 items-center gap-1 shadow bg-secondary-50">
                 <div className="col-span-2 text-secondary-900 md:text-lg md:uppercase md:font-semibold">
-                  <span className="hidden lg:inline">
-                    Counterparty
-                  </span>
+                  <span className="hidden lg:inline">Counterparty</span>
                   <span className="md:hidden">CP</span>
                 </div>
                 <div className="col-span-3 overflow-clip  text-secondary-900 md:text-lg md:uppercase md:font-semibold">
@@ -105,12 +109,8 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={
-                      trade.amountOfTokenToBuy
-                    }
-                    amountOfTokenToSell={
-                      trade.amountOfTokenToSell
-                    }
+                    amountOfTokenToBuy={trade.amountOfTokenToBuy}
+                    amountOfTokenToSell={trade.amountOfTokenToSell}
                     status={trade.status}
                     TransferTokenId={trade.symbolToSell}
                     ReceiveTokenId={trade.symbolToBuy}
@@ -131,12 +131,8 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={
-                      trade.amountOfTokenToBuy
-                    }
-                    amountOfTokenToSell={
-                      trade.amountOfTokenToSell
-                    }
+                    amountOfTokenToBuy={trade.amountOfTokenToBuy}
+                    amountOfTokenToSell={trade.amountOfTokenToSell}
                     status={trade.status}
                     TransferTokenId={trade.symbolToSell}
                     ReceiveTokenId={trade.symbolToBuy}

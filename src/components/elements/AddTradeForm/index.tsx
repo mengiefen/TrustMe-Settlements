@@ -20,11 +20,10 @@ import {
 } from "./type";
 import FormWrapper from "./FormWrapper";
 import Pending from "./Pending";
-import {
-  AiOutlineCheck,
-  AiOutlineLoading,
-} from "react-icons/ai";
-import { getSymbol } from "@/utils";
+import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
 const settings = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
   network: Network.ETH_GOERLI,
@@ -50,42 +49,28 @@ type ReviewDataProps = {
 };
 
 export default function AddTradeForm() {
-  const [sellerTokenMetadata, setSellerTokenMetadata] =
-    React.useState<TokenMetadata[]>([]);
-  const [buyerTokenMetadata, setBuyerTokenMetadata] =
-    React.useState<TokenMetadata[]>([]);
+  const { address: userAddress, userBalances } = useSelector(
+    (state: RootState) => state.wallets,
+  );
+  const [buyerTokenMetadata, setBuyerTokenMetadata] = React.useState<
+    TokenMetadata[]
+  >([]);
   const [loading, setLoading] = useState(false);
+
   const [pending, setPending] = useState(false);
   const [formData, setFormData] = useState(INITIAL_DATA);
   const { address } = useAccount();
   const [isApproving, setIsApproving] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const [isButtonClicked, setIsButtonClicked] =
-    useState(false);
-
-  async function checkSellerTokens() {
-    try {
-      setLoading(true);
-      const sellerTokens = await getConnectedUserTokens(
-        address!,
-      );
-      setSellerTokenMetadata(sellerTokens);
-      setLoading(true);
-    } catch (error) {
-      setLoading(false);
-      alert("Something went wrong");
-      console.log(error);
-      return;
-    }
-  }
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   async function checkBuyerTokens(_address: string) {
     try {
       setLoading(true);
-      const buyersTokens = await getConnectedUserTokens(
-        _address,
-      );
+      const buyersTokens = await getConnectedUserTokens(_address);
       setBuyerTokenMetadata(buyersTokens);
+
+      console.log(buyersTokens);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -96,13 +81,11 @@ export default function AddTradeForm() {
   }
 
   useEffect(() => {
-    checkSellerTokens();
-  }, []);
-
-  useEffect(() => {
-    if (formData.buyerAddress) {
-      checkBuyerTokens(formData.buyerAddress);
-    }
+    (async () => {
+      if (formData.buyerAddress) {
+        await checkBuyerTokens(formData.buyerAddress);
+      }
+    })();
   }, [formData.buyerAddress]);
 
   function updateFields(fields: Partial<FormData>) {
@@ -118,9 +101,7 @@ export default function AddTradeForm() {
         name="sellerTokenAddress"
         required
         value={buyerAddress}
-        onChange={(e) =>
-          updateFields({ buyerAddress: e.target.value })
-        }
+        onChange={(e) => updateFields({ buyerAddress: e.target.value })}
       />
     </FormWrapper>
   );
@@ -146,22 +127,34 @@ export default function AddTradeForm() {
           <option value="" selected disabled>
             --SELECT--
           </option>
-          {sellerTokenMetadata.map((item, index) => (
+          {userBalances.tokens.map((token, index) => (
             <option
               key={index}
-              disabled={loading ? true : false}
-              className="items-center text-sm md:text-md p-3 hover:bg-slate-600"
-              value={loading ? "" : item.address}
+              // disabled={loading ? true : false}
+              className="items-center text-sm md:text-md p-3 hover:bg-slate-600 w-full"
+              value={token.address}
             >
-              {loading ? "Loading..." : item.symbol}
+              {loading ? (
+                "Loading..."
+              ) : (
+                <div className="flex justify-between w-full">
+                  <span
+                    className="mr-5 md:mr-10 py-1 font-bold"
+                    data-symbol={token.symbol}
+                  >
+                    Asset:
+                    {token.symbol}
+                  </span>
+
+                  <span> Balance: {token.balance}</span>
+                </div>
+              )}
             </option>
           ))}
         </select>
       </>
       <>
-        <label className="md:mt-2">
-          Amount Asset to Send
-        </label>
+        <label className="md:mt-2">Amount Asset to Send</label>
         <input
           placeholder="Asset Amount"
           autoFocus
@@ -205,14 +198,28 @@ export default function AddTradeForm() {
         >
           --select--
         </option>
-        {buyerTokenMetadata.map((item, key) => (
+        {buyerTokenMetadata.map((token, key) => (
           <option
             key={key}
-            className="items-center text-small"
-            value={loading ? "" : item.address}
+            className="items-center text-sm"
+            value={loading ? "" : token.address}
             disabled={loading ? true : false}
           >
-            {loading ? "Loading..." : item.symbol}
+            {loading ? (
+              "Loading..."
+            ) : (
+              <div className="flex justify-between w-full">
+                <span
+                  className="mr-5 md:mr-10 py-1 font-bold"
+                  data-symbol={token.symbol}
+                >
+                  Asset:
+                  {token.symbol}
+                </span>
+
+                <span> Balance: {token.balance}</span>
+              </div>
+            )}
           </option>
         ))}
       </select>
@@ -224,18 +231,13 @@ export default function AddTradeForm() {
         name="buyerTokenAmount"
         required
         value={buyerTokenAmount}
-        onChange={(e) =>
-          updateFields({ buyerTokenAmount: e.target.value })
-        }
+        onChange={(e) => updateFields({ buyerTokenAmount: e.target.value })}
         className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
       />
     </FormWrapper>
   );
 
-  const TimePeriod = ({
-    datePeriod,
-    timePeriod,
-  }: FormProps4) => (
+  const TimePeriod = ({ datePeriod, timePeriod }: FormProps4) => (
     <FormWrapper title="Time Period">
       <label>Transaction Expiry Date</label>
       <input
@@ -244,9 +246,7 @@ export default function AddTradeForm() {
         name="datePeriod"
         required
         value={datePeriod}
-        onChange={(e) =>
-          updateFields({ datePeriod: e.target.value })
-        }
+        onChange={(e) => updateFields({ datePeriod: e.target.value })}
         className="py-3 px-3 bg-slate-700 border-2 outline-non border-secondary-900 focus:border-secondary-700 w-full text-white"
       />
       <label>Transaction Expiry Time</label>
@@ -257,9 +257,7 @@ export default function AddTradeForm() {
         name="timePeriod"
         required
         value={timePeriod}
-        onChange={(e) =>
-          updateFields({ timePeriod: e.target.value })
-        }
+        onChange={(e) => updateFields({ timePeriod: e.target.value })}
       />
     </FormWrapper>
   );
@@ -277,58 +275,38 @@ export default function AddTradeForm() {
   }) => (
     <FormWrapper title="Review Data">
       <div className="flex flex-col text-gray-200">
-        <h2 className="text-lg font-bold">
-          Review Your Transaction
-        </h2>
+        <h2 className="text-lg font-bold">Review Your Transaction</h2>
         <div className="flex flex-col space-y-3 ">
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Your Address
-            </p>
+            <p className="text-sm font-bold">Your Address</p>
             <p className="text-xs ">{address}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Counterparty Address
-            </p>
+            <p className="text-sm font-bold">Counterparty Address</p>
             <p className="text-xs">{buyerAddress}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Asset to Send
-            </p>
+            <p className="text-sm font-bold">Asset to Send</p>
             <p className="text-xs">{sellerTokenAddress} </p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              {" "}
-              Amount Asset to Send
-            </p>
+            <p className="text-sm font-bold"> Amount Asset to Send</p>
             <p className="text-sm">{sellerTokenAmount}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Asset to Receive
-            </p>
+            <p className="text-sm font-bold">Asset to Receive</p>
             <p className="text-xs">{buyerTokenAddress}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              {" "}
-              Amount Asset to Receive
-            </p>
+            <p className="text-sm font-bold"> Amount Asset to Receive</p>
             <p className="text-sm">{buyerTokenAmount}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Transaction Expiry Date
-            </p>
+            <p className="text-sm font-bold">Transaction Expiry Date</p>
             <p className="text-sm">{datePeriod}</p>
           </div>
           <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-            <p className="text-sm font-bold">
-              Transaction Expiry Time
-            </p>
+            <p className="text-sm font-bold">Transaction Expiry Time</p>
             <p className="text-sm">{timePeriod}</p>
           </div>
         </div>
@@ -336,43 +314,18 @@ export default function AddTradeForm() {
     </FormWrapper>
   );
 
-  const {
-    steps,
-    currentStepindex,
-    isFirstStep,
-    back,
-    next,
-    isLastStep,
-    step,
-  } = useMultistepForm([
-    <BuyerAddress
-      {...formData}
-      updateFields={updateFields}
-      key={1}
-    />,
-    <SellerTokenAddress
-      {...formData}
-      updateFields={updateFields}
-      key={2}
-    />,
-    <BuyerTokenAddress
-      {...formData}
-      updateFields={updateFields}
-      key={3}
-    />,
-    <TimePeriod
-      {...formData}
-      updateFields={updateFields}
-      key={4}
-    />,
-    <ReviewData formData={formData} key={5} />,
-  ]);
+  const { steps, currentStepindex, isFirstStep, back, next, isLastStep, step } =
+    useMultistepForm([
+      <BuyerAddress {...formData} updateFields={updateFields} key={1} />,
+      <SellerTokenAddress {...formData} updateFields={updateFields} key={2} />,
+      <BuyerTokenAddress {...formData} updateFields={updateFields} key={3} />,
+      <TimePeriod {...formData} updateFields={updateFields} key={4} />,
+      <ReviewData formData={formData} key={5} />,
+    ]);
 
   const { data: signer } = useSigner();
 
-  async function onSubmit(
-    event: React.FormEvent<HTMLFormElement>,
-  ) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isLastStep) return next();
     event.preventDefault();
@@ -398,9 +351,7 @@ export default function AddTradeForm() {
     setIsApproving(true);
     const _tx = await erc20Contract.approve(
       trustMeContract.address,
-      ethers.utils.parseEther(
-        formData.sellerTokenAmount.toString(),
-      ),
+      ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
     );
     await _tx.wait();
     setIsApproving(false);
@@ -411,12 +362,8 @@ export default function AddTradeForm() {
       formData.buyerAddress,
       formData.sellerTokenAddress,
       formData.buyerTokenAddress,
-      ethers.utils.parseEther(
-        formData.sellerTokenAmount.toString(),
-      ),
-      ethers.utils.parseEther(
-        formData.buyerTokenAmount.toString(),
-      ),
+      ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
+      ethers.utils.parseEther(formData.buyerTokenAmount.toString()),
       deadline,
     );
     const txReceipt = await tx.wait();
@@ -426,7 +373,7 @@ export default function AddTradeForm() {
   return (
     <div className="w-full h-[calc(100vh-70px)] md:h-[calc(100vh-85px)] flex items-center justify-center ">
       <form
-        className="w-full flex items-center justify-center py-5 md:w-[70%] xl:w-[65%] h-full px-5 md:px-10"
+        className="w-full flex items-center justify-center py-5 md:w-[80%] lg:w-[75%] xl:w-[65%] h-full px-5 lg:px-10"
         onSubmit={onSubmit}
       >
         <div
@@ -462,18 +409,14 @@ export default function AddTradeForm() {
               }}
               // disabled={isButtonClicked && isLastStep}
             >
-              {!isLastStep &&
-                !isAdding &&
-                !isApproving &&
-                !isButtonClicked && <span>Next</span>}
-              {isLastStep &&
-                !isAdding &&
-                !isApproving &&
-                !isButtonClicked && (
-                  <>
-                    <span>Submit for Approval</span>
-                  </>
-                )}
+              {!isLastStep && !isAdding && !isApproving && !isButtonClicked && (
+                <span>Next</span>
+              )}
+              {isLastStep && !isAdding && !isApproving && !isButtonClicked && (
+                <>
+                  <span>Submit for Approval</span>
+                </>
+              )}
               {isApproving && isLastStep && (
                 <>
                   <AiOutlineLoading className="animate-spin h-5 w-5 " />
@@ -486,15 +429,12 @@ export default function AddTradeForm() {
                   <span>Adding...</span>
                 </>
               )}
-              {isButtonClicked &&
-                isLastStep &&
-                !isAdding &&
-                !isApproving && (
-                  <>
-                    <AiOutlineCheck className="text-green h-5 w-5" />
-                    <span>Success</span>
-                  </>
-                )}
+              {isButtonClicked && isLastStep && !isAdding && !isApproving && (
+                <>
+                  <AiOutlineCheck className="text-green h-5 w-5" />
+                  <span>Success</span>
+                </>
+              )}
             </button>
           </div>
         </div>

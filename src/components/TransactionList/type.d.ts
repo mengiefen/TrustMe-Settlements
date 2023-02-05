@@ -27,6 +27,9 @@ export type UserDetailProps = {
 };
 
 export interface TokenListType {
+  currencyBalance: string;
+  currencySymbol: string;
+  connectedNetwork: string;
   address: string;
   balance: string;
   decimals: number;

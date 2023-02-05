@@ -7,20 +7,20 @@ import React, { useState } from "react";
 import {
   connectWallet,
   disconnectWallet,
-  updateTokens,
+  updateUseBalances,
 } from "@/redux/wallet/walletSlice";
 import { useRouter } from "next/router";
 import { getConnectedUserTokens } from "@/helpers/getterHelpers";
 import { TokenListType } from "../TransactionList/type";
 
 const HeaderDropDown = () => {
-  const { address, connected, tokens } = useSelector(
+  const { address, connected, userBalances } = useSelector(
     (state: RootState) => state.wallets,
   );
   const { disconnect } = useDisconnect();
   const { connectAsync, connectors } = useConnect({});
   const router = useRouter();
-  const { data, isSuccess } = useBalance({ address } as {
+  const { isSuccess, refetch } = useBalance({ address } as {
     address: `0x${string} | undefined`;
   });
   const { chain } = useNetwork();
@@ -39,11 +39,16 @@ const HeaderDropDown = () => {
     const connector = connectors[0];
     setShowMenu(false);
     const res = await connectAsync({ connector });
-    await dispatch(connectWallet(res.account));
     const tokens = await getConnectedUserTokens(res.account);
+    const { data: userData } = await refetch();
+    await router.push("list");
+
+    await dispatch(connectWallet(res.account));
     await dispatch(
-      updateTokens(
-        tokens.map((token: TokenListType) => ({
+      updateUseBalances({
+        currencyBalance: userData?.formatted,
+        currencySymbol: userData?.symbol,
+        tokens: tokens.map((token: TokenListType) => ({
           address: token.address,
           balance: token.balance,
           decimals: token.decimals,
@@ -51,10 +56,8 @@ const HeaderDropDown = () => {
           symbol: token.symbol,
           logo: token.logo,
         })),
-      ),
+      }),
     );
-
-    await router.push("list");
   };
 
   return (
@@ -84,15 +87,15 @@ const HeaderDropDown = () => {
         {connected && isSuccess && (
           <ul className="py-2 text-text-dark bg-transparent max-h-[500px] no-scrollbar overflow-y-scroll">
             <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
-              <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${data?.formatted.substring(
+              <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${userBalances?.currencyBalance.substring(
                 0,
                 6,
-              )} ${data?.symbol}`}</span>
+              )} ${userBalances?.currencySymbol}`}</span>
               {chain && (
                 <span className="text-secondary-500 p-2">
                   Network:{"  "}{" "}
                   <span className="bg-purplish-900 text-text py-1 px-2 rounded">
-                    {chain?.name}{" "}
+                    {userBalances?.connectedNetwork}{" "}
                   </span>
                 </span>
               )}
@@ -100,7 +103,7 @@ const HeaderDropDown = () => {
             <strong className="mt-5 pb-2 px-4 text-lg uppercase ">
               Your Assets
             </strong>
-            {tokens.map((token) => (
+            {userBalances?.tokens.map((token) => (
               <li
                 className="text-md hover:bg-bg-light border-b border-slate-400 hover:text-secondary-400 p-2 px-4 grid grid-cols-12 items-center gap-2 justify-between"
                 key={token.address}
@@ -109,27 +112,27 @@ const HeaderDropDown = () => {
                 <span className="col-span-5"> {token.balance} </span>
               </li>
             ))}
-            <div className="py-2">
-              {!connected ? (
-                <a
-                  href="#"
-                  className="text-secondary-300 block px-4 py-2 hover:bg-bg-light hover:text-secondary-600"
-                  onClick={(e) => handleConnect(e)}
-                >
-                  Connect Wallet
-                </a>
-              ) : (
-                <a
-                  href="#"
-                  className="block uppercase px-4 py-2 text-red-300 border border-red-400 hover:text-white hover:bg-red-600 mx-2"
-                  onClick={(e) => handleDisconnect(e)}
-                >
-                  Disconnect Wallet
-                </a>
-              )}
-            </div>
           </ul>
         )}
+        <div className="py-2">
+          {!connected ? (
+            <a
+              href="#"
+              className="text-secondary-300 block px-4 py-2 hover:bg-bg-light hover:text-secondary-600"
+              onClick={(e) => handleConnect(e)}
+            >
+              Connect Wallet
+            </a>
+          ) : (
+            <a
+              href="#"
+              className="block uppercase px-4 py-2 text-red-300 border border-red-400 hover:text-white hover:bg-red-600 mx-2"
+              onClick={(e) => handleDisconnect(e)}
+            >
+              Disconnect Wallet
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
