@@ -7,7 +7,7 @@ const SearchBox = () => {
       <div className="relative h-10 md:h-12 my-2">
         <input
           type="text"
-          className="w-full md:w-auto h-full pl-10 pr-4 border border-secondary-300 
+          className="w-full md:w-auto h-full pl-10 pr-4 border border-secondary-300 bg-slate-800
         rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 
         focus:border-transparent"
         />

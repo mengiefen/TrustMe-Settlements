@@ -23,6 +23,7 @@ import Pending from "./Pending";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
 
 const settings = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
@@ -56,7 +57,6 @@ export default function AddTradeForm() {
     TokenMetadata[]
   >([]);
   const [loading, setLoading] = useState(false);
-
   const [pending, setPending] = useState(false);
   const [formData, setFormData] = useState(INITIAL_DATA);
   const { address } = useAccount();
@@ -325,6 +325,8 @@ export default function AddTradeForm() {
 
   const { data: signer } = useSigner();
 
+  const router = useRouter();
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isLastStep) return next();
@@ -349,27 +351,32 @@ export default function AddTradeForm() {
     );
 
     setIsApproving(true);
-    const _tx = await erc20Contract.approve(
-      trustMeContract.address,
-      ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
-    );
-    await _tx.wait();
-    setIsApproving(false);
+    try {
+      const _tx = await erc20Contract.approve(
+        trustMeContract.address,
+        ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
+      );
+      await _tx.wait();
+      setIsApproving(false);
 
-    setIsAdding(true);
+      setIsAdding(true);
 
-    const tx = await trustMeContract.addTrade(
-      formData.buyerAddress,
-      formData.sellerTokenAddress,
-      formData.buyerTokenAddress,
-      ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
-      ethers.utils.parseEther(formData.buyerTokenAmount.toString()),
-      deadline,
-    );
-    const txReceipt = await tx.wait();
-    setIsAdding(false);
-    console.log(txReceipt);
+      const tx = await trustMeContract.addTrade(
+        formData.buyerAddress,
+        formData.sellerTokenAddress,
+        formData.buyerTokenAddress,
+        ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
+        ethers.utils.parseEther(formData.buyerTokenAmount.toString()),
+        deadline,
+      );
+      const txReceipt = await tx.wait();
+      setIsAdding(false);
+      await router.push("/list");
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   return (
     <div className="w-full h-[calc(100vh-70px)] md:h-[calc(100vh-85px)] flex items-center justify-center ">
       <form

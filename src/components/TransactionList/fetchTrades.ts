@@ -2,10 +2,7 @@ import { formatEther } from "ethers/lib/utils.js";
 import { getStatus, getSymbol } from "@/utils";
 import { BigNumber } from "ethers";
 import { Trade } from "./type";
-import {
-  getTradesIDsByUser,
-  getTrade,
-} from "@/helpers/getterHelpers";
+import { getTradesIDsByUser, getTrade } from "@/helpers/getterHelpers";
 import { fetchTrade } from "@/helpers/fetchTrade";
 
 export const getTradeList = async (
@@ -13,9 +10,7 @@ export const getTradeList = async (
   address: `0x${string}` | undefined,
 ) => {
   const trades: Trade[] = [...tradeList];
-  const tradeIds = await getTradesIDsByUser(
-    address as string,
-  );
+  const tradeIds = await getTradesIDsByUser(address as string);
   if (tradeIds.length === trades.length) return trades;
   if (tradeIds.length > tradeList.length) {
     await Promise.all(
@@ -34,15 +29,12 @@ export const getTradeList = async (
   return trades;
 };
 
-export const getLastTransactions = (
-  tradeList: Trade[],
-  amount: number,
-) => {
+export const getLastTransactions = (tradeList: Trade[], amount: number) => {
   const trades = [...tradeList];
   if (trades.length > 10) {
     return trades
-      .filter((trade) => trade.status !== "Pending")
-      .sort((a, b) => b.id - a.id)
+      .filter((trade) => trade.status !== "Pending" || trade.isCreatedByYou)
+      .sort((a: Trade, b: Trade) => b.id - a.id)
       .slice(0, amount);
   }
 

@@ -60,14 +60,14 @@ const TradeList = () => {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-full mt-10">
-          <Spinner />
+          <Spinner className="w-10 h-10 mr-2 text-gray-300 dark:text-gray-600 fill-secondary-500 animate-spin" />
         </div>
       ) : (
         <>
           <SearchBox />
 
           <div className="flex justify-between mb-2 mt-3">
-            <h2 className="text-lg font-semibold text-secondary-900 ">
+            <h2 className="text-lg font-semibold text-dark-orange-200 ">
               {pendingTrades.length > 0
                 ? "Action Required"
                 : "No pending trades"}
@@ -75,25 +75,25 @@ const TradeList = () => {
             <Button
               label="View All"
               size="medium"
-              bg="bg-bg flex flex-row gap-2 items-center justify-center px-5 text-sm"
+              bg="bg-bg flex flex-row gap-2 items-center justify-center px-5 text-sm bg-secondary-800 hover:bg-secondary-700"
               variant="secondary"
             />
           </div>
 
           <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg">
-            <div className="flex flex-col border  border-secondary-400 rounded-lg overflow-hidden">
-              <div className="grid grid-cols-12 p-2 items-center gap-1 shadow bg-secondary-50">
-                <div className="col-span-2 text-secondary-900 md:text-lg md:uppercase md:font-semibold">
+            <div className="flex flex-col border border-b-4  border-slate-600 border-b-secondary-900 overflow-hidden">
+              <div className="grid grid-cols-12 p-2 items-center gap-1 shadow">
+                <div className="col-span-2 text-text md:text-lg md:uppercase md:font-semibold">
                   <span className="hidden lg:inline">Counterparty</span>
                   <span className="md:hidden">CP</span>
                 </div>
-                <div className="col-span-3 overflow-clip  text-secondary-900 md:text-lg md:uppercase md:font-semibold">
+                <div className="col-span-3 overflow-clip  text-text md:text-lg md:uppercase md:font-semibold">
                   You Receive
                 </div>
-                <div className="col-span-3 text-secondary-900 flex-col md:text-lg md:uppercase md:font-semibold">
+                <div className="col-span-3 text-text flex-col md:text-lg md:uppercase md:font-semibold">
                   You Send
                 </div>
-                <div className="col-span-3 text-secondary-900 overflow-hidden text-center md:text-lg md:uppercase md:font-semibold">
+                <div className="col-span-3 text-text overflow-hidden text-center md:text-lg md:uppercase md:font-semibold">
                   Status
                 </div>
                 <div className="col-span-1 overflow-hidden"></div>
@@ -120,13 +120,13 @@ const TradeList = () => {
               }
             })}
 
-          <h2 className="text-lg font-semibold text-secondary-900 my-2">
+          <h2 className="text-lg font-semibold text-text my-2">
             Other Transactions
           </h2>
 
           {getLastTransactions(tradeList, 5).map(
             (trade: Trade, index: number) => {
-              if (trade.status !== "Pending") {
+              if (trade.status !== "Pending" || trade.isCreatedByYou) {
                 return (
                   <TableRow
                     key={index}

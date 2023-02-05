@@ -147,6 +147,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     tradeList,
     address,
     currentTrade.status,
+    dispatch,
   ]);
 
   return (
@@ -157,8 +158,8 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         </div>
       ) : (
         <div className="w-full px-5 md:px-0">
-          <div className="flex flex-row items-center justify-start w-screenpt-10 pb-2 md:py-5">
-            <h3 className="text-dark mx-1 font-semibold text-secondary-900 md:text-2xl">
+          <div className="flex flex-row items-center justify-start w-full pb-2 md:py-5">
+            <h3 className="text-dark mx-1 font-semibold text-secondary-600 md:text-2xl">
               Transaction Details
             </h3>
           </div>
