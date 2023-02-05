@@ -1,13 +1,20 @@
-import { useEffect } from "react"
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.min.css"
-import notify from "./toastItems"
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import notify from "./toastItems";
 
 type FlashMessageProps = {
-  message: string
-  type?: "alert" | "success" | "info" | "warning" | "error" | "success" | "dark"
-  duration?: number
-}
+  message: string;
+  type?:
+    | "alert"
+    | "success"
+    | "info"
+    | "warning"
+    | "error"
+    | "success"
+    | "dark";
+  duration?: number;
+};
 
 const FlashMessage = ({
   message,
@@ -16,14 +23,17 @@ const FlashMessage = ({
   ...props
 }: FlashMessageProps) => {
   useEffect(() => {
-    notify(type, message)
-  }, [])
+    notify(type, message);
+  }, []);
 
   return (
     <div>
-      <ToastContainer autoClose={duration} style={{ zIndex: "1111" }} />
+      <ToastContainer
+        autoClose={duration}
+        style={{ zIndex: "1111" }}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default FlashMessage
+export default FlashMessage;

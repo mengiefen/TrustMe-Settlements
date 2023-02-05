@@ -1,22 +1,22 @@
-import { useTable } from "react-table"
-import React, { ReactElement, useMemo } from "react"
-import { Column } from "react-table"
-import { MdOutlineArrowForward } from "react-icons/md"
-import { FaSearch, FaUserCircle } from "react-icons/fa"
-import TradeStatus from "../elements/TradeStatus"
-import Pagination from "./Pagination"
+import { useTable } from "react-table";
+import React, { ReactElement, useMemo } from "react";
+import { Column } from "react-table";
+import { MdOutlineArrowForward } from "react-icons/md";
+import { FaSearch, FaUserCircle } from "react-icons/fa";
+import TradeStatus from "../elements/TradeStatus";
+import Pagination from "./Pagination";
 
-const CompletedStatus = <TradeStatus status="Completed" />
-const PendingStatus = <TradeStatus status="Pending" />
-const CanceledStatus = <TradeStatus status="Canceled" />
+const CompletedStatus = <TradeStatus status="Completed" />;
+const PendingStatus = <TradeStatus status="Pending" />;
+const CanceledStatus = <TradeStatus status="Canceled" />;
 
 const ArrowRight = (
   <MdOutlineArrowForward className="text-secondary-900 hover:translate-x-[1px] transition duration-300" />
-)
+);
 
 const UserCircle = (
   <FaUserCircle className="text-secondary-900 hover:translate-x-[1px] transition duration-300 w-[40px] h-[40px]" />
-)
+);
 
 const TableComponent = () => {
   const data = useMemo(
@@ -50,16 +50,16 @@ const TableComponent = () => {
         col5: ArrowRight,
       },
     ],
-    []
-  )
+    [],
+  );
 
   const columns = useMemo<
     Column<{
-      col1: ReactElement
-      col2: string
-      col3: string
-      col4: ReactElement
-      col5: ReactElement
+      col1: ReactElement;
+      col2: string;
+      col3: string;
+      col4: ReactElement;
+      col5: ReactElement;
     }>[]
   >(
     () => [
@@ -85,13 +85,19 @@ const TableComponent = () => {
         accessor: "col5",
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
     columns,
     data,
-  })
+  });
 
   return (
     <div className="w-full mt-5">
@@ -106,9 +112,14 @@ const TableComponent = () => {
         <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-secondary-200" />
       </div>
 
-      <h2 className="text-xl font-semibold text-secondary-900 my-2">Sender Settlements</h2>
+      <h2 className="text-xl font-semibold text-secondary-900 my-2">
+        Sender Settlements
+      </h2>
 
-      <table {...getTableProps()} className="w-full text-sm text-left ">
+      <table
+        {...getTableProps()}
+        className="w-full text-sm text-left "
+      >
         <thead>
           {headerGroups.map((headerGroup, index) => (
             <tr
@@ -130,7 +141,7 @@ const TableComponent = () => {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, index) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr
                 {...row.getRowProps()}
@@ -147,19 +158,24 @@ const TableComponent = () => {
                     >
                       {cell.render("Cell")}
                     </td>
-                  )
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
 
       <Pagination />
 
-      <h2 className="text-xl font-semibold text-secondary-900 my-5">Receiver Settlements</h2>
+      <h2 className="text-xl font-semibold text-secondary-900 my-5">
+        Receiver Settlements
+      </h2>
 
-      <table {...getTableProps()} className="w-full text-sm text-left ">
+      <table
+        {...getTableProps()}
+        className="w-full text-sm text-left "
+      >
         <thead>
           {headerGroups.map((headerGroup, index) => (
             <tr
@@ -181,7 +197,7 @@ const TableComponent = () => {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, index) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr
                 {...row.getRowProps()}
@@ -190,20 +206,24 @@ const TableComponent = () => {
               >
                 {row.cells.map((cell, idx) => {
                   return (
-                    <td {...cell.getCellProps()} className="px-2 py-3" key={idx}>
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-2 py-3"
+                      key={idx}
+                    >
                       {cell.render("Cell")}
                     </td>
-                  )
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
 
       <Pagination />
     </div>
-  )
-}
+  );
+};
 
-export default TableComponent
+export default TableComponent;

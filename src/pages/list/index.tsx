@@ -1,6 +1,6 @@
-import TransactionList from "@/components/TransactionList/TradeList"
-import Layout from "@/Layout"
-import React from "react"
+import TransactionList from "@/components/TransactionList/TradeList";
+import Layout from "@/Layout";
+import React from "react";
 
 const List = () => {
   return (
@@ -9,7 +9,7 @@ const List = () => {
         <TransactionList />
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default List
+export default List;

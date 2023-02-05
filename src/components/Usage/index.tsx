@@ -1,6 +1,6 @@
-import React from "react"
-import UsageCard from "../elements/UsageCard"
-import UsageCardReverse from "../elements/UsageCardReverse"
+import React from "react";
+import UsageCard from "../elements/UsageCard";
+import UsageCardReverse from "../elements/UsageCardReverse";
 
 const Usage = () => {
   return (
@@ -15,7 +15,7 @@ const Usage = () => {
         <UsageCardReverse />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Usage
+export default Usage;

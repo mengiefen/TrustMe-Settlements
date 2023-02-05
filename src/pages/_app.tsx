@@ -1,9 +1,9 @@
-import "@/styles/globals.css"
-import type { AppProps } from "next/app"
-import WagmiProvider from "../connector/connect"
-import StoreProvider from "@/redux/StoreProvider"
-import { PersistGate } from "redux-persist/integration/react"
-import { persister } from "@/redux/store"
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import WagmiProvider from "../connector/connect";
+import StoreProvider from "@/redux/StoreProvider";
+import { PersistGate } from "redux-persist/integration/react";
+import { persister } from "@/redux/store";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -16,7 +16,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </PersistGate>
       </StoreProvider>
     </main>
-  )
-}
+  );
+};
 
-export default App
+export default App;

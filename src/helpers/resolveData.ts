@@ -1,32 +1,36 @@
-import { BigNumber } from "ethers"
-import { getSymbol } from "@/utils"
-import { formatEther } from "ethers/lib/utils.js"
+import { BigNumber } from "ethers";
+import { getSymbol } from "@/utils";
+import { formatEther } from "ethers/lib/utils.js";
 
 export const getResolvedUserAddress = (
   userAddress: string,
   tradeBuyer: string,
-  tradeSeller: string
+  tradeSeller: string,
 ) => {
-  let buyer: string
-  let seller: string
+  let buyer: string;
+  let seller: string;
 
   if (tradeSeller === userAddress) {
-    buyer = tradeBuyer
-    seller = tradeSeller
+    buyer = tradeBuyer;
+    seller = tradeSeller;
   } else {
-    seller = tradeBuyer
-    buyer = tradeSeller
+    seller = tradeBuyer;
+    buyer = tradeSeller;
   }
 
-  return { buyer, seller, isCreatedByYou: tradeSeller === userAddress }
-}
+  return {
+    buyer,
+    seller,
+    isCreatedByYou: tradeSeller === userAddress,
+  };
+};
 
 export const getResolvedTokens = async (
   isCreatedByYou: boolean,
   tokenToBuy: string,
   tokenToSell: string,
   amountOfTokenToBuy: BigNumber,
-  amountOfTokenToSell: BigNumber
+  amountOfTokenToSell: BigNumber,
 ) => {
   if (isCreatedByYou) {
     return {
@@ -37,7 +41,7 @@ export const getResolvedTokens = async (
       symbolToBuy: await getSymbol(tokenToBuy),
       symbolToSell: await getSymbol(tokenToSell),
       isCreatedByYou,
-    }
+    };
   }
 
   return {
@@ -48,5 +52,5 @@ export const getResolvedTokens = async (
     symbolToBuy: await getSymbol(tokenToSell),
     symbolToSell: await getSymbol(tokenToBuy),
     isCreatedByYou,
-  }
-}
+  };
+};

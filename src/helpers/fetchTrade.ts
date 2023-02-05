@@ -1,22 +1,29 @@
-import { getTrade } from "./getterHelpers"
-import { getResolvedTokens, getResolvedUserAddress } from "./resolveData"
+import { getTrade } from "./getterHelpers";
+import {
+  getResolvedTokens,
+  getResolvedUserAddress,
+} from "./resolveData";
 
-export const fetchTrade = async (userAddress: string, id: number) => {
-  const trade = await getTrade(id)
+export const fetchTrade = async (
+  userAddress: string,
+  id: number,
+) => {
+  const trade = await getTrade(id);
 
-  const { buyer, seller, isCreatedByYou } = getResolvedUserAddress(
-    userAddress,
-    trade.buyer,
-    trade.seller
-  )
+  const { buyer, seller, isCreatedByYou } =
+    getResolvedUserAddress(
+      userAddress,
+      trade.buyer,
+      trade.seller,
+    );
 
   const data = await getResolvedTokens(
     isCreatedByYou,
     trade.tokenToBuy,
     trade.tokenToSell,
     trade.amountOfTokenToBuy,
-    trade.amountOfTokenToSell
-  )
+    trade.amountOfTokenToSell,
+  );
 
   const tradeObj = {
     id: Number(trade.id),
@@ -40,6 +47,6 @@ export const fetchTrade = async (userAddress: string, id: number) => {
     symbolToBuy: data.symbolToBuy,
     symbolToSell: data.symbolToSell,
     isCreatedByYou: data.isCreatedByYou,
-  }
-  return tradeObj
-}
+  };
+  return tradeObj;
+};

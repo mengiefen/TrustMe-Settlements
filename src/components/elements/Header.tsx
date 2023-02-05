@@ -1,29 +1,31 @@
-import React from "react"
-import { FiMenu } from "react-icons/fi"
-import { GiTwoCoins } from "react-icons/gi"
-import MobileMenu from "./MobileMenu"
-import { BiArrowBack } from "react-icons/bi"
-import { useRouter } from "next/router"
-import DesktopMenu from "./DestopMenu"
+import React from "react";
+import { FiMenu } from "react-icons/fi";
+import { GiTwoCoins } from "react-icons/gi";
+import MobileMenu from "./MobileMenu";
+import { BiArrowBack } from "react-icons/bi";
+import { useRouter } from "next/router";
+import DesktopMenu from "./DestopMenu";
 
 type HeaderProps = {
-  bg?: string
-  logoPrimaryColor?: string
-}
+  bg?: string;
+  logoPrimaryColor?: string;
+};
 
 const Header = ({
   bg = "bg-slate-800 border-bg border-b-[0.5px]",
   logoPrimaryColor = "text-text",
 }: HeaderProps) => {
-  const router = useRouter()
-  const [isActive, setIsActive] = React.useState(false)
+  const router = useRouter();
+  const [isActive, setIsActive] = React.useState(false);
   const showMenu = () => {
-    setIsActive(!isActive)
-  }
+    setIsActive(!isActive);
+  };
 
   return (
     <div className="flex flex-col">
-      <nav className={`w-screen h-[70px] md:h-[85px] ${bg} px-5 my-auto ${logoPrimaryColor}}`}>
+      <nav
+        className={`w-screen h-[70px] md:h-[85px] ${bg} px-5 my-auto ${logoPrimaryColor}}`}
+      >
         <div className="md:hidden flex h-full flex-row justify-between items-center">
           <div className="flex flex-row items-center gap-1">
             {router.pathname == "/" ? (
@@ -31,7 +33,10 @@ const Header = ({
                 <GiTwoCoins className="text-3xl" />
 
                 <h1 className="text-2xl  font-semibold tracking-wide">
-                  Trust<span className="text-secondary-600 font-bold">Me</span>
+                  Trust
+                  <span className="text-secondary-600 font-bold">
+                    Me
+                  </span>
                 </h1>
               </>
             ) : (
@@ -42,7 +47,12 @@ const Header = ({
               transition duration-300 overflow-hidden
               md:hover:bg-secondary-200
               focus:bg-secondary-200"
-                style={{ color: router.pathname == "/addTrade" ? "white" : "slate-800" }}
+                style={{
+                  color:
+                    router.pathname == "/addTrade"
+                      ? "white"
+                      : "slate-800",
+                }}
                 onClick={() => router.back()}
               >
                 <BiArrowBack />
@@ -50,17 +60,26 @@ const Header = ({
             )}
           </div>
 
-          <button type="button" className="outline-none border-none p-0">
-            <FiMenu className="text-3xl" onClick={() => showMenu()} />
+          <button
+            type="button"
+            className="outline-none border-none p-0"
+          >
+            <FiMenu
+              className="text-3xl"
+              onClick={() => showMenu()}
+            />
           </button>
         </div>
 
         <DesktopMenu />
       </nav>
 
-      <MobileMenu showMenu={() => showMenu()} isActive={isActive} />
+      <MobileMenu
+        showMenu={() => showMenu()}
+        isActive={isActive}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

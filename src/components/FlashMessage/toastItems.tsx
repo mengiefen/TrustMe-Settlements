@@ -1,8 +1,8 @@
-import React from "react"
-import { toast } from "react-toastify"
-import { BsCheckCircle } from "react-icons/bs"
+import React from "react";
+import { toast } from "react-toastify";
+import { BsCheckCircle } from "react-icons/bs";
 
-const customId = "custom-id-yes"
+const customId = "custom-id-yes";
 const notify = (type: string, message: string) => {
   switch (type) {
     case "alert":
@@ -20,12 +20,14 @@ const notify = (type: string, message: string) => {
         progressStyle: {
           background: "#911007",
         },
-      })
-      break
+      });
+      break;
 
     case "success":
       toast.success(message, {
-        icon: <BsCheckCircle className="text-2xl text-green-700" />,
+        icon: (
+          <BsCheckCircle className="text-2xl text-green-700" />
+        ),
         style: {
           backgroundColor: "#ccf0c1",
           color: "#057a05",
@@ -40,9 +42,9 @@ const notify = (type: string, message: string) => {
         progressStyle: {
           background: "#057a05",
         },
-      })
+      });
 
-      break
+      break;
 
     case "info":
       toast.info(message, {
@@ -60,8 +62,8 @@ const notify = (type: string, message: string) => {
         progressStyle: {
           background: "#049682",
         },
-      })
-      break
+      });
+      break;
     case "warning":
       toast.warning(message, {
         style: {
@@ -79,8 +81,8 @@ const notify = (type: string, message: string) => {
         progressStyle: {
           background: "#c5a206",
         },
-      })
-      break
+      });
+      break;
     default:
       toast.info(message, {
         style: {
@@ -96,8 +98,8 @@ const notify = (type: string, message: string) => {
         progressStyle: {
           background: "#074391",
         },
-      })
+      });
   }
-}
+};
 
-export default notify
+export default notify;
