@@ -2,24 +2,13 @@ import { useFormatAddress } from "@/hooks/hooks";
 import Link from "next/link";
 import React from "react";
 import Button from "./Button";
-import {
-  useAccount,
-  useDisconnect,
-  useConnect,
-  Connector,
-} from "wagmi";
+import { useAccount, useDisconnect, useConnect, Connector } from "wagmi";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { InjectedConnector } from "@wagmi/core";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
-import {
-  connectWallet,
-  disconnectWallet,
-  updateTokens,
-} from "@/redux/wallet/walletSlice";
-import { getConnectedUserTokens } from "@/helpers/getterHelpers";
-import { TokenListType } from "../TransactionList/type";
+import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 
 type menuProps = {
   isActive: boolean;
@@ -30,12 +19,12 @@ const MobileMenu = (props: menuProps) => {
   const isMounted = useIsMounted();
   const router = useRouter();
   const { address, isConnected } = useAccount();
-  const dispatch = useDispatch();
   const {
     buttonText,
     address: userAddress,
     connected,
   } = useSelector((state: RootState) => state.wallets);
+  const dispatch = useDispatch();
 
   const { connectAsync, connectors } = useConnect({
     connector: new InjectedConnector(),
@@ -46,31 +35,20 @@ const MobileMenu = (props: menuProps) => {
 
   const formattedAddress = useFormatAddress(userAddress);
   const handleDisconnect = async () => {
-    disconnect();
-    dispatch(disconnectWallet());
-    // router.push("/")
+    await disconnect();
+    await dispatch(disconnectWallet());
+    await router.push("/");
   };
 
   const handleConnect = async (connector: Connector) => {
     if (isMounted) {
-      const data = await connectAsync({ connector });
-      await dispatch(connectWallet(data.account));
-      const tokens = await getConnectedUserTokens(
-        data.account,
-      );
-      await dispatch(
-        updateTokens(
-          tokens.map((token: TokenListType) => ({
-            address: token.address,
-            balance: token.balance,
-            decimals: token.decimals,
-            name: token.name,
-            symbol: token.symbol,
-            logo: token.logo,
-          })),
-        ),
-      );
-    } else {
+      try {
+        await connectAsync({ connector });
+        await dispatch(connectWallet(address));
+        await router.push("list");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -79,10 +57,9 @@ const MobileMenu = (props: menuProps) => {
       className={
         isActive
           ? `w-screen h-screen flex flex-col ${
-              router.pathname === "/" ||
-              router.pathname == "/addTrade"
+              router.pathname === "/" || router.pathname == "/addTrade"
                 ? "bg-menu-dark text-white"
-                : "bg-gray-200 text-bg"
+                : "bg-menu-dark text-white"
             } bg-opacity-50 items-center justify-start pt-10`
           : "hidden"
       }
@@ -132,18 +109,14 @@ const MobileMenu = (props: menuProps) => {
                   <div className=" flex flex-row address pt-10">
                     <small className="flex flex-row text-md">
                       <>Connected To {formattedAddress}</>
-                      <span className=" pl-1 pt-[1px]">
-                        &#8208;
-                      </span>
+                      <span className=" pl-1 pt-[1px]">&#8208;</span>
                     </small>
                   </div>
                 </>
               ) : (
                 <Button
                   label={buttonText}
-                  onClick={() =>
-                    handleConnect(connectors[0])
-                  }
+                  onClick={() => handleConnect(connectors[0])}
                   otherClasses="max-w-[300px]"
                 />
               )}

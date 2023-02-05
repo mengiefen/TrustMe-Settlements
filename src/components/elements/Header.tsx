@@ -39,7 +39,7 @@ const Header = ({
               <button
                 className="py-2 px-2 text-3xl outline-none
              rounded-full border-2 border-secondary-100 md:hover:border-secondary-700
-              text-bg focus:hover:border-secondary-700 focus:outline-none
+              text-light focus:hover:border-secondary-700 focus:outline-none
               transition duration-300 overflow-hidden
               md:hover:bg-secondary-200
               focus:bg-secondary-200"

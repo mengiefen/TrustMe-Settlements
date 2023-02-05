@@ -8,45 +8,32 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-import {
-  connectWallet,
-  disconnectWallet,
-  updateTokens,
-} from "@/redux/wallet/walletSlice";
-import { getConnectedUserTokens } from "@/helpers/getterHelpers";
-import { TokenListType } from "../TransactionList/type";
+import { useRouter } from "next/router";
+import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 
 const Hero = () => {
   const isMounted = useIsMounted();
-  const { isConnected } = useAccount({});
+  const dispatch = useDispatch();
+  const { address, isConnected } = useAccount({});
+  const router = useRouter();
 
   const { buttonText, address: userAddress } = useSelector(
     (state: RootState) => state.wallets,
   );
-  const dispatch = useDispatch();
+
   const { disconnect } = useDisconnect();
 
   const formattedAddress = useFormatAddress(userAddress);
 
-  const { connectAsync, connectors, data } = useConnect({});
+  const { connectAsync, connectors } = useConnect({});
 
   const handleConnect = async (connector: Connector) => {
-    if (isMounted) {
-      const data = await connectAsync({ connector });
-      await dispatch(connectWallet(data.account));
-      const tokens = await getConnectedUserTokens(data.account);
-      await dispatch(
-        updateTokens(
-          tokens.map((token: TokenListType) => ({
-            address: token.address,
-            balance: token.balance,
-            decimals: token.decimals,
-            name: token.name,
-            symbol: token.symbol,
-            logo: token.logo,
-          })),
-        ),
-      );
+    try {
+      await connectAsync({ connector });
+      await dispatch(connectWallet(address));
+      await router.push("/list");
+    } catch (err) {
+      console.log(err);
     }
   };
 

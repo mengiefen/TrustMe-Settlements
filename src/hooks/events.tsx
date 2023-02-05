@@ -56,7 +56,7 @@ export const useHandleCreatedEvent = (address: string) => {
         contract.removeAllListeners("TradeCreated");
       };
     });
-  }, [dispatch, address, tradeCreated.isTradeCreated]);
+  }, [dispatch, address, tradeCreated.isTradeCreated, isConnected]);
 
   return tradeCreated;
 };
@@ -99,7 +99,7 @@ export const useHandleExpiredEvent = (address: string) => {
         contract.removeAllListeners("TradeExpired");
       };
     });
-  }, [dispatch, address, tradeExpired.isTradeExpired]);
+  }, [dispatch, address, tradeExpired.isTradeExpired, isConnected]);
 
   return tradeExpired;
 };
@@ -141,7 +141,7 @@ export const useHandleCanceledEvent = (address: string) => {
         contract.removeAllListeners("TradeCanceled");
       };
     });
-  }, [dispatch, address, tradeCanceled.isTradeCanceled]);
+  }, [dispatch, address, tradeCanceled.isTradeCanceled, isConnected]);
 
   return tradeCanceled;
 };
@@ -183,7 +183,7 @@ export const useHandleWithdrawEvent = (address: string) => {
         contract.removeAllListeners("TradeWithdrawn");
       };
     });
-  }, [dispatch, address, tradeWithdrawn.isTradeWithdrawn]);
+  }, [dispatch, address, tradeWithdrawn.isTradeWithdrawn, isConnected]);
 
   return tradeWithdrawn;
 };
@@ -226,7 +226,7 @@ export const useHandleConfirmedEvent = (address: string) => {
         contract.removeAllListeners("TradeConfirmed");
       };
     });
-  }, [dispatch, address, tradeConfirmed.isTradeConfirmed]);
+  }, [dispatch, address, tradeConfirmed.isTradeConfirmed, isConnected]);
 
   return tradeConfirmed;
 };

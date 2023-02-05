@@ -1,8 +1,5 @@
 import storage from "redux-persist/lib/storage/session";
-import {
-  configureStore,
-  combineReducers,
-} from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import {
   persistStore,
@@ -15,9 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 
-import tradesReducer, {
-  clearTrades,
-} from "./trade/tradesSlice";
+import tradesReducer, { clearTrades } from "./trade/tradesSlice";
 import walletsReducer from "./wallet/walletSlice";
 
 const rootReducer = combineReducers({
@@ -32,10 +27,7 @@ const persistConfig = {
   whitelist: ["wallets", "trades"],
 };
 
-const persistedReducer = persistReducer(
-  persistConfig,
-  rootReducer,
-);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const makeStore = () => {
   return configureStore({
@@ -44,13 +36,7 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: [
-            FLUSH,
-            REHYDRATE,
-            PAUSE,
-            PERSIST,
-            REGISTER,
-          ],
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
       }),
   });
@@ -63,9 +49,8 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export const logout = () => {
+export const logout = async () => {
+  await persister.purge();
   store.dispatch(clearTrades());
-  // persister.purge()
-  localStorage.removeItem("persist:trustMe");
-  // sessionStorage.clear()
+  await persister.flush();
 };

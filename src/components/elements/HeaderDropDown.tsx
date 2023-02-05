@@ -2,16 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { getFormatAddress } from "@/utils";
 import { FaCaretDown } from "react-icons/fa";
-import { useBalance, useConnect, useDisconnect, useNetwork } from "wagmi";
+import { useConnect, useDisconnect, useNetwork } from "wagmi";
 import React, { useState } from "react";
-import {
-  connectWallet,
-  disconnectWallet,
-  updateUseBalances,
-} from "@/redux/wallet/walletSlice";
+
 import { useRouter } from "next/router";
-import { getConnectedUserTokens } from "@/helpers/getterHelpers";
-import { TokenListType } from "../TransactionList/type";
+import { disconnectWallet } from "@/redux/wallet/walletSlice";
 
 const HeaderDropDown = () => {
   const { address, connected, userBalances } = useSelector(
@@ -20,9 +15,6 @@ const HeaderDropDown = () => {
   const { disconnect } = useDisconnect();
   const { connectAsync, connectors } = useConnect({});
   const router = useRouter();
-  const { isSuccess, refetch } = useBalance({ address } as {
-    address: `0x${string} | undefined`;
-  });
   const { chain } = useNetwork();
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch();
@@ -30,35 +22,24 @@ const HeaderDropDown = () => {
   const handleDisconnect = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setShowMenu(false);
-    await router.push("/");
-
-    await disconnect();
-    await dispatch(disconnectWallet());
+    try {
+      await dispatch(disconnectWallet());
+      await disconnect();
+      await router.push("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleConnect = async (e: React.SyntheticEvent) => {
     const connector = connectors[0];
     setShowMenu(false);
-    const res = await connectAsync({ connector });
-    const tokens = await getConnectedUserTokens(res.account);
-    const { data: userData } = await refetch();
-    await router.push("list");
-
-    await dispatch(connectWallet(res.account));
-    await dispatch(
-      updateUseBalances({
-        currencyBalance: userData?.formatted,
-        currencySymbol: userData?.symbol,
-        tokens: tokens.map((token: TokenListType) => ({
-          address: token.address,
-          balance: token.balance,
-          decimals: token.decimals,
-          name: token.name,
-          symbol: token.symbol,
-          logo: token.logo,
-        })),
-      }),
-    );
+    try {
+      await connectAsync({ connector });
+      await router.push("list");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -85,7 +66,7 @@ const HeaderDropDown = () => {
         className="border border-gray-700 shadow-2xl shadow-secondary-500 w-full bg-slate-700 z-100 absolute mt-2"
         style={{ display: showMenu ? "block" : "none" }}
       >
-        {connected && isSuccess && (
+        {connected && (
           <ul className="py-2 text-text-dark bg-transparent max-h-[500px] no-scrollbar overflow-y-scroll">
             <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
               <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${userBalances?.currencyBalance?.substring(

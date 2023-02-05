@@ -10,7 +10,7 @@ const InfoCard = (props: InfoCardProps) => {
 
   return (
     <div
-      className={`flex flex-col py-[5px] px-[10px] border-b-2 shadow-lg bg-menu-dark items-start justify-between rounded-md w-full h-full md:py-6  ${
+      className={`flex flex-col px-[10px] border-b-4 shadow-[0px_1px_2px_0px] shadow-secondary-600 bg-menu-dark items-start justify-between rounded-md w-full h-full py-5 md:py-6  ${
         value == "Expired"
           ? " border-gray-500 "
           : value == "Completed"
@@ -20,8 +20,8 @@ const InfoCard = (props: InfoCardProps) => {
           : value == "Canceled"
           ? " border-red-500 "
           : value == "Withdrawn"
-          ? " border-purple-500 "
-          : " border-secondary-200 "
+          ? " border-secondary-500 "
+          : " border-slate-600 "
       }`}
     >
       <div className="flex items-center justify-start">
@@ -29,8 +29,8 @@ const InfoCard = (props: InfoCardProps) => {
           {label}
         </span>
       </div>
-      <div className="flex items-center justify-start">
-        <span className="flex flex-row items-center text-light text-sm font-normal md:text-sm md:font-medium md:tracking-wider">
+      <div className="flex items-center justify-start mt-2">
+        <span className="flex flex-row items-center text-secondary-700 md:tracking-wider text-sm font-normal md:text-sm md:font-medium md:tracking-wider">
           {/* <span><AiOutlineCopy className='w-1/10 h-11/12 pr-1'/></span> */}
           {value}
         </span>
