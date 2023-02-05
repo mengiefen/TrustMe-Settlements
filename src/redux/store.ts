@@ -1,33 +1,41 @@
-import storage from "redux-persist/lib/storage"
-import { configureStore, combineReducers } from "@reduxjs/toolkit"
+import storage from "redux-persist/lib/storage/session";
+import {
+  configureStore,
+  combineReducers,
+} from "@reduxjs/toolkit";
+
 import {
   persistStore,
   persistReducer,
-  createPersistoid,
   FLUSH,
   REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist"
+} from "redux-persist";
 
-import tradesReducer from "./trade/tradesSlice"
-import walletsReducer from "./wallet/walletSlice"
+import tradesReducer, {
+  clearTrades,
+} from "./trade/tradesSlice";
+import walletsReducer from "./wallet/walletSlice";
 
 const rootReducer = combineReducers({
   trades: tradesReducer,
   wallets: walletsReducer,
-})
+});
 
 const persistConfig = {
   key: "trustMe",
   version: 1,
   storage,
   whitelist: ["wallets", "trades"],
-}
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(
+  persistConfig,
+  rootReducer,
+);
 
 export const makeStore = () => {
   return configureStore({
@@ -36,15 +44,28 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+          ignoredActions: [
+            FLUSH,
+            REHYDRATE,
+            PAUSE,
+            PERSIST,
+            REGISTER,
+          ],
         },
       }),
-  })
-}
+  });
+};
 
-export const store = makeStore()
-export const persister = persistStore(store)
+export const store = makeStore();
+export const persister = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
+
+export const logout = () => {
+  store.dispatch(clearTrades());
+  // persister.purge()
+  localStorage.removeItem("persist:trustMe");
+  // sessionStorage.clear()
+};

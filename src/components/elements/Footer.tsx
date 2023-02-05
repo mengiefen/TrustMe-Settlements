@@ -1,15 +1,24 @@
-import React from "react"
-import { GiTwoCoins } from "react-icons/gi"
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa"
+import React from "react";
+import { GiTwoCoins } from "react-icons/gi";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+  FaYoutube,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col  gap-5 justify-start w-full px-5 py-5 md:py-10 md:border-t md:border-t-slate-700 ">
+    <footer className="flex flex-col gap-5 justify-start w-full px-5 py-5 md:py-10 md:border-t md:border-t-slate-700 ">
       <div className="flex flex-col gap-3 mr-auto">
         <div className="flex flex-row items-center gap-1">
           <GiTwoCoins className="text-2xl" />
           <h1 className="text-xl text-text font-semibold tracking-wide">
-            Trust<span className="text-secondary-500 font-bold">Me</span>
+            Trust
+            <span className="text-secondary-500 font-bold">
+              Me
+            </span>
           </h1>
         </div>
         <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto" />
@@ -43,7 +52,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

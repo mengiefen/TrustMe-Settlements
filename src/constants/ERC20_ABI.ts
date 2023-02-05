@@ -56,4 +56,4 @@ export const ERC20_ABI = [
     payable: false,
     type: "function",
   },
-]
+];

@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from "react"
-import CarouselItem from "./CarouselItem"
-import { CarouselProvider, Slide, Slider, ButtonBack, ButtonNext } from "pure-react-carousel"
-import "pure-react-carousel/dist/react-carousel.es.css"
-import { data } from "./data"
-import { FcNext, FcPrevious } from "react-icons/fc"
+import React, { useEffect, useState } from "react";
+import CarouselItem from "./CarouselItem";
+import {
+  CarouselProvider,
+  Slide,
+  Slider,
+  ButtonBack,
+  ButtonNext,
+} from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
+import { data } from "./data";
+import { FcNext, FcPrevious } from "react-icons/fc";
 
 const Carousel = () => {
   return (
@@ -29,7 +35,11 @@ const Carousel = () => {
         <Slider className="h-full">
           {data.map((item, index) => (
             <Slide index={index} key={item.id}>
-              <CarouselItem image={item.image} title={item.title} description={item.description} />
+              <CarouselItem
+                image={item.image}
+                title={item.title}
+                description={item.description}
+              />
             </Slide>
           ))}
         </Slider>
@@ -41,7 +51,7 @@ const Carousel = () => {
         </ButtonNext>
       </CarouselProvider>
     </div>
-  )
-}
+  );
+};
 
-export default Carousel
+export default Carousel;

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const UsageCardReverse = () => {
   return (
@@ -15,11 +15,15 @@ const UsageCardReverse = () => {
       </div>
 
       <div className="bg-slate-800 border border-secondary-900 col-start-1 col-end-5 p-4 rounded-md my-4 ml-auto shadow-md text-center w-[45%]">
-        <h3 className="font-semibold text-lg mb-1 ">Lorem ipsum</h3>
-        <p className="leading-tight text-justify">Lorem ipsum dolor sit amet </p>
+        <h3 className="font-semibold text-lg mb-1 ">
+          Lorem ipsum
+        </h3>
+        <p className="leading-tight text-justify">
+          Lorem ipsum dolor sit amet{" "}
+        </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UsageCardReverse
+export default UsageCardReverse;

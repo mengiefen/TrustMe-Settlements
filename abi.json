@@ -1,15 +1,51 @@
 [
-  { "inputs": [], "name": "CannotTradeSameToken", "type": "error" },
-  { "inputs": [], "name": "CannotTradeWithSelf", "type": "error" },
-  { "inputs": [], "name": "InsufficientAllowance", "type": "error" },
-  { "inputs": [], "name": "InsufficientBalance", "type": "error" },
-  { "inputs": [], "name": "InvalidAddress", "type": "error" },
-  { "inputs": [], "name": "InvalidAmount", "type": "error" },
+  {
+    "inputs": [],
+    "name": "CannotTradeSameToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CannotTradeWithSelf",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientAllowance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAmount",
+    "type": "error"
+  },
   { "inputs": [], "name": "OnlyBuyer", "type": "error" },
   { "inputs": [], "name": "OnlySeller", "type": "error" },
-  { "inputs": [], "name": "TradeIsExpired", "type": "error" },
-  { "inputs": [], "name": "TradeIsNotExpired", "type": "error" },
-  { "inputs": [], "name": "TradeIsNotPending", "type": "error" },
+  {
+    "inputs": [],
+    "name": "TradeIsExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TradeIsNotExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TradeIsNotPending",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -137,7 +173,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_buyer", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_buyer",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "_tokenToSell",
@@ -170,7 +210,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_tradeID", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tradeID",
+        "type": "uint256"
+      }
+    ],
     "name": "cancelTrade",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -184,7 +230,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_tradeID", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tradeID",
+        "type": "uint256"
+      }
+    ],
     "name": "confirmTrade",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -193,12 +245,24 @@
   {
     "inputs": [],
     "name": "getPendingTradesIDs",
-    "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }],
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_tradeID", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tradeID",
+        "type": "uint256"
+      }
+    ],
     "name": "getTrade",
     "outputs": [
       {
@@ -258,7 +322,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_tradeID", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tradeID",
+        "type": "uint256"
+      }
+    ],
     "name": "getTradeStatus",
     "outputs": [
       {
@@ -271,26 +341,68 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
     "name": "getTradesIDsByUser",
-    "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }],
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "pendingTradesIDs",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "tradeIDToTrade",
     "outputs": [
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "address", "name": "seller", "type": "address" },
-      { "internalType": "address", "name": "buyer", "type": "address" },
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "tokenToSell",
@@ -327,16 +439,36 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "name": "userToTradesIDs",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_tradeID", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tradeID",
+        "type": "uint256"
+      }
+    ],
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",

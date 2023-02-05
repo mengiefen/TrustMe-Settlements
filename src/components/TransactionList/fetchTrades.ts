@@ -1,41 +1,50 @@
-import { formatEther } from "ethers/lib/utils.js"
-import { getStatus, getSymbol } from "@/utils"
-import { BigNumber } from "ethers"
-import { Trade } from "./type"
-import { getTradesIDsByUser, getTrade } from "@/helpers/getterHelpers"
+import { formatEther } from "ethers/lib/utils.js";
+import { getStatus, getSymbol } from "@/utils";
+import { BigNumber } from "ethers";
+import { Trade } from "./type";
+import {
+  getTradesIDsByUser,
+  getTrade,
+} from "@/helpers/getterHelpers";
+import { fetchTrade } from "@/helpers/fetchTrade";
 
-export const getTradeList = async (address: `0x${string}` | undefined) => {
-  const trades: Trade[] = await getTradesFromStorage()
-
-  if (trades.length === 0) {
-    const tradeIds = await getTradesIDsByUser(address as string)
+export const getTradeList = async (
+  tradeList: Trade[],
+  address: `0x${string}` | undefined,
+) => {
+  const trades: Trade[] = [...tradeList];
+  const tradeIds = await getTradesIDsByUser(
+    address as string,
+  );
+  if (tradeIds.length === trades.length) return trades;
+  if (tradeIds.length > tradeList.length) {
     await Promise.all(
-      tradeIds.slice(trades.length, tradeIds.length).map(async (tradeId: BigNumber) => {
-        const trade = await getTrade(Number(tradeId._hex))
-        await trades.push({
-          id: Number(trade.id),
-          seller: trade.seller,
-          buyer: trade.buyer,
-          tokenToSell: trade.tokenToSell,
-          tokenToBuy: trade.tokenToBuy,
-          symbolToBuy: await getSymbol(trade.tokenToBuy),
-          symbolToSell: await getSymbol(trade.tokenToSell),
-          amountOfTokenToSell: formatEther(trade.amountOfTokenToSell),
-          amountOfTokenToBuy: formatEther(trade.amountOfTokenToBuy),
-          deadline: Number(trade.deadline),
-          status: getStatus(trade.status),
-        })
-      })
-    )
+      tradeIds
+        .slice(tradeList.length, tradeIds.length)
+        .map(async (tradeId: BigNumber) => {
+          const trade = (await fetchTrade(
+            address as string,
+            Number(tradeId._hex),
+          )) as Trade;
+          trades.push(trade);
+        }),
+    );
   }
 
-  return trades
-}
+  return trades;
+};
 
-export const getTradesFromStorage = async () => {
-  const trades = JSON.parse(
-    JSON.parse(localStorage.getItem("persist:trustMe") || "[]").trades
-  ).data
+export const getLastTransactions = (
+  tradeList: Trade[],
+  amount: number,
+) => {
+  const trades = [...tradeList];
+  if (trades.length > 10) {
+    return trades
+      .filter((trade) => trade.status !== "Pending")
+      .sort((a, b) => b.id - a.id)
+      .slice(0, amount);
+  }
 
-  return trades
-}
+  return trades;
+};

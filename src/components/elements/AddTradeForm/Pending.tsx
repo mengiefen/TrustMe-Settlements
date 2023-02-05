@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const Pending = () => {
   return (
@@ -8,7 +8,7 @@ const Pending = () => {
       <div className="w-4 h-4 bg-green-400 rounded-full"></div>
       <div className="w-4 h-4 bg-black rounded-full"></div>
     </div>
-  )
-}
+  );
+};
 
-export default Pending
+export default Pending;

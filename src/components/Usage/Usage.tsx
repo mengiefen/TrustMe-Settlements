@@ -1,77 +1,60 @@
-import React from "react"
-import { Chrono } from "react-chrono"
-import { TimelineItemModel } from "react-chrono/dist/models"
+import useWindowSize from "@/hooks/useWindowSize";
+import React from "react";
+import { Chrono } from "react-chrono";
+import { TimelineItemModel } from "react-chrono/dist/models";
 
 export const Usage = () => {
   const items: TimelineItemModel[] = [
     {
-      title: "NFT to NFT",
-      cardTitle: "Token to Currency",
-      url: "http://www.history.com",
-      cardSubtitle: "Lore ipsum dolor sit amet consectetur adipisicing elit",
+      title: "STEP 1",
+      cardTitle: "Entering Transaction Details",
+      cardSubtitle: "One party enters the transaction details",
       cardDetailedText:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In ut nulla modi ipsam magnam eligendi asperiores consectetur dolorum architecto quibusdam nemo animi ullam repudiandae et labore iusto nam laborum eaque, tempora voluptate ratione. Beatae quidem in nisi repellendus. Omnis voluptas quasi autem blanditiis numquam animi eum deleniti repellendus neque quibusdam. Aperiam incidunt quod quis perferendis corrupti praesentium ad reiciendis? Labore natus corporis temporibus recusandae. Maiores consequuntur officia earum doloribus, dicta, fuga voluptas a nihil quibusdam error nulla in rerum pariatur repudiandae? Corrupti quidem accusantium reprehenderit sequi ipsam consequuntur aliquid explicabo, velit at ea atque a, rerum possimus, maxime tempora esse.",
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "http://someurl/image.jpg",
-        },
-      },
+        "In this step, one of the parties involved in the transaction enters all the relevant details of the transaction, such as the type of asset being traded, the quantity, and the agreed-upon terms. This information is then sent to the counterparty for confirmation.",
     },
     {
-      title: "CURRENCY TO CURRENCY",
-      cardTitle: "NFT to NFT",
-      url: "http://www.history.com",
-      cardSubtitle: "Lore ipsum dolor sit amet consectetur adipisicing elit",
+      title: "STEP 2",
+      cardTitle: "Confirming the Transaction",
+
+      cardSubtitle: "   The counterparty confirms the transaction",
       cardDetailedText:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In ut nulla modi ipsam magnam eligendi asperiores consectetur dolorum architecto quibusdam nemo animi ullam repudiandae et labore iusto nam laborum eaque, tempora voluptate ratione. Beatae quidem in nisi repellendus. Omnis voluptas quasi autem blanditiis numquam animi eum deleniti repellendus neque quibusdam. Aperiam incidunt quod quis perferendis corrupti praesentium ad reiciendis? Labore natus corporis temporibus recusandae. Maiores consequuntur officia earum doloribus, dicta, fuga voluptas a nihil quibusdam error nulla in rerum pariatur repudiandae? Corrupti quidem accusantium reprehenderit sequi ipsam consequuntur aliquid explicabo, velit at ea atque a, rerum possimus, maxime tempora esse.",
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "http://someurl/image.jpg",
-        },
-      },
+        "In this step, the counterparty reviews the details of the transaction and confirms their agreement to the terms. This confirms that both parties are in agreement and ready to proceed with the asset exchange.",
     },
 
     {
-      title: "TOKEN TO TOKEN",
-      cardTitle: "Token to Token",
-      url: "http://www.history.com",
-      cardSubtitle: "Lore ipsum dolor sit amet consectetur adipisicing elit",
+      title: "STEP 3",
+      cardTitle:
+        "   The assets of both parties are exchanged simultaneously - settled!",
+
+      cardSubtitle:
+        "The assets of both parties are exchanged simultaneously - settled!",
       cardDetailedText:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In ut nulla modi ipsam magnam eligendi asperiores consectetur dolorum architecto quibusdam nemo animi ullam repudiandae et labore iusto nam laborum eaque, tempora voluptate ratione. Beatae quidem in nisi repellendus. Omnis voluptas quasi autem blanditiis numquam animi eum deleniti repellendus neque quibusdam. Aperiam incidunt quod quis perferendis corrupti praesentium ad reiciendis? Labore natus corporis temporibus recusandae. Maiores consequuntur officia earum doloribus, dicta, fuga voluptas a nihil quibusdam error nulla in rerum pariatur repudiandae? Corrupti quidem accusantium reprehenderit sequi ipsam consequuntur aliquid explicabo, velit at ea atque a, rerum possimus, maxime tempora esse.",
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "http://someurl/image.jpg",
-        },
-      },
+        "Once the transaction has been confirmed, both parties' assets are exchanged simultaneously. This means that the assets are transferred from one party to the other, and the transaction is considered settled.",
     },
 
     {
-      title: "NFT TO TOKEN",
-      cardTitle: "NFT to Token",
-      url: "http://www.history.com",
-      cardSubtitle: "Lore ipsum dolor sit amet consectetur adipisicing elit",
+      title: "STEP 4",
+      cardTitle: "Withdrawing Assets in Case of Failure to Confirm",
+      cardSubtitle:
+        "If the counterparty fails to confirm, the first party can withdraw its assets - safe!",
       cardDetailedText:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In ut nulla modi ipsam magnam eligendi asperiores consectetur dolorum architecto quibusdam nemo animi ullam repudiandae et labore iusto nam laborum eaque, tempora voluptate ratione. Beatae quidem in nisi repellendus. Omnis voluptas quasi autem blanditiis numquam animi eum deleniti repellendus neque quibusdam. Aperiam incidunt quod quis perferendis corrupti praesentium ad reiciendis? Labore natus corporis temporibus recusandae. Maiores consequuntur officia earum doloribus, dicta, fuga voluptas a nihil quibusdam error nulla in rerum pariatur repudiandae? Corrupti quidem accusantium reprehenderit sequi ipsam consequuntur aliquid explicabo, velit at ea atque a, rerum possimus, maxime tempora esse.",
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "http://someurl/image.jpg",
-        },
-      },
+        "If, for any reason, the counterparty fails to confirm the transaction, the first party has the option to withdraw their assets. This ensures that their assets are safe and protected in case of any unexpected issues.",
     },
-  ]
+  ];
+
+  const { width } = useWindowSize();
 
   return (
-    <div className="my-12 md:mb-20">
-      <h2 className="text-2xl text-center text-text  tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold mb-5">
+    <div
+      id="howToUse"
+      className="my-12 md:mb-20 sm:shadow-[0px_-12px_500px_0px] sm:shadow-secondary-900 rounded pb:10 md:pb-20"
+    >
+      <h2 className=" p-5 text-2xl text-center text-text  tracking-wider leading-10 md:text-start md:text-3xl md:font-semibold mb-5 md:mb:10">
         How to Use
       </h2>
-      {/* <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto md:mb-5" /> */}
 
       <div
+        className=""
         style={{
           width: "100%",
           backgroundColor: "transparent",
@@ -80,23 +63,23 @@ export const Usage = () => {
       >
         <Chrono
           items={items}
-          mode="VERTICAL_ALTERNATING"
+          mode={width > 992 ? "VERTICAL_ALTERNATING" : "VERTICAL"}
           allowDynamicUpdate
-          cardHeight={100}
           lineWidth={3}
+          mediaHeight={0}
           theme={{
             primary: "#02b6ce",
             secondary: "#9a5cb0",
-            cardBgColor: "linear-gradient(45deg, #03272c 0%, #240330 100%)",
+            cardBgColor: "linear-gradient(45deg, #03272c 0%, #240330 80%)",
             cardForeColor: "white",
             textColor: "white",
             titleColor: "white",
             titleColorActive: "cyan",
           }}
           hideControls
-          borderLessCards={true}
+          borderLessCards={false}
         />
       </div>
     </div>
-  )
-}
+  );
+};

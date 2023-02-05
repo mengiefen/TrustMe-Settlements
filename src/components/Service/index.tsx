@@ -1,9 +1,9 @@
-import React from "react"
-import Button from "../elements/Button"
-import Image from "next/image"
-import CarouselItem from "../elements/CarouselItem"
-import Image1 from "../../assets/1.jpg"
-import Carousel from "../elements/Carousel"
+import React from "react";
+import Button from "../elements/Button";
+import Image from "next/image";
+import CarouselItem from "../elements/CarouselItem";
+import Image1 from "../../assets/1.jpg";
+import Carousel from "../elements/Carousel";
 
 const Service = () => {
   return (
@@ -14,7 +14,7 @@ const Service = () => {
       {/* <hr className="border-2 border-secondary-500 w-[20%] md:w-10 mr-auto" /> */}
       <Carousel />
     </div>
-  )
-}
+  );
+};
 
-export default Service
+export default Service;

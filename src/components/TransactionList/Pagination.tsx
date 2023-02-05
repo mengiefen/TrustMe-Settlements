@@ -1,6 +1,13 @@
-import React from "react"
-import { BiSkipNext, BiSkipPrevious, BiDotsHorizontal } from "react-icons/bi"
-import { BsSkipBackward, BsSkipForward } from "react-icons/bs"
+import React from "react";
+import {
+  BiSkipNext,
+  BiSkipPrevious,
+  BiDotsHorizontal,
+} from "react-icons/bi";
+import {
+  BsSkipBackward,
+  BsSkipForward,
+} from "react-icons/bs";
 
 const Pagination = () => {
   return (
@@ -23,7 +30,7 @@ const Pagination = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Pagination
+export default Pagination;

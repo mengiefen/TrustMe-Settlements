@@ -1,5 +1,5 @@
-import React from "react"
-import { FaSearch } from "react-icons/fa"
+import React from "react";
+import { FaSearch } from "react-icons/fa";
 
 const SearchBox = () => {
   return (
@@ -14,7 +14,7 @@ const SearchBox = () => {
         <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-secondary-200" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SearchBox
+export default SearchBox;
