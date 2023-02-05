@@ -18,7 +18,10 @@ import type {
   Result,
   EventFragment,
 } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  Listener,
+  Provider,
+} from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
@@ -49,7 +52,7 @@ export declare namespace TrustMe {
     BigNumber,
     BigNumber,
     BigNumber,
-    number
+    number,
   ] & {
     id: BigNumber;
     seller: string;
@@ -92,7 +95,7 @@ export interface TrustMeInterface extends utils.Interface {
       | "pendingTradesIDs"
       | "tradeIDToTrade"
       | "userToTradesIDs"
-      | "withdraw"
+      | "withdraw",
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -103,93 +106,105 @@ export interface TrustMeInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+      PromiseOrValue<BigNumberish>,
+    ],
   ): string;
   encodeFunctionData(
     functionFragment: "cancelTrade",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "checkExpiredTrades",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "confirmTrade",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "getPendingTradesIDs",
-    values?: undefined
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "getTrade",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "getTradeStatus",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "getTradesIDsByUser",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<string>],
   ): string;
   encodeFunctionData(
     functionFragment: "pendingTradesIDs",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "tradeIDToTrade",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
   encodeFunctionData(
     functionFragment: "userToTradesIDs",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+    ],
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>],
   ): string;
 
-  decodeFunctionResult(functionFragment: "addTrade", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "addTrade",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(
     functionFragment: "cancelTrade",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "checkExpiredTrades",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "confirmTrade",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "getPendingTradesIDs",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getTrade", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTrade",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getTradeStatus",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "getTradesIDsByUser",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "pendingTradesIDs",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "tradeIDToTrade",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "userToTradesIDs",
-    data: BytesLike
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdraw",
+    data: BytesLike,
+  ): Result;
 
   events: {
     "TradeCanceled(uint256,address,address)": EventFragment;
@@ -199,11 +214,21 @@ export interface TrustMeInterface extends utils.Interface {
     "TradeWithdrawn(uint256,address,address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "TradeCanceled"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TradeConfirmed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TradeCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TradeExpired"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TradeWithdrawn"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TradeCanceled",
+  ): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TradeConfirmed",
+  ): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TradeCreated",
+  ): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TradeExpired",
+  ): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TradeWithdrawn",
+  ): EventFragment;
 }
 
 export interface TradeCanceledEventObject {
@@ -216,7 +241,8 @@ export type TradeCanceledEvent = TypedEvent<
   TradeCanceledEventObject
 >;
 
-export type TradeCanceledEventFilter = TypedEventFilter<TradeCanceledEvent>;
+export type TradeCanceledEventFilter =
+  TypedEventFilter<TradeCanceledEvent>;
 
 export interface TradeConfirmedEventObject {
   tradeID: BigNumber;
@@ -228,7 +254,8 @@ export type TradeConfirmedEvent = TypedEvent<
   TradeConfirmedEventObject
 >;
 
-export type TradeConfirmedEventFilter = TypedEventFilter<TradeConfirmedEvent>;
+export type TradeConfirmedEventFilter =
+  TypedEventFilter<TradeConfirmedEvent>;
 
 export interface TradeCreatedEventObject {
   tradeID: BigNumber;
@@ -240,7 +267,8 @@ export type TradeCreatedEvent = TypedEvent<
   TradeCreatedEventObject
 >;
 
-export type TradeCreatedEventFilter = TypedEventFilter<TradeCreatedEvent>;
+export type TradeCreatedEventFilter =
+  TypedEventFilter<TradeCreatedEvent>;
 
 export interface TradeExpiredEventObject {
   tradeID: BigNumber;
@@ -252,7 +280,8 @@ export type TradeExpiredEvent = TypedEvent<
   TradeExpiredEventObject
 >;
 
-export type TradeExpiredEventFilter = TypedEventFilter<TradeExpiredEvent>;
+export type TradeExpiredEventFilter =
+  TypedEventFilter<TradeExpiredEvent>;
 
 export interface TradeWithdrawnEventObject {
   tradeID: BigNumber;
@@ -264,10 +293,13 @@ export type TradeWithdrawnEvent = TypedEvent<
   TradeWithdrawnEventObject
 >;
 
-export type TradeWithdrawnEventFilter = TypedEventFilter<TradeWithdrawnEvent>;
+export type TradeWithdrawnEventFilter =
+  TypedEventFilter<TradeWithdrawnEvent>;
 
 export interface TrustMe extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
+  connect(
+    signerOrProvider: Signer | Provider | string,
+  ): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
@@ -276,15 +308,15 @@ export interface TrustMe extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -300,48 +332,58 @@ export interface TrustMe extends BaseContract {
       _amountOfTokenToSell: PromiseOrValue<BigNumberish>,
       _amountOfTokenToBuy: PromiseOrValue<BigNumberish>,
       _tradePeriod: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<ContractTransaction>;
 
     cancelTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<ContractTransaction>;
 
     checkExpiredTrades(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<ContractTransaction>;
 
     confirmTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<ContractTransaction>;
 
-    getPendingTradesIDs(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+    getPendingTradesIDs(
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber[]]>;
 
     getTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[TrustMe.TradeStructOutput]>;
 
     getTradeStatus(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[number]>;
 
     getTradesIDsByUser(
       _user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]]>;
 
     pendingTradesIDs(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     tradeIDToTrade(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [
         BigNumber,
@@ -352,7 +394,7 @@ export interface TrustMe extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
-        number
+        number,
       ] & {
         id: BigNumber;
         seller: string;
@@ -369,12 +411,14 @@ export interface TrustMe extends BaseContract {
     userToTradesIDs(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     withdraw(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<ContractTransaction>;
   };
 
@@ -385,48 +429,58 @@ export interface TrustMe extends BaseContract {
     _amountOfTokenToSell: PromiseOrValue<BigNumberish>,
     _amountOfTokenToBuy: PromiseOrValue<BigNumberish>,
     _tradePeriod: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & {
+      from?: PromiseOrValue<string>;
+    },
   ): Promise<ContractTransaction>;
 
   cancelTrade(
     _tradeID: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & {
+      from?: PromiseOrValue<string>;
+    },
   ): Promise<ContractTransaction>;
 
   checkExpiredTrades(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & {
+      from?: PromiseOrValue<string>;
+    },
   ): Promise<ContractTransaction>;
 
   confirmTrade(
     _tradeID: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & {
+      from?: PromiseOrValue<string>;
+    },
   ): Promise<ContractTransaction>;
 
-  getPendingTradesIDs(overrides?: CallOverrides): Promise<BigNumber[]>;
+  getPendingTradesIDs(
+    overrides?: CallOverrides,
+  ): Promise<BigNumber[]>;
 
   getTrade(
     _tradeID: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<TrustMe.TradeStructOutput>;
 
   getTradeStatus(
     _tradeID: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<number>;
 
   getTradesIDsByUser(
     _user: PromiseOrValue<string>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber[]>;
 
   pendingTradesIDs(
     arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   tradeIDToTrade(
     arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [
       BigNumber,
@@ -437,7 +491,7 @@ export interface TrustMe extends BaseContract {
       BigNumber,
       BigNumber,
       BigNumber,
-      number
+      number,
     ] & {
       id: BigNumber;
       seller: string;
@@ -454,12 +508,14 @@ export interface TrustMe extends BaseContract {
   userToTradesIDs(
     arg0: PromiseOrValue<string>,
     arg1: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   withdraw(
     _tradeID: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & {
+      from?: PromiseOrValue<string>;
+    },
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -470,46 +526,50 @@ export interface TrustMe extends BaseContract {
       _amountOfTokenToSell: PromiseOrValue<BigNumberish>,
       _amountOfTokenToBuy: PromiseOrValue<BigNumberish>,
       _tradePeriod: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     cancelTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    checkExpiredTrades(overrides?: CallOverrides): Promise<void>;
+    checkExpiredTrades(
+      overrides?: CallOverrides,
+    ): Promise<void>;
 
     confirmTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    getPendingTradesIDs(overrides?: CallOverrides): Promise<BigNumber[]>;
+    getPendingTradesIDs(
+      overrides?: CallOverrides,
+    ): Promise<BigNumber[]>;
 
     getTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<TrustMe.TradeStructOutput>;
 
     getTradeStatus(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<number>;
 
     getTradesIDsByUser(
       _user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber[]>;
 
     pendingTradesIDs(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     tradeIDToTrade(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [
         BigNumber,
@@ -520,7 +580,7 @@ export interface TrustMe extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
-        number
+        number,
       ] & {
         id: BigNumber;
         seller: string;
@@ -537,12 +597,12 @@ export interface TrustMe extends BaseContract {
     userToTradesIDs(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     withdraw(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
@@ -550,56 +610,56 @@ export interface TrustMe extends BaseContract {
     "TradeCanceled(uint256,address,address)"(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeCanceledEventFilter;
     TradeCanceled(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeCanceledEventFilter;
 
     "TradeConfirmed(uint256,address,address)"(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeConfirmedEventFilter;
     TradeConfirmed(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeConfirmedEventFilter;
 
     "TradeCreated(uint256,address,address)"(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeCreatedEventFilter;
     TradeCreated(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeCreatedEventFilter;
 
     "TradeExpired(uint256,address,address)"(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeExpiredEventFilter;
     TradeExpired(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeExpiredEventFilter;
 
     "TradeWithdrawn(uint256,address,address)"(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeWithdrawnEventFilter;
     TradeWithdrawn(
       tradeID?: PromiseOrValue<BigNumberish> | null,
       seller?: PromiseOrValue<string> | null,
-      buyer?: PromiseOrValue<string> | null
+      buyer?: PromiseOrValue<string> | null,
     ): TradeWithdrawnEventFilter;
   };
 
@@ -611,59 +671,71 @@ export interface TrustMe extends BaseContract {
       _amountOfTokenToSell: PromiseOrValue<BigNumberish>,
       _amountOfTokenToBuy: PromiseOrValue<BigNumberish>,
       _tradePeriod: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<BigNumber>;
 
     cancelTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<BigNumber>;
 
     checkExpiredTrades(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<BigNumber>;
 
     confirmTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<BigNumber>;
 
-    getPendingTradesIDs(overrides?: CallOverrides): Promise<BigNumber>;
+    getPendingTradesIDs(
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>;
 
     getTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getTradeStatus(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getTradesIDsByUser(
       _user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     pendingTradesIDs(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     tradeIDToTrade(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     userToTradesIDs(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     withdraw(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<BigNumber>;
   };
 
@@ -675,61 +747,71 @@ export interface TrustMe extends BaseContract {
       _amountOfTokenToSell: PromiseOrValue<BigNumberish>,
       _amountOfTokenToBuy: PromiseOrValue<BigNumberish>,
       _tradePeriod: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<PopulatedTransaction>;
 
     cancelTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<PopulatedTransaction>;
 
     checkExpiredTrades(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<PopulatedTransaction>;
 
     confirmTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<PopulatedTransaction>;
 
     getPendingTradesIDs(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getTrade(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getTradeStatus(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getTradesIDsByUser(
       _user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     pendingTradesIDs(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     tradeIDToTrade(
       arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     userToTradesIDs(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     withdraw(
       _tradeID: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & {
+        from?: PromiseOrValue<string>;
+      },
     ): Promise<PopulatedTransaction>;
   };
 }

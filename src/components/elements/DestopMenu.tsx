@@ -1,7 +1,7 @@
-import React from "react"
-import Link from "next/link"
-import { GiTwoCoins } from "react-icons/gi"
-import HeaderDropDown from "./HeaderDropDown"
+import React from "react";
+import Link from "next/link";
+import { GiTwoCoins } from "react-icons/gi";
+import HeaderDropDown from "./HeaderDropDown";
 
 const DesktopMenu = () => {
   return (
@@ -10,7 +10,10 @@ const DesktopMenu = () => {
         <GiTwoCoins className="text-3xl" />
 
         <h1 className="text-2xl  font-semibold tracking-wide">
-          Trust<span className="text-secondary-600 font-bold">Me</span>
+          Trust
+          <span className="text-secondary-600 font-bold">
+            Me
+          </span>
         </h1>
       </div>
       <ul className="flex md:gap-3 lg:gap-5 items-center justify-end">
@@ -45,7 +48,7 @@ const DesktopMenu = () => {
         </li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default DesktopMenu
+export default DesktopMenu;

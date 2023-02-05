@@ -1,15 +1,15 @@
-import { trustMeContract } from "../constants/interact"
+import { trustMeContract } from "../constants/interact";
 
 async function confirmTrade(tradeId: number) {
-  return await trustMeContract.confirmTrade(tradeId)
+  return await trustMeContract.confirmTrade(tradeId);
 }
 
 async function checkExpiredTrades() {
-  return await trustMeContract.checkExpiredTrades()
+  return await trustMeContract.checkExpiredTrades();
 }
 
 async function withdraw(tradeId: number) {
-  return await trustMeContract.withdraw(tradeId)
+  return await trustMeContract.withdraw(tradeId);
 }
 
 export const addTrade = async (
@@ -18,7 +18,7 @@ export const addTrade = async (
   tokenToBuy: number,
   amountOfTokenToSell: number,
   amountOfTokenToBuy: number,
-  deadline: number
+  deadline: number,
 ) => {
   const tx = await trustMeContract.addTrade(
     buyerAddress,
@@ -26,16 +26,16 @@ export const addTrade = async (
     tokenToBuy,
     amountOfTokenToSell,
     amountOfTokenToBuy,
-    deadline
-  )
+    deadline,
+  );
 
-  tx.wait()
+  tx.wait();
 
-  return tx
-}
+  return tx;
+};
 
 export const cancelTrade = async (tradeID: number) => {
-  const tx = await trustMeContract.cancelTrade(tradeID)
-  tx.wait()
-  return tx
-}
+  const tx = await trustMeContract.cancelTrade(tradeID);
+  tx.wait();
+  return tx;
+};

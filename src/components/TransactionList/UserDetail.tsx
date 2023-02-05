@@ -1,12 +1,15 @@
-import React from "react"
-import { CgArrowsExchangeAlt } from "react-icons/cg"
-import { BsLink, BsPlus } from "react-icons/bs"
-import Link from "next/link"
-import { useIsMounted } from "@/hooks/useIsMounted"
-import { UserDetailProps } from "./type"
+import React from "react";
+import { CgArrowsExchangeAlt } from "react-icons/cg";
+import { BsLink, BsPlus } from "react-icons/bs";
+import Link from "next/link";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { UserDetailProps } from "./type";
 
-const UserDetail = ({ userAddress, transactionCount }: UserDetailProps) => {
-  const isMounted = useIsMounted()
+const UserDetail = ({
+  userAddress,
+  transactionCount,
+}: UserDetailProps) => {
+  const isMounted = useIsMounted();
 
   return (
     <div className="flex flex-row justify-between items-center mt-3">
@@ -14,9 +17,13 @@ const UserDetail = ({ userAddress, transactionCount }: UserDetailProps) => {
         <div className="flex flex-row gap-5">
           <CgArrowsExchangeAlt className="text-2xl md:text-3xl text-secondary-900" />
           <div className="flex flex-col gap-2 md:gap-3">
-            <h3 className="text-bg-light">Connected Address</h3>
+            <h3 className="text-bg-light">
+              Connected Address
+            </h3>
             {isMounted && (
-              <h4 className="text-sm text-secondary-800 tracking-wider">{userAddress}</h4>
+              <h4 className="text-sm text-secondary-800 tracking-wider">
+                {userAddress}
+              </h4>
             )}
           </div>
         </div>
@@ -46,7 +53,7 @@ const UserDetail = ({ userAddress, transactionCount }: UserDetailProps) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserDetail
+export default UserDetail;

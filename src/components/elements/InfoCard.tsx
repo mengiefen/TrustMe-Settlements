@@ -1,12 +1,12 @@
-import React from "react"
+import React from "react";
 
 type InfoCardProps = {
-  label: string
-  value: string
-}
+  label: string;
+  value: string;
+};
 
 const InfoCard = (props: InfoCardProps) => {
-  const { label, value } = props
+  const { label, value } = props;
 
   return (
     <div
@@ -36,7 +36,7 @@ const InfoCard = (props: InfoCardProps) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InfoCard
+export default InfoCard;

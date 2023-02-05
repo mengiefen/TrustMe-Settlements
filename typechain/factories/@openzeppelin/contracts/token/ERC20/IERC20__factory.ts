@@ -200,7 +200,14 @@ export class IERC20__factory {
   static createInterface(): IERC20Interface {
     return new utils.Interface(_abi) as IERC20Interface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): IERC20 {
-    return new Contract(address, _abi, signerOrProvider) as IERC20;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider,
+  ): IERC20 {
+    return new Contract(
+      address,
+      _abi,
+      signerOrProvider,
+    ) as IERC20;
   }
 }

@@ -1,24 +1,29 @@
-import React from "react"
-import { FaUserCircle } from "react-icons/fa"
-import { MdOutlineArrowForward } from "react-icons/md"
-import TradeStatus from "../elements/TradeStatus"
-import Link from "next/link"
-import { RiArrowLeftDownLine, RiArrowRightUpLine } from "react-icons/ri"
-import { getFormatAddress } from "@/utils"
+import React from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { MdOutlineArrowForward } from "react-icons/md";
+import TradeStatus from "../elements/TradeStatus";
+import Link from "next/link";
+import {
+  RiArrowLeftDownLine,
+  RiArrowRightUpLine,
+} from "react-icons/ri";
+import { getFormatAddress } from "@/utils";
 
 interface RowProps {
-  userPic?: React.ReactNode | React.ReactElement
-  buyerAddress?: string
-  ReceiveTokenId?: string
-  TransferTokenId?: string
-  amountOfTokenToBuy: string
-  amountOfTokenToSell: string
-  status: string
-  txId: number
+  userPic?: React.ReactNode | React.ReactElement;
+  buyerAddress?: string;
+  ReceiveTokenId?: string;
+  TransferTokenId?: string;
+  amountOfTokenToBuy: string;
+  amountOfTokenToSell: string;
+  status: string;
+  txId: number;
 }
 
 const TableRow = ({
-  userPic = <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />,
+  userPic = (
+    <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />
+  ),
   buyerAddress = "",
   amountOfTokenToBuy,
   ReceiveTokenId = "USDT",
@@ -51,7 +56,9 @@ const TableRow = ({
             }
             <div className="flex flex-col">
               {amountOfTokenToBuy}
-              <span className="mr-1 text-gray-400 text-[20px]">{ReceiveTokenId}</span>
+              <span className="mr-1 text-gray-400 text-[20px]">
+                {ReceiveTokenId}
+              </span>
             </div>
           </div>
           <div className="col-span-3 text-secondary-900 flex items-center">
@@ -60,7 +67,9 @@ const TableRow = ({
             }
             <div className="flex flex-col">
               {amountOfTokenToSell}
-              <span className="mr-1 text-gray-400 text-[20px] ">{TransferTokenId}</span>
+              <span className="mr-1 text-gray-400 text-[20px] ">
+                {TransferTokenId}
+              </span>
             </div>
           </div>
 
@@ -79,14 +88,16 @@ const TableRow = ({
             href={`/list/${txId}`}
             className="outline-none border-none py-1 px-2 flex items-center justify-center bg-secondary-50 text-sm font-normal"
           >
-            <span className="mr-2 text-orange-900">Confirmation required</span>
+            <span className="mr-2 text-orange-900">
+              Confirmation required
+            </span>
 
             <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-bg" />
           </Link>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TableRow
+export default TableRow;
