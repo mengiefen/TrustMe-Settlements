@@ -11,7 +11,7 @@ import {
   useHandleCreatedEvent,
   useHandleExpiredEvent,
   useHandleWithdrawEvent,
-} from "./events";
+} from "@/hooks/events";
 import { useDispatch } from "react-redux";
 
 type LayoutProps = {
@@ -26,11 +26,12 @@ const Layout = (props: LayoutProps) => {
   useEffect(() => {
     if (isConnected) dispatch(connectWallet(address));
   }, [dispatch, address, isConnected]);
-  // const { isTradeCreated } = useHandleCreatedEvent(address as string);
-  // const { isTradeExpired } = useHandleExpiredEvent(address as string);
-  // const { isTradeConfirmed } = useHandleConfirmedEvent(address as string);
-  // const { isTradeCanceled } = useHandleCanceledEvent(address as string);
-  // const { isTradeWithdrawn } = useHandleWithdrawEvent(address as string);
+
+  const { isTradeCreated } = useHandleCreatedEvent(address as string);
+  const { isTradeExpired } = useHandleExpiredEvent(address as string);
+  const { isTradeConfirmed } = useHandleConfirmedEvent(address as string);
+  const { isTradeCanceled } = useHandleCanceledEvent(address as string);
+  const { isTradeWithdrawn } = useHandleWithdrawEvent(address as string);
 
   const router = useRouter();
   const pathname = router.pathname;
@@ -46,7 +47,7 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      {/* {isTradeCreated ? (
+      {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
       ) : isTradeCanceled ? (
         <FlashMessage message="Trade Canceled!" type="error" />
@@ -56,7 +57,7 @@ const Layout = (props: LayoutProps) => {
         <FlashMessage message="Trade expired!" type="info" />
       ) : isTradeWithdrawn ? (
         <FlashMessage message="Trade withdrawn!" type="success" />
-      ) : null} */}
+      ) : null}
 
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}

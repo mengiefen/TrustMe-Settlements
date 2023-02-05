@@ -10,8 +10,10 @@ import { useDispatch } from "react-redux";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { trustMeContract } from "@/helpers/getterHelpers";
+import { useAccount } from "wagmi";
 
 export const useHandleCreatedEvent = (address: string) => {
+  const { isConnected } = useAccount();
   const [tradeCreated, setTradeCreated] = useState({
     isTradeCreated: false,
     tradeId: 0,
@@ -21,6 +23,7 @@ export const useHandleCreatedEvent = (address: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!isConnected) return;
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
       await trustMe.on(
@@ -59,6 +62,7 @@ export const useHandleCreatedEvent = (address: string) => {
 };
 
 export const useHandleExpiredEvent = (address: string) => {
+  const { isConnected } = useAccount();
   const [tradeExpired, setTradeExpired] = useState({
     isTradeExpired: false,
     tradeId: 0,
@@ -68,6 +72,8 @@ export const useHandleExpiredEvent = (address: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!isConnected) return;
+
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
       await trustMe.on(
@@ -99,6 +105,7 @@ export const useHandleExpiredEvent = (address: string) => {
 };
 
 export const useHandleCanceledEvent = (address: string) => {
+  const { isConnected } = useAccount();
   const [tradeCanceled, setTradeCanceled] = useState({
     isTradeCanceled: false,
     tradeId: 0,
@@ -108,6 +115,7 @@ export const useHandleCanceledEvent = (address: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!isConnected) return;
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
       await trustMe.on(
@@ -139,6 +147,7 @@ export const useHandleCanceledEvent = (address: string) => {
 };
 
 export const useHandleWithdrawEvent = (address: string) => {
+  const { isConnected } = useAccount();
   const [tradeWithdrawn, setTradeWithdrawn] = useState({
     isTradeWithdrawn: false,
     tradeId: 0,
@@ -148,6 +157,7 @@ export const useHandleWithdrawEvent = (address: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!isConnected) return;
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
       await trustMe.on(
@@ -179,6 +189,7 @@ export const useHandleWithdrawEvent = (address: string) => {
 };
 
 export const useHandleConfirmedEvent = (address: string) => {
+  const { isConnected } = useAccount();
   const [tradeConfirmed, setTradeConfirmed] = useState({
     isTradeConfirmed: false,
     tradeId: 0,
@@ -188,6 +199,8 @@ export const useHandleConfirmedEvent = (address: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!isConnected) return;
+
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
       await trustMe.on(

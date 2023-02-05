@@ -31,6 +31,7 @@ const HeaderDropDown = () => {
     e.preventDefault();
     setShowMenu(false);
     await router.push("/");
+
     await disconnect();
     await dispatch(disconnectWallet());
   };
@@ -87,7 +88,7 @@ const HeaderDropDown = () => {
         {connected && isSuccess && (
           <ul className="py-2 text-text-dark bg-transparent max-h-[500px] no-scrollbar overflow-y-scroll">
             <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
-              <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${userBalances?.currencyBalance.substring(
+              <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${userBalances?.currencyBalance?.substring(
                 0,
                 6,
               )} ${userBalances?.currencySymbol}`}</span>
