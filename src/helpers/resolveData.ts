@@ -2,26 +2,32 @@ import { BigNumber } from "ethers";
 import { getSymbol } from "@/utils";
 import { formatEther } from "ethers/lib/utils.js";
 
-export const getResolvedUserAddress = (
-  userAddress: string,
-  tradeBuyer: string,
-  tradeSeller: string,
-) => {
-  let buyer: string;
-  let seller: string;
-
-  if (tradeSeller === userAddress) {
-    buyer = tradeBuyer;
-    seller = tradeSeller;
-  } else {
-    seller = tradeBuyer;
-    buyer = tradeSeller;
-  }
-
+export const resolveDataType = (trade: any) => {
   return {
-    buyer,
-    seller,
-    isCreatedByYou: tradeSeller === userAddress,
+    id: Number(trade.tradeId),
+    status: Number(trade.status),
+    seller: trade.seller,
+    buyer: trade.buyer,
+    deadline: Number(trade.deadline),
+    dateCreated: Number(trade.dateCreated),
+    nft: {
+      addressNFTToSell: trade.nft.addressNFTToSell,
+      tokenIdNFTToSell: formatEther(trade.nft.tokenIdNFTToSell),
+      addressNFTToBuy: trade.nft.addressNFTToBuy,
+      tokenIdNFTToBuy: formatEther(trade.nft.tokenIdNFTToBuy),
+    },
+
+    token: {
+      tokenToSell: trade.token.tokenToSell,
+      tokenToBuy: trade.token.tokenToBuy,
+      amountOfTokenToSell: formatEther(trade.token.amountOfTokenToSell),
+      amountOfTokenToBuy: formatEther(trade.token.amountOfTokenToBuy),
+    },
+
+    eth: {
+      amountOfETHToSell: formatEther(trade.eth.amountOfETHToSell),
+      amountOfETHToBuy: formatEther(trade.eth.amountOfETHToBuy),
+    },
   };
 };
 
@@ -38,6 +44,7 @@ export const getResolvedTokens = async (
   amountOfETHToBuy: BigNumber,
   amountOfETHToSell: BigNumber,
 ) => {
+  console.log("isCreatedByYou IN", isCreatedByYou);
   if (isCreatedByYou) {
     return {
       token: {
@@ -50,11 +57,12 @@ export const getResolvedTokens = async (
       },
       nft: {
         addressNFTToSell,
-        symbolToNFTToSell: (await getSymbol(addressNFTToSell)) as string,
+        symbolToNFTToSell: ((await getSymbol(addressNFTToSell)) ||
+          "") as string,
         addressNFTToBuy,
-        symbolToNFTToBuy: (await getSymbol(addressNFTToBuy)) as string,
-        tokenIdNFTToSell: Number(tokenIdNFTToSell).toString(),
-        tokenIdNFTToBuy: Number(tokenIdNFTToBuy).toString(),
+        symbolToNFTToBuy: ((await getSymbol(addressNFTToBuy)) || "") as string,
+        tokenIdNFTToSell: Number(tokenIdNFTToSell),
+        tokenIdNFTToBuy: Number(tokenIdNFTToBuy),
       },
       eth: {
         amountOfETHToSell: formatEther(amountOfETHToSell),
@@ -69,19 +77,20 @@ export const getResolvedTokens = async (
       tokenToBuy: tokenToSell,
       amountOfTokenToSell: formatEther(amountOfTokenToBuy),
       amountOfTokenToBuy: formatEther(amountOfTokenToSell),
-      symbolToBuy: (await getSymbol(tokenToSell)) as string,
-      symbolToSell: (await getSymbol(tokenToBuy)) as string,
+      symbolToBuy: await getSymbol(tokenToSell),
+      symbolToSell: await getSymbol(tokenToBuy),
     },
     nft: {
       addressNFTToSell: addressNFTToBuy,
-      symbolToNFTToSell: (await getSymbol(addressNFTToBuy)) as string,
+      // symbolToNFTToSell: ((await getSymbol(addressNFTToBuy)) || "") as string,
       addressNFTToBuy: addressNFTToSell,
-      symbolToNFTToBuy: (await getSymbol(addressNFTToSell)) as string,
+      // symbolToNFTToBuy: ((await getSymbol(addressNFTToSell)) || "") as string,
       tokenIdNFTToSell: tokenIdNFTToBuy,
       tokenIdNFTToBuy: tokenIdNFTToSell,
     },
+
     eth: {
-      amountOfETHToSell: formatEther(amountOfTokenToBuy),
+      amountOfETHToSell: formatEther(amountOfETHToBuy),
       amountOfETHToBuy: formatEther(amountOfETHToSell),
     },
   };

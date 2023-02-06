@@ -5,19 +5,20 @@ import UserDetail from "./UserDetail";
 import Button from "../elements/Button";
 import Pagination from "./Pagination";
 import { getLastTransactions, getTradeList } from "./fetchTrades";
-import { Trade } from "./type";
+import { Trade, TradeData } from "./type";
 import { useFormatAddress } from "@/hooks/hooks";
 import { useAccount } from "wagmi";
 import Spinner from "../elements/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice";
+import { RootState } from "@/redux/store";
 
 // import { useQuery } from "@apollo/client";
 // import { GET_ALL_TRADES, GET_TRADE_BY_ID } from "@/helpers/getDataFromGraph";
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any;
-  const tradeList = useSelector((state: any) => state.trades.data);
+  const tradeList = useSelector((state: RootState) => state.trades.data);
   const [isLoading, setLoading] = React.useState(true);
   const { address } = useAccount();
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const TradeList = () => {
       const data = await getTradeList(tradeList, address);
       dispatch(fetchTrades(data));
       setPendingTrades(
-        data.filter((trade: Trade) => trade.status === "Pending"),
+        data.filter((trade: TradeData) => trade.status === "Pending"),
       );
       setLoading(false);
     };
@@ -60,13 +61,12 @@ const TradeList = () => {
       />
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-full mt-10">
+        <div className="flex justify-center items-center min-h-[50vh] mt-10">
           <Spinner className="w-10 h-10 mr-2 text-gray-300 dark:text-gray-600 fill-secondary-500 animate-spin" />
         </div>
       ) : (
         <>
           <SearchBox />
-
           <div className="flex justify-between mb-2 mt-3">
             <h2 className="text-lg font-semibold text-dark-orange-200 ">
               {pendingTrades.length > 0
@@ -80,7 +80,6 @@ const TradeList = () => {
               variant="secondary"
             />
           </div>
-
           <div className="flex flex-col gap-2 my-2 text-[14px] md:text-lg">
             <div className="flex flex-col border border-b-4  border-slate-600 border-b-secondary-900 overflow-hidden">
               <div className="grid grid-cols-12 p-2 items-center gap-1 shadow">
@@ -103,40 +102,38 @@ const TradeList = () => {
           </div>
 
           {pendingTrades
-            .sort((a: Trade, b: Trade) => b.id - a.id)
-            .map((trade: Trade, index: number) => {
+            .sort((a: TradeData, b: TradeData) => b.id - a.id)
+            .map((trade: TradeData, index: number) => {
               if (!trade.isCreatedByYou) {
                 return (
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.token.amountOfTokenToBuy}
-                    amountOfTokenToSell={trade.token.amountOfTokenToSell}
+                    amountOfTokenToBuy={trade.amountOfAssetToReceive}
+                    amountOfTokenToSell={trade.amountOfAssetToSend}
                     status={trade.status}
-                    TransferTokenId={trade.token.symbolToSell}
-                    ReceiveTokenId={trade.token.symbolToBuy}
+                    TransferTokenId={trade.symbolAssetToSend}
+                    ReceiveTokenId={trade.symbolAssetToReceive}
                     txId={trade.id}
                   />
                 );
               }
             })}
-
           <h2 className="text-lg font-semibold text-text my-2">
             Other Transactions
           </h2>
-
           {getLastTransactions(tradeList, 5).map(
-            (trade: Trade, index: number) => {
+            (trade: TradeData, index: number) => {
               if (trade.status !== "Pending" || trade.isCreatedByYou) {
                 return (
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.token.amountOfTokenToBuy}
-                    amountOfTokenToSell={trade.token.amountOfTokenToSell}
+                    amountOfTokenToBuy={trade.amountOfAssetToReceive}
+                    amountOfTokenToSell={trade.amountOfAssetToSend}
                     status={trade.status}
-                    TransferTokenId={trade.token.symbolToSell}
-                    ReceiveTokenId={trade.token.symbolToBuy}
+                    TransferTokenId={trade.symbolAssetToSend}
+                    ReceiveTokenId={trade.symbolAssetToReceive}
                     txId={trade.id}
                   />
                 );

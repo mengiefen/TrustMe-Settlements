@@ -10,6 +10,7 @@ import { RootState } from "@/redux/store";
 
 import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
+import { getTrade } from "@/helpers/getterHelpers";
 
 const Hero = () => {
   const isMounted = useIsMounted();
