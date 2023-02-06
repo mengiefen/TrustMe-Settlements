@@ -1,14 +1,44 @@
+// export interface Trade {
+//   id: number;
+//   seller: string;
+//   buyer: string;
+//   tokenToSell: string;
+//   tokenToBuy: string;
+//   symbolToSell: string;
+//   symbolToBuy: string;
+//   amountOfTokenToSell: string;
+//   amountOfTokenToBuy: string;
+//   deadline: number;
+//   status: string;
+//   isCreatedByYou: boolean;
+// }
+
 export interface Trade {
   id: number;
   seller: string;
   buyer: string;
-  tokenToSell: string;
-  tokenToBuy: string;
-  symbolToSell: string;
-  symbolToBuy: string;
-  amountOfTokenToSell: string;
-  amountOfTokenToBuy: string;
+  nft: {
+    addressNFTToSell: string;
+    symbolToNFTToSell: string;
+    tokenIdNFTToSell: string;
+    addressNFTToBuy: string;
+    tokenIdNFTToBuy: string;
+    symbolToNFTToBuy: string;
+  };
+  token: {
+    tokenToSell: string;
+    symbolToSell: string;
+    amountOfTokenToSell: string;
+    tokenToBuy: string;
+    symbolToBuy: string;
+    amountOfTokenToBuy: string;
+  };
+  eth: {
+    amountOfETHToSell: string;
+    amountOfETHToBuy: string;
+  };
   deadline: number;
+  dateCreated: number;
   status: string;
   isCreatedByYou: boolean;
 }
@@ -16,9 +46,9 @@ export interface Trade {
 export interface TradeRow extends Trade {
   userPic?: React.ReactNode | React.ReactElement;
   ReceiveAmount: string;
-  ReceiveTokenId?: string;
+  ReceiveAssetId?: string;
   TransferAmount: string;
-  TransferTokenId?: string;
+  TransferAssetId?: string;
 }
 
 export type UserDetailProps = {

@@ -110,11 +110,11 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.amountOfTokenToBuy}
-                    amountOfTokenToSell={trade.amountOfTokenToSell}
+                    amountOfTokenToBuy={trade.token.amountOfTokenToBuy}
+                    amountOfTokenToSell={trade.token.amountOfTokenToSell}
                     status={trade.status}
-                    TransferTokenId={trade.symbolToSell}
-                    ReceiveTokenId={trade.symbolToBuy}
+                    TransferTokenId={trade.token.symbolToSell}
+                    ReceiveTokenId={trade.token.symbolToBuy}
                     txId={trade.id}
                   />
                 );
@@ -132,11 +132,11 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.amountOfTokenToBuy}
-                    amountOfTokenToSell={trade.amountOfTokenToSell}
+                    amountOfTokenToBuy={trade.token.amountOfTokenToBuy}
+                    amountOfTokenToSell={trade.token.amountOfTokenToSell}
                     status={trade.status}
-                    TransferTokenId={trade.symbolToSell}
-                    ReceiveTokenId={trade.symbolToBuy}
+                    TransferTokenId={trade.token.symbolToSell}
+                    ReceiveTokenId={trade.token.symbolToBuy}
                     txId={trade.id}
                   />
                 );

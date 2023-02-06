@@ -1,7 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import sessionStorage from "redux-persist/lib/storage/session";
-
-import { getTradesIDsByUser, getTrade } from "../../helpers/getterHelpers";
 import { Trade } from "@/components/TransactionList/type";
 
 type TradesState = {
