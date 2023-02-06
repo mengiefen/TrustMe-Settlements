@@ -9,6 +9,7 @@ const client = new ApolloClient({
   uri: "https://api.studio.thegraph.com/query/38778/trustme-subgraph/0.0.13",
   cache: new InMemoryCache(),
 });
+
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <main className="font-poppins">

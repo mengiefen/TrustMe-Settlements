@@ -47,7 +47,7 @@ const TableRow = ({
 
           <div className="col-span-3 overflow-clip  text-secondary-800 flex items-center">
             {
-              <RiArrowLeftDownLine className="text-green-500 inline-block mr-1 md:mr-2 border border-green-400 rounded-full bg-green-100" />
+              <RiArrowLeftDownLine className="text-green-400 inline-block mr-1 md:mr-2 border border-green-400 rounded-full" />
             }
             <div className="flex flex-col">
               {amountOfTokenToBuy}
@@ -58,7 +58,7 @@ const TableRow = ({
           </div>
           <div className="col-span-3 text-secondary-900 flex items-center">
             {
-              <RiArrowRightUpLine className="text-red-500 inline-block mr-1 md:mr-2 border border-red-400 bg-red-100 rounded-full" />
+              <RiArrowRightUpLine className="text-red-400 inline-block mr-1 md:mr-2 border border-red-400 rounded-full" />
             }
             <div className="flex flex-col">
               {amountOfTokenToSell}

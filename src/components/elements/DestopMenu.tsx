@@ -4,8 +4,12 @@ import { GiTwoCoins } from "react-icons/gi";
 import HeaderDropDown from "./HeaderDropDown";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useAccount } from "wagmi";
+import { useRouter } from "next/router";
 
 const DesktopMenu = () => {
+  const { isConnected } = useAccount();
+  const router = useRouter();
   const { connected } = useSelector((state: RootState) => state.wallets);
 
   return (
@@ -23,7 +27,7 @@ const DesktopMenu = () => {
             Home
           </Link>
         </li>
-        {connected && (
+        {router.pathname !== "/list" && isConnected && connected && (
           <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
             <Link href="/list" className="py-3">
               Transactions
@@ -31,21 +35,13 @@ const DesktopMenu = () => {
           </li>
         )}
 
-        {/* <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          <Link href="" className="py-3">
-            Services
-          </Link>
-        </li> */}
-
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
           <Link href="#howToUse" className="py-3">
             How to use
           </Link>
         </li>
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
-          {/* <Link href="#" className="py-3"> */}
           Contact us
-          {/* </Link> */}
         </li>
 
         <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">

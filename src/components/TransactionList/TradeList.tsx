@@ -38,6 +38,7 @@ const TradeList = () => {
   // console.log(tradeFromGraph);
 
   useEffect(() => {
+    if (!address) return;
     const fetchTradeList = async () => {
       dispatch(fetchTradesPending());
       const data = await getTradeList(tradeList, address);

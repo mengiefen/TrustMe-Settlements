@@ -75,7 +75,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       setTxWait(false);
       router.push("/list");
     } catch (err) {
-      router.push("/list");
       setButtonClicked(false);
       setTxWait(false);
       setIsError({
@@ -153,34 +152,34 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   return (
     <Layout>
       {isLoading ? (
-        <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full h-full uppercase">
+        <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full  uppercase">
           <Spinner /> Loading...
         </div>
       ) : (
-        <div className="w-full px-5 md:px-0">
+        <div className="w-full px-5 md:px-0 min-h-[calc(100vh-70px)] md:min-h-[calc(100vh-85px)]">
           <div className="flex flex-row items-center justify-start w-full pb-2 md:py-5">
-            <h3 className="text-dark mx-1 font-semibold text-secondary-600 md:text-2xl">
+            <h3 className="text-dark mx-1 font-semibold text-secondary-600 md:text-2xl mt-2">
               Transaction Details
             </h3>
           </div>
-          <div className="grid grid-cols-1 w-full gap-x-2 gap-y-2 md:grid-cols-4 md:gap-x-5">
-            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+          <div className="grid grid-cols-1 w-full gap-x-2 md:grid-cols-4 md:gap-x-5">
+            <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard label={"TRANSACTION ID"} value={currentTrade.id} />
               </div>
-              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard label={"TXN STATUS"} value={currentTrade.status} />
               </div>
             </div>
 
-            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+            <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"YOUR ADDRESS"}
                   value={getFormatAddress(currentTrade.seller)}
                 />
               </div>
-              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"COUNTERPARTY ADDRESS"}
                   value={getFormatAddress(currentTrade.buyer)}
@@ -188,14 +187,14 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               </div>
             </div>
 
-            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+            <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"DATE CREATED"}
                   value={getFormatDate(currentTrade.deadline)}
                 />
               </div>
-              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"EXPIRY DATE"}
                   value={getFormatDate(currentTrade.deadline)}
@@ -203,14 +202,14 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               </div>
             </div>
 
-            <div className="flex flex-row w-full h-[55px] md:flex-col md:h-[200px]">
+            <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
                   value={`${currentTrade.symbolToSell}  ${currentTrade.amountOfTokenToSell}`}
                 />
               </div>
-              <div className="flex flex-row items-center justify-between w-1/2 md:mt-2 md:w-full md:h-1/2">
+              <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
                   value={`${currentTrade.symbolToBuy}   ${currentTrade.amountOfTokenToBuy} `}
@@ -219,8 +218,8 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-end pt-5">
-            <div className="flex items-center justify-center w-full h-11/12 py-10 px-10">
+          <div className="flex flex-col items-center justify-end md:mt-5">
+            <div className="flex items-center justify-center w-full h-11/12 py-5 md:py-10 px-10">
               {/* <Spinner/> */}
             </div>
             <div className="flex flex-row items-center">
@@ -258,7 +257,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 {isPending && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
-                      className="flex flex-row items-center justify-center p-4 m-auto bg-red-300 rounded-md"
+                      className="flex flex-row items-center justify-center p-4 m-auto text-red-700 bg-red-300 rounded-md"
                       onClick={() => {
                         handleCancelTrade(currentTrade?.id);
                         setButtonClicked(true);
@@ -271,7 +270,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       )}
                       {txWait && (
                         <>
-                          <AiOutlineLoading className="animate-spin h-5 w-5 " />
+                          <AiOutlineLoading className="text-red-700 animate-spin h-5 w-5 " />
                           <span>CANCELLING...</span>
                         </>
                       )}
@@ -288,7 +287,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 {isPending && !currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
-                      className="flex flex-row items-center justify-center p-4 m-auto bg-green-300 rounded-md"
+                      className="flex flex-row items-center justify-center p-4 m-auto font-semibold text-bg bg-secondary-600 border border-secondary-300 rounded-md"
                       onClick={() => {
                         handleConfirmTrade(currentTrade?.id);
                         setButtonClicked(true);

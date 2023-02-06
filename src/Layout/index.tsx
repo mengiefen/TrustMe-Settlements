@@ -3,17 +3,21 @@ import Header from "@/components/elements/Header";
 import Footer from "@/components/elements/Footer";
 import { useRouter } from "next/router";
 import FlashMessage from "@/components/FlashMessage";
-import { useAccount } from "wagmi";
-import { connectWallet } from "@/redux/wallet/walletSlice";
+import { useAccount, useBalance, useNetwork } from "wagmi";
+import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 import {
   useHandleCanceledEvent,
   useHandleConfirmedEvent,
   useHandleCreatedEvent,
   useHandleExpiredEvent,
   useHandleWithdrawEvent,
-} from "./events";
+} from "@/hooks/events";
 import { useDispatch } from "react-redux";
-
+import { getConnectedUserTokens } from "@/helpers/getterHelpers";
+import { updateUseBalances } from "@/redux/wallet/walletSlice";
+import { TokenListType } from "@/components/TransactionList/type";
+import { logout } from "@/redux/store";
+import { clearTrades } from "@/redux/trade/tradesSlice";
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>;
   bg?: string;
@@ -22,20 +26,52 @@ type LayoutProps = {
 const Layout = (props: LayoutProps) => {
   const { address, isConnected } = useAccount();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isConnected) dispatch(connectWallet(address));
-  }, [dispatch, address, isConnected]);
-  // const { isTradeCreated } = useHandleCreatedEvent(address as string);
-  // const { isTradeExpired } = useHandleExpiredEvent(address as string);
-  // const { isTradeConfirmed } = useHandleConfirmedEvent(address as string);
-  // const { isTradeCanceled } = useHandleCanceledEvent(address as string);
-  // const { isTradeWithdrawn } = useHandleWithdrawEvent(address as string);
+  const { isTradeCreated } = useHandleCreatedEvent(address as string);
+  const { isTradeExpired } = useHandleExpiredEvent(address as string);
+  const { isTradeConfirmed } = useHandleConfirmedEvent(address as string);
+  const { isTradeCanceled } = useHandleCanceledEvent(address as string);
+  const { isTradeWithdrawn } = useHandleWithdrawEvent(address as string);
 
   const router = useRouter();
   const pathname = router.pathname;
   const background = pathname !== "/" ? `bg-text${props.bg}` : "";
   const logoColor = pathname !== "/" ? `text-bg${props.logoPrimaryColor}` : "";
+  const { chain } = useNetwork();
+  const { refetch } = useBalance({ address } as {
+    address: `0x${string} | undefined`;
+  });
+
+  useEffect(() => {
+    const updateStore = async () => {
+      const tokens = await getConnectedUserTokens(address as `0x${string}`);
+      const { data: userData } = await refetch();
+      await dispatch(clearTrades());
+      await dispatch(connectWallet(address as string));
+      await dispatch(
+        updateUseBalances({
+          currencyBalance: userData?.formatted,
+          currencySymbol: userData?.symbol,
+          connectedNetwork: chain?.network,
+          tokens: tokens.map((token: TokenListType) => ({
+            address: token.address,
+            balance: token.balance,
+            decimals: token.decimals,
+            name: token.name,
+            symbol: token.symbol,
+            logo: token.logo,
+          })),
+        }),
+      );
+    };
+
+    isConnected && updateStore();
+  }, [isConnected, address, chain, dispatch, refetch]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      logout();
+    }
+  }, [isConnected]);
 
   return (
     <main
@@ -46,7 +82,7 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      {/* {isTradeCreated ? (
+      {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
       ) : isTradeCanceled ? (
         <FlashMessage message="Trade Canceled!" type="error" />
@@ -56,7 +92,7 @@ const Layout = (props: LayoutProps) => {
         <FlashMessage message="Trade expired!" type="info" />
       ) : isTradeWithdrawn ? (
         <FlashMessage message="Trade withdrawn!" type="success" />
-      ) : null} */}
+      ) : null}
 
       <Header bg={background} logoPrimaryColor={logoColor} />
       {props.children}
