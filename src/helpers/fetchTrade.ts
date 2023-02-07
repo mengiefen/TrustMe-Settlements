@@ -12,16 +12,16 @@ export const fetchTrade = async (userAddress: string, id: number) => {
 
   const data = await getResolvedTokens(
     isCreatedByYou,
-    trade.token.tokenToBuy,
-    trade.token.tokenToSell,
-    trade.token.amountOfTokenToBuy,
-    trade.token.amountOfTokenToSell,
-    trade.nft.addressNFTToBuy,
-    trade.nft.addressNFTToSell,
-    trade.nft.tokenIdNFTToBuy,
-    trade.nft.tokenIdNFTToSell,
-    trade.eth.amountOfETHToBuy,
-    trade.eth.amountOfETHToSell,
+    trade.token?.tokenToBuy,
+    trade.token?.tokenToSell,
+    trade.token?.amountOfTokenToBuy,
+    trade.token?.amountOfTokenToSell,
+    trade.nft?.addressNFTToBuy,
+    trade.nft?.addressNFTToSell,
+    trade.nft?.tokenIdNFTToBuy,
+    trade.nft?.tokenIdNFTToSell,
+    trade.eth?.amountOfETHToBuy,
+    trade.eth?.amountOfETHToSell,
   );
 
   const tradeObj = {

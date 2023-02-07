@@ -1,10 +1,16 @@
 export type FormData = {
-  sellerAddress: ReactNode;
+  sellerAddress: string;
   buyerAddress: string;
   sellerTokenAddress: string;
   sellerTokenAmount: string;
   buyerTokenAddress: string;
-  buyerTokenAmount: string;
+  buyerTokenAmount: number;
+  sellerNftAddress: string;
+  sellerNftTokenId: number;
+  buyerNftAddress: string;
+  buyerNftTokenId: number;
+  sellerEthAmount: number;
+  buyerEthAmount: number;
   datePeriod: string;
   timePeriod: string;
 };
@@ -23,20 +29,19 @@ export type TimePeriodType = {
   datePeriod: string;
   timePeriod: string;
 };
-
-export type FormProps1 = BuyerAddressType & {
-  updateFields: (fields: Partial<FormData>) => void;
+export type SellerEthAmount = {
+  sellerEthAmount: string;
 };
-export type FormProps2 = SellerTokenAddressType & {
-  updateFields: (
-    fields: Pick<FormData, "sellerTokenAddress" | "sellerTokenAmount">,
-  ) => void;
+export type BuyerEthAmount = {
+  buyerEthAmount: string;
 };
-export type FormProps3 = BuyerTokenAddressType & {
-  updateFields: (fields: Partial<FormData>) => void;
+export type BuyerNft = {
+  buyerNftAddress: string;
+  buyerNftTokenId: string;
 };
-export type FormProps4 = TimePeriodType & {
-  updateFields: (fields: Partial<FormData>) => void;
+export type SellerNft = {
+  sellerNftAddress: string;
+  sellerNftTokenId: string;
 };
 
 export type FormWrapperProps = {
