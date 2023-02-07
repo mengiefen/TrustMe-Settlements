@@ -14,7 +14,7 @@ const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || "";
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, goerli, polygon],
   [
-    // alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
+    alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
     infuraProvider({ apiKey: INFURA_API_KEY }),
     publicProvider(),
   ],
@@ -48,6 +48,7 @@ const config = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_GOERLI_API_KEY,
   network: Network.ETH_GOERLI,
 };
+
 export const alchemy = new Alchemy(config);
 
 interface WagmiProviderProps {

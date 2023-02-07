@@ -7,7 +7,7 @@ import { useFormatAddress } from "@/hooks/hooks";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-
+import Link from 'next/link'
 import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 import { getTrade } from "@/helpers/getterHelpers";
@@ -96,14 +96,16 @@ const Hero = () => {
           )}
         </div>
       </div>
-
-      <button
-        className="absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-300  bg-transparent font-thin
-          border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
-      >
-        <span>View Transactions</span>
-        <BsArrowDown className="animate-bounce bg-secondary-600 rounded-full p-1 text-xl hover:translate-x-2" />
-      </button>
+      {isConnected && (
+        <Link href="/list"
+          className="hidden md:block absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-200  bg-transparent font-medium
+            border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
+        >
+          <span>View Transactions</span>
+          <BsArrowDown className="border border-purplish-600 rounded-full p-1 text-xl"  />
+        </Link>
+      )
+    }
     </div>
   );
 };

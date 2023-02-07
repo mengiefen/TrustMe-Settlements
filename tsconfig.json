@@ -26,6 +26,6 @@
     "src/components/icrementCounter.txs",
     "src/constants/interact.js",
     "src/constants/interact.js"
-  ],
+, "src/helpers/whatsapp.js"  ],
   "exclude": ["node_modules"]
 }
