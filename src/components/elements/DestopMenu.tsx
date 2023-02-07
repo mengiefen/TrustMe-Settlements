@@ -1,0 +1,55 @@
+import React from "react";
+import Link from "next/link";
+import { GiTwoCoins } from "react-icons/gi";
+import HeaderDropDown from "./HeaderDropDown";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useAccount } from "wagmi";
+import { useRouter } from "next/router";
+
+const DesktopMenu = () => {
+  const { isConnected } = useAccount();
+  const router = useRouter();
+  const { connected } = useSelector((state: RootState) => state.wallets);
+
+  return (
+    <div className="items-center justify-between h-full w-full px-5 hidden md:flex mr-5">
+      <div className="flex gap-1 items-center">
+        <GiTwoCoins className="text-3xl" />
+
+        <h1 className="text-2xl  font-semibold tracking-wide">
+          Trust<span className="text-secondary-600 font-bold">ME</span>
+        </h1>
+      </div>
+      <ul className="flex md:gap-3 lg:gap-5 items-center justify-end">
+        <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+          <Link href="/" className="py-3">
+            Home
+          </Link>
+        </li>
+        {router.pathname !== "/list" && isConnected && connected && (
+          <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+            <Link href="/list" className="py-3">
+              Transactions
+            </Link>
+          </li>
+        )}
+
+        <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+          <Link href="#howToUse" className="py-3">
+            How to use
+          </Link>
+        </li>
+        <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+          Contact us
+        </li>
+
+        <li className="py-2 hover:-translate-y-[1px] transition duration-100 hover:text-secondary-600">
+          <HeaderDropDown />
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default DesktopMenu;
