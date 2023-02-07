@@ -46,7 +46,7 @@ const Hero = () => {
     <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5 ">
       <div
         className="flex flex-col md:flex-row-reverse items-center justify-center w-[80%]
-                       mb-5 md:gap-5 lg:gap-10 md:w-full"
+                      mb-3 md:gap-5 lg:gap-10 md:w-full"
       >
         <div className="sm:max-w-[70%] lg:max-w-[55%] md:h-full md:my-auto">
           <Image src={HeroImage} alt="Hero Image" />
@@ -70,7 +70,7 @@ const Hero = () => {
           </p>
 
           {isMounted && (
-            <div className="mt-5 flex flex-col justify-center items-center md:items-start md:mt-10">
+            <div className="mt-5 flex flex-col gap-2 justify-center items-center md:items-start md:mt-3 md:py-3">
               <Button
                 label={buttonText}
                 variant="primary"
@@ -84,12 +84,25 @@ const Hero = () => {
                 size="large"
                 bg="bg-gradient-to-r from-purplish-800 to-secondary-800 md:py-4 md:px-12 lg:px-20 md:text-lg md:tracking-widest"
               />
+              <Button
+                label= "View Transactions"
+                variant="primary"
+                onClick={() => {
+                  if (isConnected) {
+                    handleDisconnect();
+                    return;
+                  }
+                  handleConnect(connectors[0]);
+                }}
+                size="large"
+                bg="bg-transperant border-[1px] to-secondary-800 md:py-4 md:px-12 lg:px-20 md:text-lg md:tracking-widest"
+              />
 
-              <div className="flex flex-col items-center justify-center w-[80%] mt-5">
+              {/* <div className="flex flex-col items-center justify-center w-[80%] mt-5">
                 <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:tracking-wider">
                   {formattedAddress}
                 </p>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
