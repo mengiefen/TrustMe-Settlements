@@ -43,7 +43,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const tradeList = useSelector((state: RootState) => state.trades.data) as any;
   const { address } = useSelector((state: RootState) => state.wallets);
 
-  const handleCancelTrade = async (id: string) => {
+  const handleCancelTrade = async (id: number) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
@@ -53,7 +53,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       setTxWait(false);
       router.push("/list");
     } catch (err) {
-      router.push("/list");
+      console.log(err)
       setTxWait(false);
       setIsError({
         status: true,
@@ -62,23 +62,24 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-  console.log("---------------", currentTrade.assetToSend);
-
-  const handleConfirmTrade = async (id: string) => {
+  const handleConfirmTrade = async (id: number) => {
     console.log("currentTrade", currentTrade);
     let tradeType = currentTrade.tradeType;
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-      if (tradeType == "ETH to NFT" || tradeType === "ETH to TOKEN") {
+      if (tradeType === "ETH to NFT" || tradeType === "ETH to Token") {
         const confirm = await contract.confirmTrade(id, {
           value: parseEther(currentTrade.amountOfAssetToSend),
         });
         await confirm.wait();
+        dispatch(updateConfirmedTrade(parseInt(id)));
+        setTxWait(false);
+        router.push("/list");
       } else if (
-        tradeType == "TOKEN to NFT" ||
-        tradeType == "TOKEN to ETH" ||
-        tradeType == "TOKEN to TOKEN"
+        tradeType === "Token to NFT" ||
+        tradeType === "Token to ETH" ||
+        tradeType === "Token to Token"
       ) {
         const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
         await erc20.approve(
@@ -87,6 +88,9 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         );
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
+        dispatch(updateConfirmedTrade(parseInt(id)));
+        setTxWait(false);
+        router.push("/list");
       } else {
         const erc721 = await erc721Contract(currentTrade.addressAssetToSend);
         await erc721.approve(
@@ -95,11 +99,12 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         );
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
+        dispatch(updateConfirmedTrade(parseInt(id)));
+        setTxWait(false);
+        router.push("/list");
       }
-      dispatch(updateConfirmedTrade(parseInt(id)));
-      setTxWait(false);
-      router.push("/list");
     } catch (err) {
+      console.log(err)
       setButtonClicked(false);
       setTxWait(false);
       setIsError({
@@ -109,7 +114,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-  const handleWithdrawTrade = async (id: string) => {
+  const handleWithdrawTrade = async (id: number) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
@@ -129,7 +134,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   useEffect(() => {
     let tradeObj: TradeData;
-
     if (router.isReady) {
       const slug = parseInt(router.query.slug as string);
       const fetchData = async () => {

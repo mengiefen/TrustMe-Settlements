@@ -113,6 +113,7 @@ const TradeList = () => {
                     amountOfTokenToSell={trade.amountOfAssetToSend}
                     status={trade.status}
                     TransferTokenId={trade.symbolAssetToSend}
+                    isCreatedByYou={trade.isCreatedByYou}
                     ReceiveTokenId={trade.symbolAssetToReceive}
                     txId={trade.id}
                   />
@@ -122,7 +123,7 @@ const TradeList = () => {
           <h2 className="text-lg font-semibold text-text my-2">
             Other Transactions
           </h2>
-          {getLastTransactions(tradeList, 5).map(
+          {getLastTransactions(tradeList, 20).map(
             (trade: TradeData, index: number) => {
               if (trade.status !== "Pending" || trade.isCreatedByYou) {
                 return (
@@ -134,6 +135,7 @@ const TradeList = () => {
                     status={trade.status}
                     TransferTokenId={trade.symbolAssetToSend}
                     ReceiveTokenId={trade.symbolAssetToReceive}
+                    isCreatedByYou={trade.isCreatedByYou}
                     txId={trade.id}
                   />
                 );

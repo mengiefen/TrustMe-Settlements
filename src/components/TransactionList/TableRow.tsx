@@ -13,6 +13,7 @@ interface RowProps {
   TransferTokenId?: string;
   amountOfTokenToBuy: string;
   amountOfTokenToSell: string;
+  isCreatedByYou: boolean,
   status: string;
   txId: number;
 }
@@ -20,10 +21,11 @@ interface RowProps {
 const TableRow = ({
   userPic = <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />,
   buyerAddress = "",
-  amountOfTokenToBuy,
+  amountOfTokenToBuy="NFT",
   ReceiveTokenId = "USDT",
-  amountOfTokenToSell,
+  amountOfTokenToSell="NFT",
   TransferTokenId = "TKN",
+  isCreatedByYou,
   status,
   txId,
 }: RowProps) => {
@@ -78,13 +80,13 @@ const TableRow = ({
           </div>
         </div>
 
-        {status === "Pending" && (
+        {status === "Pending" &&  (
           <Link
             href={`/list/${txId}`}
             className="outline-none border-none py-1 px-2 flex items-center justify-center bg-slate-900 text-sm font-normal"
           >
             <span className="mr-2 text-gray-400 hover:text-light-orange-400">
-              Confirmation required
+              {isCreatedByYou ? "Awaiting Confirmation" : "You to Confirm" }
             </span>
 
             <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-gray-400 hover:text-light-orange-400" />
