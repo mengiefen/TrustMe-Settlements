@@ -10,12 +10,13 @@ export const getSigner = async () => {
   const signer = await fetchSigner();
   return signer;
 };
+
 export const TRUST_ME_CONTRACT_ADDRESS =
-  "0x466f95C9cd9CaB50689E45D19974FC6718679a2c";
+  process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 export const trustMeContract = async () => {
   const trustMeInstance: TrustMe = new ethers.Contract(
-    TRUST_ME_CONTRACT_ADDRESS,
+    TRUST_ME_CONTRACT_ADDRESS as string,
     TrustMeAbi,
     (await getSigner()) as Signer,
   ) as TrustMe;

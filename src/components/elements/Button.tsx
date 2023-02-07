@@ -40,11 +40,7 @@ const Button = ({
   }, [variant, size, bg, props.otherClasses]);
 
   return (
-    <button
-      type={buttonType}
-      className={buttonClass}
-      onClick={props.onClick}
-    >
+    <button type={buttonType} className={buttonClass} onClick={props.onClick}>
       {label}
       {props.children}
     </button>
