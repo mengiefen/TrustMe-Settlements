@@ -46,7 +46,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const tradeList = useSelector((state: RootState) => state.trades.data) as any;
   const { address } = useSelector((state: RootState) => state.wallets);
 
-  const handleCancelTrade = async (id: string) => {
+  const handleCancelTrade = async (id: number) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
@@ -56,7 +56,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       setTxWait(false);
       router.push("/list");
     } catch (err) {
-      router.push("/list");
+      console.log(err)
       setTxWait(false);
       setIsError({
         status: true,
@@ -65,17 +65,22 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
+
   const handleConfirmTrade = async (id: string) => {
+
     let tradeType = currentTrade.tradeType;
     try {
       setTxWait(true);
       const contract = await trustMeContract();
+
       if (tradeType === "Token to ETH" || tradeType === "NFT to ETH") {
+
         const confirm = await contract.confirmTrade(id, {
           value: parseEther(currentTrade.amountOfAssetToSend),
         });
         console.log(tradeType);
         await confirm.wait();
+
         setTxWait(false);
         setButtonClicked(true);
         dispatch(updateConfirmedTrade(parseInt(id)));
@@ -96,6 +101,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         setButtonClicked(true);
         dispatch(updateConfirmedTrade(parseInt(id)));
         ``;
+
         router.push("/list");
       } else {
         console.log(tradeType);
@@ -105,6 +111,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         await erc721.approve(contract.address, number);
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
+
         setTxWait(false);
         setButtonClicked(true);
         dispatch(updateConfirmedTrade(parseInt(id)));
@@ -113,6 +120,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       }
     } catch (err) {
       console.log(err);
+
       setButtonClicked(false);
       setTxWait(false);
       setIsError({
@@ -122,7 +130,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-  const handleWithdrawTrade = async (id: string) => {
+  const handleWithdrawTrade = async (id: number) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
@@ -142,7 +150,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   useEffect(() => {
     let tradeObj: TradeData;
-
     if (router.isReady) {
       const slug = parseInt(router.query.slug as string);
       const fetchData = async () => {
