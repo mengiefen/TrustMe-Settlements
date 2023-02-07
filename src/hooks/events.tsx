@@ -23,12 +23,13 @@ export const useHandleCreatedEvent = (address: string) => {
     seller: "",
   });
   const dispatch = useDispatch();
+  const { address: signer } = useAccount();
 
   useEffect(() => {
-    if (!isConnected) return;
+    if (!isConnected && !signer) return;
     const listenEvent = async () => {
       const trustMe = await trustMeContract();
-      await trustMe.on(
+      await trustMe?.on(
         "TradeCreated",
         async (tradeId: BigNumber, buyer: string, seller: string) => {
           if (buyer == address || seller == address) {
@@ -250,3 +251,4 @@ export const useHandleConfirmedEvent = (address: string) => {
 
   return tradeConfirmed;
 };
+// export default {};
