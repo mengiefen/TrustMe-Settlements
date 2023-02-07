@@ -378,7 +378,7 @@ export default function AddTradeForm() {
   }
 
   return (
-    <div className="w-full h-[calc(100vh-70px)] md:h-[calc(100vh-85px)] flex items-center justify-center ">
+    <div className="w-full min-h-[calc(100vh-70px)] md:min-h-[calc(100vh-85px)] flex items-center justify-center ">
       <form
         className="w-full flex items-center justify-center py-5 md:w-[80%] lg:w-[75%] xl:w-[65%] h-full px-5 lg:px-10"
         onSubmit={onSubmit}
@@ -394,7 +394,7 @@ export default function AddTradeForm() {
             Create New Transaction
           </h3>
           <span className="text-gray-400"> {step}</span>
-          <div className="flex gap-2 justify-between mx-5 md:mx-10] mt-10">
+          <div className="flex gap-2 justify-between mx-5 md:mx-10 mt-10">
             {!isFirstStep && (
               <button
                 className="py-2 text-white text-sm rounded shadow-md bg-purplish-800 
