@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-// import Button from "@/components/elements/Button"
 import { trustMeContract, erc20Contract } from "@/helpers/getterHelpers";
 import Layout from "@/Layout";
 import { parseEther } from "ethers/lib/utils.js";
-// import { BiTransfer } from "react-icons/bi"
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
 import { getFormatAddress, getFormatDate } from "@/utils";
@@ -103,7 +101,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   };
 
   useEffect(() => {
-    let tradeObj: Trade | undefined;
+    let tradeObj: Trade;
 
     if (router.isReady) {
       const slug = parseInt(router.query.slug as string);
@@ -206,13 +204,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={`${currentTrade.symbolToSell}  ${currentTrade.amountOfTokenToSell}`}
+                  value={`${currentTrade.token.symbolToSell}  ${currentTrade.token.amountOfTokenToSell}`}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={`${currentTrade.symbolToBuy}   ${currentTrade.amountOfTokenToBuy} `}
+                  value={`${currentTrade.token.symbolToBuy}   ${currentTrade.token.amountOfTokenToBuy} `}
                 />
               </div>
             </div>
@@ -224,7 +222,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             </div>
             <div className="flex flex-row items-center">
               <>
-                {isExpired && currentTrade.isCreatedByYou && (
+                {isExpired && currentTrade.token.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"

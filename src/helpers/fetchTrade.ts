@@ -1,32 +1,31 @@
 import { getTrade } from "./getterHelpers";
-import {
-  getResolvedTokens,
-  getResolvedUserAddress,
-} from "./resolveData";
+import { getResolvedTokens, getResolvedUserAddress } from "./resolveData";
 
-export const fetchTrade = async (
-  userAddress: string,
-  id: number,
-) => {
+export const fetchTrade = async (userAddress: string, id: number) => {
   const trade = await getTrade(id);
 
-  const { buyer, seller, isCreatedByYou } =
-    getResolvedUserAddress(
-      userAddress,
-      trade.buyer,
-      trade.seller,
-    );
+  const { buyer, seller, isCreatedByYou } = getResolvedUserAddress(
+    userAddress,
+    trade.buyer,
+    trade.seller,
+  );
 
   const data = await getResolvedTokens(
     isCreatedByYou,
-    trade.tokenToBuy,
-    trade.tokenToSell,
-    trade.amountOfTokenToBuy,
-    trade.amountOfTokenToSell,
+    trade.token.tokenToBuy,
+    trade.token.tokenToSell,
+    trade.token.amountOfTokenToBuy,
+    trade.token.amountOfTokenToSell,
+    trade.nft.addressNFTToBuy,
+    trade.nft.addressNFTToSell,
+    trade.nft.tokenIdNFTToBuy,
+    trade.nft.tokenIdNFTToSell,
+    trade.eth.amountOfETHToBuy,
+    trade.eth.amountOfETHToSell,
   );
 
   const tradeObj = {
-    id: Number(trade.id),
+    id: Number(trade.tradeId),
     status:
       trade.status == 0
         ? "Pending"
@@ -40,13 +39,16 @@ export const fetchTrade = async (
     seller,
     buyer,
     deadline: Number(trade.deadline),
-    tokenToSell: data.tokenToSell,
-    tokenToBuy: data.tokenToBuy,
-    amountOfTokenToSell: data.amountOfTokenToSell,
-    amountOfTokenToBuy: data.amountOfTokenToBuy,
-    symbolToBuy: data.symbolToBuy,
-    symbolToSell: data.symbolToSell,
-    isCreatedByYou: data.isCreatedByYou,
+    dateCreated: Number(trade.dateCreated),
+    isCreatedByYou,
+    ...data,
   };
+
   return tradeObj;
 };
+
+/// token to eth
+/// token to nft
+/// eth to nft
+/// nft to nft
+/// token to token

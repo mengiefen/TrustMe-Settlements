@@ -10,6 +10,7 @@ export const getTradeList = async (
   address: `0x${string}` | undefined,
 ) => {
   const trades: Trade[] = [...tradeList];
+
   const tradeIds = await getTradesIDsByUser(address as string);
   if (tradeIds.length === trades.length) return trades;
   if (tradeIds.length > tradeList.length) {
@@ -17,7 +18,7 @@ export const getTradeList = async (
       tradeIds
         .slice(tradeList.length, tradeIds.length)
         .map(async (tradeId: BigNumber) => {
-          const trade = (await fetchTrade(
+          const trade: Trade = (await fetchTrade(
             address as string,
             Number(tradeId._hex),
           )) as Trade;

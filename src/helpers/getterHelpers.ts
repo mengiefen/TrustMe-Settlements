@@ -11,7 +11,7 @@ export const getSigner = async () => {
   return signer;
 };
 export const TRUST_ME_CONTRACT_ADDRESS =
-  "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E";
+  "0x466f95C9cd9CaB50689E45D19974FC6718679a2c";
 
 export const trustMeContract = async () => {
   const trustMeInstance: TrustMe = new ethers.Contract(
@@ -30,10 +30,10 @@ export const erc20Contract = async (address: string) => {
   ) as ERC20;
   return erc20Instance;
 };
+
 export async function getPendingTrades() {
   const trustMe = await trustMeContract();
-  const pendingTradesIDs =
-    await trustMe.getPendingTradesIDs();
+  const pendingTradesIDs = await trustMe.getPendingTradesIDs();
   return pendingTradesIDs;
 }
 
@@ -48,56 +48,37 @@ export const getTradeStatus = async (tradeID: number) => {
   const tradeStatus = await trustMe.getTradeStatus(tradeID);
   return tradeStatus;
 };
-export const getTradesIDsByUser = async (
-  address: string,
-) => {
+
+export const getTradesIDsByUser = async (address: string) => {
   const trustMe = await trustMeContract();
-  const tradeIds = await trustMe.getTradesIDsByUser(
-    address,
-  );
+  const tradeIds = await trustMe.getTradesIDsByUser(address);
 
   return tradeIds;
 };
 
-export const getUserToTradesIDs = async (
-  userAddress: string,
-  id: number,
-) => {
+export const getUserToTradesIDs = async (userAddress: string, id: number) => {
   const trustMe = await trustMeContract();
-  const tradeStatus = await trustMe.userToTradesIDs(
-    userAddress,
-    id,
-  );
+  const tradeStatus = await trustMe.userToTradesIDs(userAddress, id);
   return tradeStatus;
 };
 
-export const getConnectedUserTokens = async (
-  address: string,
-) => {
+export const getConnectedUserTokens = async (address: string) => {
   const tokenMetadata: any = [];
-  const balances = await alchemy.core.getTokenBalances(
-    address,
-  );
+  const balances = await alchemy.core.getTokenBalances(address);
 
   // Remove tokens with zero balance
-  const nonZeroBalances = balances.tokenBalances.filter(
-    (token) => {
-      return token.tokenBalance !== "0";
-    },
-  );
+  const nonZeroBalances = balances.tokenBalances.filter((token) => {
+    return token.tokenBalance !== "0";
+  });
   for (let token of nonZeroBalances) {
     // Get balance of token
-    let balance: number =
-      token.tokenBalance as unknown as number;
+    let balance: number = token.tokenBalance as unknown as number;
 
     // Get metadata of token
-    const metadata = await alchemy.core.getTokenMetadata(
-      token.contractAddress,
-    );
+    const metadata = await alchemy.core.getTokenMetadata(token.contractAddress);
 
     // Compute token balance in human-readable format
-    balance =
-      balance / Math.pow(10, metadata.decimals as number);
+    balance = balance / Math.pow(10, metadata.decimals as number);
     balance = balance.toFixed(2) as unknown as number;
     tokenMetadata.push({
       name: metadata.name,
