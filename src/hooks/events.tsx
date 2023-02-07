@@ -11,8 +11,10 @@ import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { trustMeContract } from "@/helpers/getterHelpers";
 import { useAccount } from "wagmi";
+import { TradeData } from "@/components/TransactionList/type";
 
 export const useHandleCreatedEvent = (address: string) => {
+  const [isNotified, setIsNotified] = useState(false);
   const { isConnected } = useAccount();
   const [tradeCreated, setTradeCreated] = useState({
     isTradeCreated: false,
@@ -33,9 +35,27 @@ export const useHandleCreatedEvent = (address: string) => {
             if (!tradeCreated.isTradeCreated) {
               await fetchTrade(address as string, Number(tradeId)).then(
                 (trade) => {
-                  dispatch(updateCreatedTrade(trade));
+                  dispatch(updateCreatedTrade(trade as TradeData));
                 },
               );
+            }
+            if (!isNotified) {
+              await fetch("/api/notify", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  message:
+                    "Dear Customer, You have new transaction in TrustMe App. Thank you for using our service.",
+                }),
+              })
+                .then(() => {
+                  setIsNotified(true);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
 
             setTradeCreated({
@@ -56,7 +76,7 @@ export const useHandleCreatedEvent = (address: string) => {
         contract.removeAllListeners("TradeCreated");
       };
     });
-  }, [dispatch, address, tradeCreated.isTradeCreated, isConnected]);
+  }, [dispatch, address, tradeCreated.isTradeCreated, isConnected, isNotified]);
 
   return tradeCreated;
 };

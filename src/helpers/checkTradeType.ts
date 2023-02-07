@@ -10,12 +10,16 @@ const isAddress = (address: string) => {
   return (
     address !== "0x0000000000000000000000000000000000000000" &&
     address !== "" &&
-    address !== "0x0"
+    address !== "0x0" &&
+    address !== null &&
+    address !== undefined
   );
 };
 
-const isNotZero = (amount: string) => {
-  return amount !== "0" && amount !== "0.0" && amount !== "0.00";
+const isNotZero = (amount: string | number) => {
+  return (
+    amount !== "0" && amount !== 0 && amount !== "0.0" && amount !== "0.00"
+  );
 };
 
 const getStatus = (symbol: number) => {
@@ -49,8 +53,6 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isAddress(trade.token.tokenToSell) &&
     isAddress(trade.nft.addressNFTToBuy)
   ) {
-    console.log("TokenNft");
-
     return await getTokenNftTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
@@ -60,8 +62,6 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isAddress(trade.nft.addressNFTToSell) &&
     isNotZero(trade.eth.amountOfETHToBuy)
   ) {
-    console.log("NFTEth");
-
     return await getNftEthTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
@@ -71,19 +71,16 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isNotZero(trade.eth.amountOfETHToSell) &&
     isAddress(trade.nft.addressNFTToBuy)
   ) {
-    console.log("EthNft");
-
     return await getEthNftTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
     );
   }
+
   if (
     isNotZero(trade.token.amountOfTokenToSell) &&
     isNotZero(trade.eth.amountOfETHToBuy)
   ) {
-    console.log("TokenEth");
-
     return await getTokenEthTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
@@ -93,8 +90,6 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isNotZero(trade.eth.amountOfETHToSell) &&
     isNotZero(trade.token.amountOfTokenToBuy)
   ) {
-    console.log("EthToken");
-
     return await getEthTokenTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
@@ -105,8 +100,6 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isAddress(trade.nft.addressNFTToSell) &&
     isAddress(trade.nft.addressNFTToBuy)
   ) {
-    console.log("NftNft");
-
     return await getNftNftTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
@@ -116,8 +109,6 @@ export const getTradeDataByType = async (trade: Trade, userAddress: string) => {
     isNotZero(trade.token.amountOfTokenToBuy) &&
     isNotZero(trade.token.amountOfTokenToSell)
   ) {
-    console.log("TokenToken");
-
     return await getTokenTokenTradeData(
       trade,
       checkCreateBy(userAddress, trade.seller),
