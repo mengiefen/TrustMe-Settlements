@@ -23,6 +23,7 @@ type LayoutProps = {
   bg?: string;
   logoPrimaryColor?: string;
 };
+
 const Layout = (props: LayoutProps) => {
   const { address, isConnected } = useAccount();
   const dispatch = useDispatch();
