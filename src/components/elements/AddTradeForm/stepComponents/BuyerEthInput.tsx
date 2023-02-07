@@ -4,8 +4,8 @@ import FormWrapper from "../FormWrapper";
 const BuyerEthInput = () => {
   const { formData, setFormData } = useFormData();
   return (
-    <FormWrapper title="ETH Value">
-      <label className="md:mt-2">Eth To Send</label>
+    <FormWrapper title="ETH to Receive">
+      <label className="md:mt-2">How much ETH Baby?</label>
       <input
         placeholder="Asset Amount"
         autoFocus

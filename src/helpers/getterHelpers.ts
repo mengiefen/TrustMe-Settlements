@@ -2,8 +2,8 @@ import { ethers, Signer } from "ethers";
 import { alchemy } from "@/connector/connect";
 import TrustMeAbi from "../../abi.json";
 import Erc20Abi from "../../erc20Abi.json";
-import { fetchSigner } from "@wagmi/core";
-import { ERC20, TrustMe } from "typechain";
+import { erc721ABI, fetchSigner } from "@wagmi/core";
+import { ERC20, ERC721, TrustMe } from "typechain";
 import { formatEther } from "ethers/lib/utils.js";
 
 export const getSigner = async () => {
@@ -29,6 +29,15 @@ export const erc20Contract = async (address: string) => {
     (await getSigner()) as Signer,
   ) as ERC20;
   return erc20Instance;
+};
+
+export const erc721Contract = async (address: string) => {
+  const erc721Instance = new ethers.Contract(
+    address,
+    erc721ABI,
+    (await getSigner()) as Signer,
+  ) as ERC721;
+  return erc721Instance;
 };
 
 export async function getPendingTrades() {
@@ -90,6 +99,40 @@ export const getConnectedUserTokens = async (address: string) => {
     });
   }
   return tokenMetadata;
+};
+export interface NftDetails {
+  quantity: number;
+  address: string;
+  title: string;
+  description: string;
+  media: { raw: string }[];
+  tokenId: number;
+  tokenUri: string | undefined;
+}
+export const getNftsMetadata = async (address: string) => {
+  console.log(address);
+  try {
+    const result = await alchemy.nft.getNftsForOwner(address, {
+      omitMetadata: false,
+    });
+    let formattedResult: NftDetails[] = [] as NftDetails[];
+    for (let nfts of result.ownedNfts) {
+      let formatData = {
+        title: nfts.title,
+        quantity: nfts.balance,
+        description: nfts.description,
+        media: nfts.media,
+        address: nfts.contract.address,
+        tokenId: Number(nfts.tokenId),
+        tokenUri: nfts.tokenUri?.raw,
+      };
+      formattedResult.push(formatData);
+    }
+    console.log(formattedResult);
+    return formattedResult;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // return balance in ether format

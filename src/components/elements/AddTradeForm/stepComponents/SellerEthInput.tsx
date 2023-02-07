@@ -5,15 +5,15 @@ import FormWrapper from "../FormWrapper";
 const SellerEthInput = () => {
   const { formData, setFormData } = useFormData();
   return (
-    <FormWrapper title="ETH Value">
-      <label className="md:mt-2">Eth To Send</label>
+    <FormWrapper title="ETH to Send">
+      <label className="md:mt-2">How much eth baby?</label>
       <input
         placeholder="Asset Amount"
         autoFocus
         type="number"
         name="sellerTokenAmount"
         required
-        value={formData?.sellerEthAmount || 0}
+        //   value={formData?.sellerEthAmount || 0}
         onChange={(e) =>
           setFormData({
             ...formData,

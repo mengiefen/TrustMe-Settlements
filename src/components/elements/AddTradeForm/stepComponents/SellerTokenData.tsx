@@ -11,9 +11,9 @@ const SellerTokenAddress = () => {
   );
   const { formData, setFormData } = useFormData();
   return (
-    <FormWrapper title="Details Asset to Send">
+    <FormWrapper title="Details Token to Send">
       <>
-        <label className="md:mt-2">Asset to Send</label>
+        <label className="md:mt-2">Token to Send</label>
         <select
           required
           name="tokenToTransfer"
@@ -21,7 +21,7 @@ const SellerTokenAddress = () => {
             setFormData({ ...formData, sellerTokenAddress: e.target.value });
           }}
           className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
-          value={formData?.sellerTokenAddress}
+          // value={formData?.sellerTokenAddress}
         >
           <option value="" selected disabled>
             --SELECT--
@@ -53,14 +53,14 @@ const SellerTokenAddress = () => {
         </select>
       </>
       <>
-        <label className="md:mt-2">Amount Asset to Send</label>
+        <label className="md:mt-2">Amount Token to Send</label>
         <input
           placeholder="Asset Amount"
           autoFocus
           type="number"
           name="sellerTokenAmount"
           required
-          value={formData.sellerTokenAmount || 0}
+          // value={formData.sellerTokenAmount || 0}
           onChange={(e) =>
             setFormData({
               ...formData,

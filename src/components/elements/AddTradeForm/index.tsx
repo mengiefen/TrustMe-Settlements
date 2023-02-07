@@ -3,11 +3,17 @@ import { Network, Alchemy } from "alchemy-sdk";
 import { ethers } from "ethers";
 import { useAccount, useSigner } from "wagmi";
 import { useState } from "react";
-import { getConnectedUserTokens } from "../../../helpers/getterHelpers";
+import {
+  erc20Contract,
+  erc721Contract,
+  getConnectedUserTokens,
+  trustMeContract,
+} from "../../../helpers/getterHelpers";
 import { useMultistepForm } from "./useMultistepForm";
 import dayjs from "dayjs";
-import { TrustMe } from "typechain";
+import { ERC20, ERC721, TrustMe } from "typechain";
 import abi from "../../../../abi.json";
+import { AddressZero } from "@ethersproject/constants";
 
 import erc20Abi from "../../../../erc20Abi.json";
 
@@ -24,16 +30,15 @@ import SellerTokenAddress from "./stepComponents/SellerTokenData";
 import SellerNftData from "./stepComponents/SellerNftData";
 import SellerEthInput from "./stepComponents/SellerEthInput";
 import TimePeriodInput from "./stepComponents/TimePeriodInput";
+import BuyerEthInput from "./stepComponents/BuyerEthInput";
+import BuyerTokenData from "./stepComponents/BuyerTokenData";
+import BuyerNftData from "./stepComponents/BuyerNftData";
+import ReviewData from "./stepComponents/ReviewData";
+import { parseEther } from "ethers/lib/utils.js";
 
 const settings = {
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
   network: Network.ETH_GOERLI,
-};
-
-const alchemy = new Alchemy(settings);
-
-type ReviewDataProps = {
-  formData: FormData;
 };
 
 export default function AddTradeForm() {
@@ -47,101 +52,100 @@ export default function AddTradeForm() {
   const [isAdding, setIsAdding] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [selectedRadioSeller, setSelectedRadioSeller] = useState("eth");
+  const [selectedRadioBuyer, setSelectedRadioBuyer] = useState("token");
   const { formData, setFormData } = useFormData();
-  console.log(formData);
-  // function updateFields(fields: Partial<FormData>) {
-  //   console.log(formData);
-  //   setFormData((prev) => ({ ...prev, ...fields }));
-  // }
-  console.log(formData);
-
+  console.log("formData", formData);
   const RadioButtonSeller = () => (
-    <div className="flex items-center">
-      <label htmlFor="">ETH</label>
-      <input
-        type="radio"
-        name="asset"
-        id="Eth"
-        checked={selectedRadioSeller === "eth"}
-        className="form-radio h-5 w-5 text-secondary-900"
-        value="eth"
-        onChange={(e) => setSelectedRadioSeller(e.target.value)}
-      />
-      <label htmlFor="">Token</label>
-      <input
-        type="radio"
-        name="asset"
-        id="Token"
-        className="form-radio h-5 w-5 text-secondary-900"
-        checked={selectedRadioSeller === "token"}
-        value="token"
-        onChange={(e) => setSelectedRadioSeller(e.target.value)}
-      />
-      <label htmlFor="">NFT</label>
-      <input
-        type="radio"
-        name="asset"
-        id="NFT"
-        value="nft"
-        checked={selectedRadioSeller === "nft"}
-        // className="form-radio h-5 w-5 text-secondary-900"
-        onChange={(e) => setSelectedRadioSeller(e.target.value)}
-      />
-    </div>
+    <>
+      <div> Which Asset Do you want to Send</div>
+      <div className="flex items-center gap-5">
+        <div>
+          <label htmlFor="">ETH</label>
+          <input
+            type="radio"
+            name="asset"
+            id="Eth"
+            checked={selectedRadioSeller === "eth"}
+            className="form-radio h-5 w-5 text-secondary-900"
+            value="eth"
+            onChange={(e) => setSelectedRadioSeller(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="">Token</label>
+          <input
+            type="radio"
+            name="asset"
+            id="Token"
+            className="form-radio h-5 w-5 text-secondary-900"
+            checked={selectedRadioSeller === "token"}
+            value="token"
+            onChange={(e) => setSelectedRadioSeller(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="">NFT</label>
+          <input
+            type="radio"
+            name="asset"
+            id="NFT"
+            value="nft"
+            checked={selectedRadioSeller === "nft"}
+            // className="form-radio h-5 w-5 text-secondary-900"
+            onChange={(e) => setSelectedRadioSeller(e.target.value)}
+          />
+        </div>
+      </div>
+    </>
   );
+  const RadioButtonBuyer = () => (
+    <>
+      {" "}
+      <div> Which Asset Do you want to Receive</div>
+      <div className="flex items-center gap-5">
+        {formData.sellerEthAmount === 0 && (
+          <div>
+            <label htmlFor="">ETH</label>
+            <input
+              type="radio"
+              name="asset"
+              id="Eth"
+              checked={selectedRadioBuyer === "eth"}
+              className="form-radio h-5 w-5 text-secondary-900"
+              value="eth"
+              onChange={(e) => setSelectedRadioBuyer(e.target.value)}
+            />
+          </div>
+        )}
 
-  //  const ReviewData: FC<ReviewDataProps> = ({
-  //   formData: {
-  //     buyerAddress,
-  //     sellerTokenAddress,
-  //     sellerTokenAmount,
-  //     buyerTokenAddress,
-  //     buyerTokenAmount,
-  //     datePeriod,
-  //     timePeriod,
-  //   },
-  // }) => (
-  //   <FormWrapper title="Review Data">
-  //     <div className="flex flex-col text-gray-200">
-  //       <h2 className="text-lg font-bold">Review Your Transaction</h2>
-  //       <div className="flex flex-col space-y-3 ">
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Your Address</p>
-  //           <p className="text-xs ">{address}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Counterparty Address</p>
-  //           <p className="text-xs">{buyerAddress}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Asset to Send</p>
-  //           <p className="text-xs">{sellerTokenAddress} </p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold"> Amount Asset to Send</p>
-  //           <p className="text-sm">{sellerTokenAmount}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Asset to Receive</p>
-  //           <p className="text-xs">{buyerTokenAddress}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold"> Amount Asset to Receive</p>
-  //           <p className="text-sm">{buyerTokenAmount}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Transaction Expiry Date</p>
-  //           <p className="text-sm">{datePeriod}</p>
-  //         </div>
-  //         <div className="md:flex flex-row justify-between border-b-2 border-gray-500">
-  //           <p className="text-sm font-bold">Transaction Expiry Time</p>
-  //           <p className="text-sm">{timePeriod}</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </FormWrapper>
-  // );
-  const InputFieldToShow = () => {
+        <div>
+          <label htmlFor="">Token</label>
+          <input
+            type="radio"
+            name="asset"
+            id="Token"
+            className="form-radio h-5 w-5 text-secondary-900"
+            checked={selectedRadioBuyer === "token"}
+            value="token"
+            onChange={(e) => setSelectedRadioBuyer(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="">NFT</label>
+          <input
+            type="radio"
+            name="asset"
+            id="NFT"
+            value="nft"
+            checked={selectedRadioBuyer === "nft"}
+            className="form-radio h-5 w-5 text-secondary-900"
+            onChange={(e) => setSelectedRadioBuyer(e.target.value)}
+          />
+        </div>
+      </div>
+    </>
+  );
+  const SellerInputFieldToShow = () => {
     switch (selectedRadioSeller) {
       case "eth":
         return <SellerEthInput />;
@@ -153,14 +157,28 @@ export default function AddTradeForm() {
         return <SellerEthInput />;
     }
   };
+  const BuyerInputFieldToShow = () => {
+    switch (selectedRadioSeller) {
+      case "eth":
+        return <BuyerEthInput />;
+      case "token":
+        return <BuyerTokenData />;
+      case "nft":
+        return <BuyerNftData />;
+      default:
+        return <SellerEthInput />;
+    }
+  };
 
   const { steps, currentStepindex, isFirstStep, back, next, isLastStep, step } =
     useMultistepForm([
       <BuyerAddress {...formData} key={1} />,
       <RadioButtonSeller />,
-      InputFieldToShow(),
+      SellerInputFieldToShow(),
+      <RadioButtonBuyer />,
+      BuyerInputFieldToShow(),
       <TimePeriodInput />,
-      // <ReviewData  />,
+      <ReviewData />,
     ]);
 
   const { data: signer } = useSigner();
@@ -178,42 +196,146 @@ export default function AddTradeForm() {
     ).unix();
 
     const deadline = unixTimeFuture - currentUnixTime;
-    const trustMeContract: TrustMe = new ethers.Contract(
-      "0xF112F9D64Db9BE8F33Ee2e49c625EB564e58a25E",
-      abi,
-      signer!,
-    ) as TrustMe;
+    const _trustMeContract: TrustMe = (await trustMeContract()) as TrustMe;
+    let _erc20Contract: ERC20;
+    let _erc721Contract: ERC721;
+    if (formData.sellerTokenAddress !== AddressZero) {
+      try {
+        _erc20Contract = (await erc20Contract(
+          formData.sellerTokenAddress,
+        )) as ERC20;
+        setIsApproving(true);
+        const _tx = await _erc20Contract.approve(
+          _trustMeContract.address,
+          ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
+        );
+        await _tx.wait();
+        setIsApproving(false);
 
-    const erc20Contract = new ethers.Contract(
-      formData.sellerTokenAddress,
-      erc20Abi,
-      signer!,
-    );
+        setIsAdding(true);
+        const trade = {
+          tradeId: 0,
+          seller: formData.sellerAddress,
+          buyer: formData.buyerAddress,
+          nft: {
+            addressNFTToSell: formData.sellerNftAddress,
+            tokenIdNFTToSell: formData.sellerNftTokenId,
+            addressNFTToBuy: formData.buyerNftAddress,
+            tokenIdNFTToBuy: formData.buyerNftTokenId,
+          },
+          token: {
+            tokenToSell: formData.sellerTokenAddress,
+            amountOfTokenToSell: parseEther(
+              formData.sellerTokenAmount.toString(),
+            ),
+            tokenToBuy: formData.buyerTokenAddress,
+            amountOfTokenToBuy: parseEther(
+              formData.buyerTokenAmount.toString(),
+            ),
+          },
+          eth: {
+            amountOfETHToSell: parseEther(formData.sellerEthAmount.toString()),
+            amountOfETHToBuy: parseEther(formData.buyerEthAmount.toString()),
+          },
+          deadline: deadline,
+          dateCreated: currentUnixTime,
+          status: 0,
+        };
+        const tx = await _trustMeContract.addTrade(trade);
+        const txReceipt = await tx.wait();
+        setIsAdding(false);
+        await router.push("/list");
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (formData.sellerNftAddress !== AddressZero) {
+      try {
+        _erc721Contract = (await erc721Contract(
+          formData.sellerNftAddress,
+        )) as ERC721;
+        setIsApproving(true);
+        const _tx = await _erc721Contract.approve(
+          _trustMeContract.address,
+          formData.sellerNftTokenId,
+        );
+        await _tx.wait();
+        setIsApproving(false);
 
-    setIsApproving(true);
-    try {
-      const _tx = await erc20Contract.approve(
-        trustMeContract.address,
-        ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
-      );
-      await _tx.wait();
-      setIsApproving(false);
+        setIsAdding(true);
+        const trade = {
+          tradeId: 0,
+          seller: formData.sellerAddress,
+          buyer: formData.buyerAddress,
+          nft: {
+            addressNFTToSell: formData.sellerNftAddress,
+            tokenIdNFTToSell: formData.sellerNftTokenId,
+            addressNFTToBuy: formData.buyerNftAddress,
+            tokenIdNFTToBuy: formData.buyerNftTokenId,
+          },
+          token: {
+            tokenToSell: formData.sellerTokenAddress,
+            amountOfTokenToSell: parseEther(
+              formData.sellerTokenAmount.toString(),
+            ),
+            tokenToBuy: formData.buyerTokenAddress,
+            amountOfTokenToBuy: parseEther(
+              formData.buyerTokenAmount.toString(),
+            ),
+          },
+          eth: {
+            amountOfETHToSell: parseEther(formData.sellerEthAmount.toString()),
+            amountOfETHToBuy: parseEther(formData.buyerEthAmount.toString()),
+          },
+          deadline: deadline,
+          dateCreated: currentUnixTime,
+          status: 0,
+        };
+        const tx = await _trustMeContract.addTrade(trade);
+        const txReceipt = await tx.wait();
+        setIsAdding(false);
+        await router.push("/list");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const trade = {
+          tradeId: 0,
+          seller: formData.sellerAddress,
+          buyer: formData.buyerAddress,
+          nft: {
+            addressNFTToSell: formData.sellerNftAddress,
+            tokenIdNFTToSell: formData.sellerNftTokenId,
+            addressNFTToBuy: formData.buyerNftAddress,
+            tokenIdNFTToBuy: formData.buyerNftTokenId,
+          },
+          token: {
+            tokenToSell: formData.sellerTokenAddress,
+            amountOfTokenToSell: parseEther(
+              formData.sellerTokenAmount.toString(),
+            ),
+            tokenToBuy: formData.buyerTokenAddress,
+            amountOfTokenToBuy: parseEther(
+              formData.buyerTokenAmount.toString(),
+            ),
+          },
+          eth: {
+            amountOfETHToSell: parseEther(formData.sellerEthAmount.toString()),
+            amountOfETHToBuy: parseEther(formData.buyerEthAmount.toString()),
+          },
+          deadline: deadline,
+          dateCreated: currentUnixTime,
+          status: 0,
+        };
 
-      setIsAdding(true);
-
-      // const tx = await trustMeContract.addTrade(
-      //   formData.buyerAddress,
-      //   formData.sellerTokenAddress,
-      //   formData.buyerTokenAddress,
-      //   ethers.utils.parseEther(formData.sellerTokenAmount.toString()),
-      //   ethers.utils.parseEther(formData.buyerTokenAmount.toString()),
-      //   deadline,
-      // );
-      // const txReceipt = await tx.wait();
-      setIsAdding(false);
-      await router.push("/list");
-    } catch (error) {
-      console.log(error);
+        setIsAdding(true);
+        const tx = await _trustMeContract.addTrade(trade);
+        const txReceipt = await tx.wait();
+        setIsAdding(false);
+        await router.push("/list");
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

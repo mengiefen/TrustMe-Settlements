@@ -1,9 +1,29 @@
-import React from "react";
+import { getNftsMetadata, NftDetails } from "@/helpers/getterHelpers";
+import React, { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import { useFormData } from "../FormDataContext";
 import FormWrapper from "../FormWrapper";
 
 const SellerNftData = () => {
   const { formData, setFormData } = useFormData();
+  const [loading, setLoading] = useState(false);
+  const [sellerNfts, setSellerNfts] = useState<NftDetails[]>(
+    [] as NftDetails[],
+  );
+  const { address } = useAccount();
+  useEffect(() => {
+    (async () => {
+      try {
+        const getNfts = await getNftsMetadata(address as `0x${string}`);
+        setSellerNfts(getNfts as NftDetails[]);
+        setLoading(false);
+        console.log(getNfts);
+      } catch (e) {
+        setLoading(false);
+        console.log(e);
+      }
+    })();
+  }, []);
   return (
     <FormWrapper title="Details NFT to Send">
       <>
@@ -11,6 +31,7 @@ const SellerNftData = () => {
         <select
           required
           name="tokenToTransfer"
+          value={formData?.sellerNftAddress}
           onChange={(e) => {
             setFormData({
               ...formData,
@@ -23,11 +44,12 @@ const SellerNftData = () => {
           <option value="" selected disabled>
             --SELECT--
           </option>
-          {/* {userBalances.nfts.map((nft, index) => (
-            <option
-              key={index}
-              // disabled={loading ? true : false}
-              className="
+          {sellerNfts?.length &&
+            sellerNfts.map((nft, index) => (
+              <option
+                key={index}
+                // disabled={loading ? true : false}
+                className="
               items-center
               justify-between
               flex
@@ -46,11 +68,17 @@ const SellerNftData = () => {
               py-2
 
               "
-              value={nft.address}
-            >
-              {nft.name}
-            </option>
-          ))} */}
+                value={nft.address}
+              >
+                {loading ? (
+                  "Loading..."
+                ) : (
+                  <span>
+                    Name: {nft.title}, Token Id: {nft.tokenId}
+                  </span>
+                )}
+              </option>
+            ))}
         </select>
         <label className="md:mt-2">NFT ID</label>
         <input

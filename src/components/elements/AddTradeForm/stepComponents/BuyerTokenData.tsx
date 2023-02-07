@@ -5,6 +5,10 @@ import FormWrapper from "../FormWrapper";
 import { TokenMetadata } from "../type";
 
 const BuyerTokenData = () => {
+  const [loading, setLoading] = useState(false);
+  const [buyerTokenMetadata, setBuyerTokenMetadata] = React.useState<
+    TokenMetadata[]
+  >([]);
   async function checkBuyerTokens(_address: string) {
     try {
       setLoading(true);
@@ -22,22 +26,22 @@ const BuyerTokenData = () => {
   }
 
   const { formData, setFormData } = useFormData();
-  const [loading, setLoading] = useState(false);
-  const [buyerTokenMetadata, setBuyerTokenMetadata] = React.useState<
-    TokenMetadata[]
-  >([]);
 
   useEffect(() => {
     (async () => {
       if (formData?.buyerAddress) {
-        await checkBuyerTokens(formData.buyerAddress);
+        const metaData = await checkBuyerTokens(formData?.buyerAddress);
+        //   setBuyerTokenMetadata(metaData);
       }
     })();
   }, [formData.buyerAddress]);
 
   return (
-    <FormWrapper title="Details Asset to Receive">
-      <label>Asset to Receive</label>
+    <FormWrapper title="Details Token to Receive">
+      <label>Token To Receive </label>
+      <span className="text-xs text-gray-400">
+        These are the available token in buyer address
+      </span>
       <select
         required
         name="tokenToTransfer"
@@ -84,7 +88,7 @@ const BuyerTokenData = () => {
         ))}
       </select>
 
-      <label>Amount Asset to Receive</label>
+      <label>Amount Token to Receive</label>
       <input
         autoFocus
         type="number"
