@@ -17,7 +17,6 @@ const SellerNftData = () => {
         const getNfts = await getNftsMetadata(address as `0x${string}`);
         setSellerNfts(getNfts as NftDetails[]);
         setLoading(false);
-        // console.log(getNfts);
       } catch (e) {
         setLoading(false);
         console.log(e);

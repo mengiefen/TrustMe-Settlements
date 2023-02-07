@@ -55,8 +55,6 @@ export default function AddTradeForm() {
   const [selectedRadioBuyer, setSelectedRadioBuyer] = useState("token");
   const { formData, setFormData } = useFormData();
 
-  console.log("formData", formData);
-
   const RadioButtonSeller = () => (
     <div className="flex flex-col items-center p-4">
       <div className="text-lg font-medium">Which Asset Do you want to Send</div>

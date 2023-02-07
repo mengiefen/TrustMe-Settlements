@@ -4,9 +4,8 @@ import {
   erc20Contract,
   erc721Contract,
 } from "@/helpers/getterHelpers";
-
 import Layout from "@/Layout";
-import { formatEther, parseEther } from "ethers/lib/utils.js";
+import { parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
 import { getFormatAddress, getFormatDate } from "@/utils";
@@ -23,8 +22,6 @@ import {
   updateWithdrawnTrade,
 } from "@/redux/trade/tradesSlice";
 import FlashMessage from "@/components/FlashMessage";
-import { ERC20, ERC721 } from "typechain";
-import { BigNumber } from "ethers";
 
 type TransactionDetailProps = {
   tradeId: number;
@@ -46,7 +43,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const tradeList = useSelector((state: RootState) => state.trades.data) as any;
   const { address } = useSelector((state: RootState) => state.wallets);
 
-  const handleCancelTrade = async (id: number) => {
+  const handleCancelTrade = async (id: string) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
@@ -56,7 +53,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
       setTxWait(false);
       router.push("/list");
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setTxWait(false);
       setIsError({
         status: true,
@@ -65,62 +62,47 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-
   const handleConfirmTrade = async (id: string) => {
-
     let tradeType = currentTrade.tradeType;
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-
-      if (tradeType === "Token to ETH" || tradeType === "NFT to ETH") {
-
+      if (tradeType === "NFT to ETH" || tradeType === "Token to ETH") {
         const confirm = await contract.confirmTrade(id, {
           value: parseEther(currentTrade.amountOfAssetToSend),
         });
-        console.log(tradeType);
         await confirm.wait();
-
-        setTxWait(false);
-        setButtonClicked(true);
         dispatch(updateConfirmedTrade(parseInt(id)));
+        setTxWait(false);
         router.push("/list");
       } else if (
-        tradeType === "NFT To Token" ||
-        tradeType === "ETH To Token" ||
+        tradeType === "NFT to Token" ||
+        tradeType === "ETH to Token" ||
         tradeType === "Token to Token"
       ) {
-        console.log(tradeType);
-        // const bigNumber = BigNumber.from(wholeString);
-        // const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
-        // await erc20.approve(contract.address, parseEther("10"));
-        // const confirm = await contract.confirmTrade(id);
-        // await confirm.wait();
-        console.log("currentTrade", currentTrade);
-        setTxWait(false);
-        setButtonClicked(true);
+        const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
+        await erc20.approve(
+          contract.address,
+          parseEther(currentTrade.amountOfAssetToSend),
+        );
+        const confirm = await contract.confirmTrade(id);
+        await confirm.wait();
         dispatch(updateConfirmedTrade(parseInt(id)));
-        ``;
-
+        setTxWait(false);
         router.push("/list");
       } else {
-        console.log(tradeType);
         const bignumberammount = parseEther(currentTrade.amountOfAssetToSend);
         const number = bignumberammount.toNumber();
         const erc721 = await erc721Contract(currentTrade.addressAssetToSend);
         await erc721.approve(contract.address, number);
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
-
-        setTxWait(false);
-        setButtonClicked(true);
         dispatch(updateConfirmedTrade(parseInt(id)));
-
+        setTxWait(false);
         router.push("/list");
       }
     } catch (err) {
       console.log(err);
-
       setButtonClicked(false);
       setTxWait(false);
       setIsError({
@@ -130,7 +112,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-  const handleWithdrawTrade = async (id: number) => {
+  const handleWithdrawTrade = async (id: string) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();

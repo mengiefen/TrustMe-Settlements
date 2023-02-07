@@ -16,7 +16,6 @@ const BuyerNftData = () => {
         );
         setBuyerNfts(getNfts as NftDetails[]);
         setLoading(false);
-        console.log(getNfts);
       } catch (e) {
         setLoading(false);
         console.log(e);
@@ -32,7 +31,6 @@ const BuyerNftData = () => {
           name="tokenToTransfer"
           // value={formData?.buyerNftAddress}
           onChange={(e) => {
-            console.log(e.target.value);
             setFormData({
               ...formData,
               buyerNftAddress: e.target.value,
@@ -90,7 +88,6 @@ const BuyerNftData = () => {
           required
           //     value={formData?.sellerNftTokenId || 0}
           onChange={(e) => {
-            console.log(e.target.value);
             setFormData({
               ...formData,
               buyerNftTokenId: parseInt(e.target.value),

@@ -14,8 +14,6 @@ const BuyerTokenData = () => {
       setLoading(true);
       const buyersTokens = await getConnectedUserTokens(_address);
       setBuyerTokenMetadata(buyersTokens);
-
-      console.log(buyersTokens);
       setLoading(false);
     } catch (error) {
       setLoading(false);

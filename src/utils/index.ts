@@ -1,5 +1,6 @@
 import { BigNumber, ethers, Signer } from "ethers";
 import { ERC20_ABI } from "../constants/ERC20_ABI";
+import {erc721Contract} from '@/helpers/getterHelpers'
 import { getSigner } from "@/helpers/getterHelpers";
 
 export function formatInt(value: BigNumber) {
@@ -31,6 +32,15 @@ export const getSymbol = async (tokenAddress: string) => {
   const symbol = await tokenContract.symbol();
   return symbol;
 };
+
+
+export const getNFTTitle = async (tokenAddress: string) => {
+  const erc721Instance = await erc721Contract(tokenAddress);
+  const title = await erc721Instance.name()
+
+  return title;
+};
+
 
 export const getFormatDate = (unixTime: number) => {
   const date = new Date(unixTime * 1000);
