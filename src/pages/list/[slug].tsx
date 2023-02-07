@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { trustMeContract, erc20Contract } from "@/helpers/getterHelpers";
+import {
+  trustMeContract,
+  erc20Contract,
+  erc721Contract,
+} from "@/helpers/getterHelpers";
 import Layout from "@/Layout";
 import { parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
@@ -58,17 +62,40 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
+  console.log("---------------", currentTrade.assetToSend);
+
   const handleConfirmTrade = async (id: string) => {
+    console.log("currentTrade", currentTrade);
+    let tradeType = currentTrade.tradeType;
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-      const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
-      await erc20.approve(
-        contract.address,
-        parseEther(currentTrade.amountOfAssetToSend),
-      );
-      const confirm = await contract.confirmTrade(id);
-      await confirm.wait();
+      if (tradeType == "ETH to NFT" || tradeType === "ETH to TOKEN") {
+        const confirm = await contract.confirmTrade(id, {
+          value: parseEther(currentTrade.amountOfAssetToSend),
+        });
+        await confirm.wait();
+      } else if (
+        tradeType == "TOKEN to NFT" ||
+        tradeType == "TOKEN to ETH" ||
+        tradeType == "TOKEN to TOKEN"
+      ) {
+        const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
+        await erc20.approve(
+          contract.address,
+          parseEther(currentTrade.amountOfAssetToSend),
+        );
+        const confirm = await contract.confirmTrade(id);
+        await confirm.wait();
+      } else {
+        const erc721 = await erc721Contract(currentTrade.addressAssetToSend);
+        await erc721.approve(
+          contract.address,
+          parseInt(currentTrade.amountOfAssetToSend),
+        );
+        const confirm = await contract.confirmTrade(id);
+        await confirm.wait();
+      }
       dispatch(updateConfirmedTrade(parseInt(id)));
       setTxWait(false);
       router.push("/list");

@@ -197,13 +197,13 @@ export default function AddTradeForm() {
     isLastStep,
     step,
   } = useMultistepForm([
-    <BuyerAddress />,
-    <RadioButtonSeller />,
+    <BuyerAddress key={1} />,
+    <RadioButtonSeller key={2} />,
     SellerInputFieldToShow(),
-    <RadioButtonBuyer />,
+    <RadioButtonBuyer key={3} />,
     BuyerInputFieldToShow(),
-    <TimePeriodInput />,
-    <ReviewData />,
+    <TimePeriodInput key={4} />,
+    <ReviewData key={5} />,
   ]);
 
   const { data: signer } = useSigner();
