@@ -86,19 +86,6 @@ const Hero = () => {
                 size="large"
                 bg="bg-gradient-to-r from-purplish-800 to-secondary-800 md:py-4 md:px-12 lg:px-20 md:text-lg md:tracking-widest"
               />
-              <Button
-                label= "View Transactions"
-                variant="primary"
-                onClick={() => {
-                  if (isConnected) {
-                    handleDisconnect();
-                    return;
-                  }
-                  handleConnect(connectors[0]);
-                }}
-                size="large"
-                bg="bg-transperant border-[1px] to-secondary-800 md:py-4 md:px-12 lg:px-20 md:text-lg md:tracking-widest"
-              />
 
               {/* <div className="flex flex-col items-center justify-center w-[80%] mt-5">
                 <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:tracking-wider">
