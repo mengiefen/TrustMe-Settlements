@@ -1,9 +1,5 @@
 import { mainnet, goerli, polygon } from "wagmi/chains";
-import {
-  createClient,
-  configureChains,
-  WagmiConfig,
-} from "wagmi";
+import { createClient, configureChains, WagmiConfig } from "wagmi";
 
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
@@ -12,20 +8,17 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { Alchemy, Network } from "alchemy-sdk";
 
-const ALCHEMY_API_KEY =
-  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "";
-const INFURA_API_KEY =
-  process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || "";
+const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "";
+const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || "";
 
-const { chains, provider, webSocketProvider } =
-  configureChains(
-    [mainnet, goerli, polygon],
-    [
-      alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
-      // infuraProvider({ apiKey: INFURA_API_KEY }),
-      publicProvider(),
-    ],
-  );
+const { chains, provider, webSocketProvider } = configureChains(
+  [mainnet, goerli, polygon],
+  [
+    // alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
+    infuraProvider({ apiKey: INFURA_API_KEY }),
+    publicProvider(),
+  ],
+);
 
 // Set up client
 const client = createClient({
@@ -61,12 +54,8 @@ interface WagmiProviderProps {
   children: React.ReactNode;
 }
 
-const WagmiProvider: React.FC<WagmiProviderProps> = ({
-  children,
-}) => {
-  return (
-    <WagmiConfig client={client}>{children}</WagmiConfig>
-  );
+const WagmiProvider: React.FC<WagmiProviderProps> = ({ children }) => {
+  return <WagmiConfig client={client}>{children}</WagmiConfig>;
 };
 
 export { client, chains, provider };

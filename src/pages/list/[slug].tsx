@@ -7,7 +7,7 @@ import InfoCard from "../../components/elements/InfoCard";
 import { getFormatAddress, getFormatDate } from "@/utils";
 import { useRouter } from "next/router";
 import { fetchTrade } from "@/helpers/fetchTrade";
-import { Trade } from "@/components/TransactionList/type";
+import { TradeData } from "@/components/TransactionList/type";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import Spinner from "@/components/elements/Spinner";
@@ -62,10 +62,10 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-      const erc20 = await erc20Contract(currentTrade.tokenToSell);
+      const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
       await erc20.approve(
         contract.address,
-        parseEther(currentTrade.amountOfTokenToSell),
+        parseEther(currentTrade.amountOfAssetToSend),
       );
       const confirm = await contract.confirmTrade(id);
       await confirm.wait();
@@ -101,7 +101,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   };
 
   useEffect(() => {
-    let tradeObj: Trade;
+    let tradeObj: TradeData;
 
     if (router.isReady) {
       const slug = parseInt(router.query.slug as string);
@@ -109,13 +109,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         try {
           if (
             tradeList.length > 0 &&
-            tradeList.find((trade: Trade) => trade.id === slug)
+            tradeList.find((trade: TradeData) => trade.id === slug)
           ) {
             // fetches from store
-            tradeObj = tradeList.find((trade: Trade) => trade.id === slug);
+            tradeObj = tradeList.find((trade: TradeData) => trade.id === slug);
           } else {
             //fetches from api
-            tradeObj = await fetchTrade(address, slug);
+            tradeObj = (await fetchTrade(address, slug)) as TradeData;
             dispatch(updateCreatedTrade(tradeObj));
           }
           setCurrentTrade(tradeObj);
@@ -169,7 +169,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 <InfoCard label={"TXN STATUS"} value={currentTrade.status} />
               </div>
             </div>
-
             <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
@@ -184,12 +183,11 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 />
               </div>
             </div>
-
             <div className="flex flex-row w-full md:flex-col gap-y-3 md:gap-y-5 mb-3">
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"DATE CREATED"}
-                  value={getFormatDate(currentTrade.deadline)}
+                  value={getFormatDate(currentTrade.dateCreated)}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
@@ -204,13 +202,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={`${currentTrade.token.symbolToSell}  ${currentTrade.token.amountOfTokenToSell}`}
+                  value={`${currentTrade.symbolAssetToSend}  ${currentTrade.amountOfAssetToSend}`}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={`${currentTrade.token.symbolToBuy}   ${currentTrade.token.amountOfTokenToBuy} `}
+                  value={`${currentTrade.symbolAssetToReceive}   ${currentTrade.amountOfAssetToReceive} `}
                 />
               </div>
             </div>
@@ -222,7 +220,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             </div>
             <div className="flex flex-row items-center">
               <>
-                {isExpired && currentTrade.token.isCreatedByYou && (
+                {isExpired && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"

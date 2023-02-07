@@ -10,6 +10,8 @@ import { RootState } from "@/redux/store";
 
 import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
+import { getTrade } from "@/helpers/getterHelpers";
+import { BsArrowDown, BsArrowRight } from "react-icons/bs";
 
 const Hero = () => {
   const isMounted = useIsMounted();
@@ -94,6 +96,14 @@ const Hero = () => {
           )}
         </div>
       </div>
+
+      <button
+        className="absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-300  bg-transparent font-thin
+          border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
+      >
+        <span>View Transactions</span>
+        <BsArrowDown className="animate-bounce bg-secondary-600 rounded-full p-1 text-xl hover:translate-x-2" />
+      </button>
     </div>
   );
 };

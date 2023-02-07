@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Trade } from "@/components/TransactionList/type";
+import { TradeData } from "@/components/TransactionList/type";
 
 type TradesState = {
-  data: Trade[];
+  data: TradeData[];
   status: "loading" | "succeeded" | "failed";
 };
 
@@ -20,7 +20,7 @@ const tradesSlice = createSlice({
       state.status = "loading";
     },
 
-    fetchTrades: (state, action: PayloadAction<Trade[]>) => {
+    fetchTrades: (state, action: PayloadAction<TradeData[]>) => {
       if (state.status === "succeeded") return;
       state.data = action.payload;
       state.status = "succeeded";
@@ -50,7 +50,7 @@ const tradesSlice = createSlice({
       state.data[index].status = "Confirmed";
     },
 
-    updateCreatedTrade: (state, action: PayloadAction<Trade>) => {
+    updateCreatedTrade: (state, action: PayloadAction<TradeData>) => {
       const trade = action.payload;
       if (state.data.find((t) => t.id === trade.id)) return;
       state.data.push(trade);
