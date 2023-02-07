@@ -64,7 +64,7 @@ const SellerTokenAddress = () => {
           onChange={(e) =>
             setFormData({
               ...formData,
-              sellerTokenAmount: e.target.value,
+              sellerTokenAmount: parseInt(e.target.value),
             })
           }
           className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
