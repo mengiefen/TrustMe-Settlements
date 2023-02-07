@@ -140,3 +140,8 @@ export interface TokenListType {
   symbol: string;
   logo: string;
 }
+export type RadioType = {
+  eth: string;
+  token: string;
+  nft: string;
+};
