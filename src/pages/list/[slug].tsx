@@ -4,8 +4,9 @@ import {
   erc20Contract,
   erc721Contract,
 } from "@/helpers/getterHelpers";
+
 import Layout from "@/Layout";
-import { parseEther } from "ethers/lib/utils.js";
+import { formatEther, parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
 import { getFormatAddress, getFormatDate } from "@/utils";
@@ -22,6 +23,8 @@ import {
   updateWithdrawnTrade,
 } from "@/redux/trade/tradesSlice";
 import FlashMessage from "@/components/FlashMessage";
+import { ERC20, ERC721 } from "typechain";
+import { BigNumber } from "ethers";
 
 type TransactionDetailProps = {
   tradeId: number;
@@ -62,49 +65,62 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     }
   };
 
-  const handleConfirmTrade = async (id: number) => {
-    console.log("currentTrade", currentTrade);
+
+  const handleConfirmTrade = async (id: string) => {
+
     let tradeType = currentTrade.tradeType;
     try {
       setTxWait(true);
       const contract = await trustMeContract();
-      if (tradeType === "ETH to NFT" || tradeType === "ETH to Token") {
+
+      if (tradeType === "Token to ETH" || tradeType === "NFT to ETH") {
+
         const confirm = await contract.confirmTrade(id, {
           value: parseEther(currentTrade.amountOfAssetToSend),
         });
+        console.log(tradeType);
         await confirm.wait();
-        dispatch(updateConfirmedTrade(parseInt(id)));
+
         setTxWait(false);
+        setButtonClicked(true);
+        dispatch(updateConfirmedTrade(parseInt(id)));
         router.push("/list");
       } else if (
-        tradeType === "Token to NFT" ||
-        tradeType === "Token to ETH" ||
+        tradeType === "NFT To Token" ||
+        tradeType === "ETH To Token" ||
         tradeType === "Token to Token"
       ) {
-        const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
-        await erc20.approve(
-          contract.address,
-          parseEther(currentTrade.amountOfAssetToSend),
-        );
-        const confirm = await contract.confirmTrade(id);
-        await confirm.wait();
-        dispatch(updateConfirmedTrade(parseInt(id)));
+        console.log(tradeType);
+        // const bigNumber = BigNumber.from(wholeString);
+        // const erc20 = await erc20Contract(currentTrade.addressAssetToSend);
+        // await erc20.approve(contract.address, parseEther("10"));
+        // const confirm = await contract.confirmTrade(id);
+        // await confirm.wait();
+        console.log("currentTrade", currentTrade);
         setTxWait(false);
+        setButtonClicked(true);
+        dispatch(updateConfirmedTrade(parseInt(id)));
+        ``;
+
         router.push("/list");
       } else {
+        console.log(tradeType);
+        const bignumberammount = parseEther(currentTrade.amountOfAssetToSend);
+        const number = bignumberammount.toNumber();
         const erc721 = await erc721Contract(currentTrade.addressAssetToSend);
-        await erc721.approve(
-          contract.address,
-          parseInt(currentTrade.amountOfAssetToSend),
-        );
+        await erc721.approve(contract.address, number);
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
-        dispatch(updateConfirmedTrade(parseInt(id)));
+
         setTxWait(false);
+        setButtonClicked(true);
+        dispatch(updateConfirmedTrade(parseInt(id)));
+
         router.push("/list");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
+
       setButtonClicked(false);
       setTxWait(false);
       setIsError({
