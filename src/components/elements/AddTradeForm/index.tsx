@@ -25,7 +25,7 @@ import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { RadioType } from "@/components/TransactionList/type";
 import BuyerAddress from "./stepComponents/BuyerAddress";
-import { useFormData } from "./FormDataContext";
+import { initialFormData, useFormData } from "./FormDataContext";
 import SellerTokenAddress from "./stepComponents/SellerTokenData";
 import SellerNftData from "./stepComponents/SellerNftData";
 import SellerEthInput from "./stepComponents/SellerEthInput";
@@ -54,13 +54,17 @@ export default function AddTradeForm() {
   const [selectedRadioSeller, setSelectedRadioSeller] = useState("eth");
   const [selectedRadioBuyer, setSelectedRadioBuyer] = useState("token");
   const { formData, setFormData } = useFormData();
+
   console.log("formData", formData);
+
   const RadioButtonSeller = () => (
-    <>
-      <div> Which Asset Do you want to Send</div>
-      <div className="flex items-center gap-5">
-        <div>
-          <label htmlFor="">ETH</label>
+    <div className="flex flex-col items-center p-4">
+      <div className="text-lg font-medium">Which Asset Do you want to Send</div>
+      <div className="flex items-center gap-8 justify-evenly my-10">
+        <div className="flex items-center">
+          <label htmlFor="" className="mr-2">
+            ETH
+          </label>
           <input
             type="radio"
             name="asset"
@@ -71,8 +75,10 @@ export default function AddTradeForm() {
             onChange={(e) => setSelectedRadioSeller(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="">Token</label>
+        <div className="flex items-center">
+          <label htmlFor="" className="mr-2">
+            Token
+          </label>
           <input
             type="radio"
             name="asset"
@@ -83,29 +89,34 @@ export default function AddTradeForm() {
             onChange={(e) => setSelectedRadioSeller(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="">NFT</label>
+        <div className="flex items-center">
+          <label htmlFor="" className="mr-2">
+            NFT
+          </label>
           <input
             type="radio"
             name="asset"
             id="NFT"
             value="nft"
+            className="form-radio h-5 w-5 text-secondary-900"
             checked={selectedRadioSeller === "nft"}
-            // className="form-radio h-5 w-5 text-secondary-900"
             onChange={(e) => setSelectedRadioSeller(e.target.value)}
           />
         </div>
       </div>
-    </>
+    </div>
   );
+
   const RadioButtonBuyer = () => (
-    <>
+    <div className="flex flex-col items-center p-4">
       {" "}
       <div> Which Asset Do you want to Receive</div>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-8 justify-evenly my-4">
         {formData.sellerEthAmount === 0 && (
-          <div>
-            <label htmlFor="">ETH</label>
+          <div className="flex items-center">
+            <label htmlFor="" className="mr-2">
+              ETH
+            </label>
             <input
               type="radio"
               name="asset"
@@ -118,8 +129,10 @@ export default function AddTradeForm() {
           </div>
         )}
 
-        <div>
-          <label htmlFor="">Token</label>
+        <div className="flex items-center">
+          <label htmlFor="" className="mr-2">
+            Token
+          </label>
           <input
             type="radio"
             name="asset"
@@ -130,8 +143,10 @@ export default function AddTradeForm() {
             onChange={(e) => setSelectedRadioBuyer(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="">NFT</label>
+        <div className="flex items-center">
+          <label htmlFor="" className="mr-2">
+            NFT
+          </label>
           <input
             type="radio"
             name="asset"
@@ -143,8 +158,9 @@ export default function AddTradeForm() {
           />
         </div>
       </div>
-    </>
+    </div>
   );
+
   const SellerInputFieldToShow = () => {
     switch (selectedRadioSeller) {
       case "eth":
@@ -158,28 +174,37 @@ export default function AddTradeForm() {
     }
   };
   const BuyerInputFieldToShow = () => {
-    switch (selectedRadioSeller) {
+    switch (selectedRadioBuyer) {
       case "eth":
         return <BuyerEthInput />;
+
       case "token":
         return <BuyerTokenData />;
+
       case "nft":
         return <BuyerNftData />;
       default:
-        return <SellerEthInput />;
+        return <BuyerEthInput />;
     }
   };
 
-  const { steps, currentStepindex, isFirstStep, back, next, isLastStep, step } =
-    useMultistepForm([
-      <BuyerAddress {...formData} key={1} />,
-      <RadioButtonSeller />,
-      SellerInputFieldToShow(),
-      <RadioButtonBuyer />,
-      BuyerInputFieldToShow(),
-      <TimePeriodInput />,
-      <ReviewData />,
-    ]);
+  const {
+    steps,
+    currentStepindex,
+    isFirstStep,
+    refresh,
+    next,
+    isLastStep,
+    step,
+  } = useMultistepForm([
+    <BuyerAddress />,
+    <RadioButtonSeller />,
+    SellerInputFieldToShow(),
+    <RadioButtonBuyer />,
+    BuyerInputFieldToShow(),
+    <TimePeriodInput />,
+    <ReviewData />,
+  ]);
 
   const { data: signer } = useSigner();
 
@@ -244,8 +269,10 @@ export default function AddTradeForm() {
         const tx = await _trustMeContract.addTrade(trade);
         const txReceipt = await tx.wait();
         setIsAdding(false);
+        setFormData(initialFormData);
         await router.push("/list");
       } catch (error) {
+        setFormData(initialFormData);
         console.log(error);
       }
     } else if (formData.sellerNftAddress !== AddressZero) {
@@ -293,8 +320,10 @@ export default function AddTradeForm() {
         const tx = await _trustMeContract.addTrade(trade);
         const txReceipt = await tx.wait();
         setIsAdding(false);
+        setFormData(initialFormData);
         await router.push("/list");
       } catch (error) {
+        setFormData(initialFormData);
         console.log(error);
       }
     } else {
@@ -329,11 +358,15 @@ export default function AddTradeForm() {
         };
 
         setIsAdding(true);
-        const tx = await _trustMeContract.addTrade(trade);
+        const tx = await _trustMeContract.addTrade(trade, {
+          value: parseEther(formData.sellerEthAmount.toString()),
+        });
         const txReceipt = await tx.wait();
         setIsAdding(false);
+        setFormData(initialFormData);
         await router.push("/list");
       } catch (error) {
+        setFormData(initialFormData);
         console.log(error);
       }
     }
@@ -352,9 +385,15 @@ export default function AddTradeForm() {
           <div className="flex justify-end mt-3">
             {pending ? <Pending /> : null}
           </div>
-          <h3 className="py-5 font-semibold text-xl uppercase text-secondary-200">
-            Create New Transaction
-          </h3>
+          <div className="flex items-center justify-between mx-5">
+            <h3 className="py-5 font-semibold text-xl uppercase text-secondary-200 text-center">
+              Create New Transaction
+            </h3>
+            <div className="flex items-center justify-between">
+              {currentStepindex} / {steps.length - 1}
+            </div>
+          </div>
+
           <span className="text-gray-400"> {step}</span>
           <div className="flex gap-2 justify-between mx-5 md:mx-10] mt-10">
             {!isFirstStep && (
@@ -362,9 +401,12 @@ export default function AddTradeForm() {
                 className="py-2 text-white text-sm rounded shadow-md bg-purplish-800 
                 shadow:border-l-secondary-800 px-5 md:px-10 md:py-3 md:text-lg"
                 type="submit"
-                onClick={back}
+                onClick={() => {
+                  refresh();
+                  setFormData(initialFormData);
+                }}
               >
-                Back
+                Refresh
               </button>
             )}
             <button

@@ -2,7 +2,7 @@ export type FormData = {
   sellerAddress: string;
   buyerAddress: string;
   sellerTokenAddress: string;
-  sellerTokenAmount: string;
+  sellerTokenAmount: number;
   buyerTokenAddress: string;
   buyerTokenAmount: number;
   sellerNftAddress: string;

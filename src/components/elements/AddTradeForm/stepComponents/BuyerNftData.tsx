@@ -24,14 +24,15 @@ const BuyerNftData = () => {
     })();
   }, []);
   return (
-    <FormWrapper title="Details NFT to Send">
+    <FormWrapper title="Details NFT to Recieve">
       <>
-        <label className="md:mt-2">NFT to Send</label>
+        <label className="md:mt-2">NFT to Recieve</label>
         <select
           required
           name="tokenToTransfer"
-          value={formData?.buyerNftAddress}
+          // value={formData?.buyerNftAddress}
           onChange={(e) => {
+            console.log(e.target.value);
             setFormData({
               ...formData,
               buyerNftAddress: e.target.value,
@@ -88,12 +89,13 @@ const BuyerNftData = () => {
           name="sellerTokenAmount"
           required
           //     value={formData?.sellerNftTokenId || 0}
-          onChange={(e) =>
+          onChange={(e) => {
+            console.log(e.target.value);
             setFormData({
               ...formData,
               buyerNftTokenId: parseInt(e.target.value),
-            })
-          }
+            });
+          }}
           className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
         />
       </>

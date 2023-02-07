@@ -2,8 +2,7 @@ import { ReactElement } from "react";
 import { useState } from "react";
 
 export function useMultistepForm(steps: ReactElement[]) {
-  const [currentStepindex, setCurrentStepIndex] =
-    useState(0);
+  const [currentStepindex, setCurrentStepIndex] = useState(0);
 
   function next() {
     setCurrentStepIndex((i) => {
@@ -14,13 +13,8 @@ export function useMultistepForm(steps: ReactElement[]) {
     });
   }
 
-  function back() {
-    setCurrentStepIndex((i) => {
-      if (i <= 0) {
-        return i;
-      }
-      return i - 1;
-    });
+  function refresh() {
+    setCurrentStepIndex(0);
   }
 
   function goToStep(index: number) {
@@ -35,6 +29,6 @@ export function useMultistepForm(steps: ReactElement[]) {
     isLastStep: currentStepindex === steps.length - 1,
     goToStep,
     next,
-    back,
+    refresh,
   };
 }

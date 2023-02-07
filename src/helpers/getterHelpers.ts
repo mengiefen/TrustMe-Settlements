@@ -115,6 +115,7 @@ export const getNftsMetadata = async (address: string) => {
     const result = await alchemy.nft.getNftsForOwner(address, {
       omitMetadata: false,
     });
+    console.log(result);
     let formattedResult: NftDetails[] = [] as NftDetails[];
     for (let nfts of result.ownedNfts) {
       let formatData = {

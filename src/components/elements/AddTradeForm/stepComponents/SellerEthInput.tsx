@@ -10,16 +10,16 @@ const SellerEthInput = () => {
       <input
         placeholder="Asset Amount"
         autoFocus
-        type="number"
+        type="text"
         name="sellerTokenAmount"
-        required
         //   value={formData?.sellerEthAmount || 0}
-        onChange={(e) =>
+        onChange={(e) => {
+          console.log(parseFloat(e.target.value));
           setFormData({
             ...formData,
-            sellerEthAmount: parseInt(e.target.value),
-          })
-        }
+            sellerEthAmount: parseFloat(e.target.value),
+          });
+        }}
         className="py-3 px-3 bg-slate-700 border-2 outline-none border-secondary-900 focus:border-secondary-700 w-full text-white"
       />
     </FormWrapper>

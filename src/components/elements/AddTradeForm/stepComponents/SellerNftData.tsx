@@ -17,13 +17,14 @@ const SellerNftData = () => {
         const getNfts = await getNftsMetadata(address as `0x${string}`);
         setSellerNfts(getNfts as NftDetails[]);
         setLoading(false);
-        console.log(getNfts);
+        // console.log(getNfts);
       } catch (e) {
         setLoading(false);
         console.log(e);
       }
     })();
   }, []);
+
   return (
     <FormWrapper title="Details NFT to Send">
       <>
@@ -48,7 +49,7 @@ const SellerNftData = () => {
             sellerNfts.map((nft, index) => (
               <option
                 key={index}
-                // disabled={loading ? true : false}
+                disabled={loading ? true : false}
                 className="
               items-center
               justify-between
@@ -73,9 +74,7 @@ const SellerNftData = () => {
                 {loading ? (
                   "Loading..."
                 ) : (
-                  <span>
-                    Name: {nft.title}, Token Id: {nft.tokenId}
-                  </span>
+                  <span>{nft.title ? nft.title : nft.address}</span>
                 )}
               </option>
             ))}
