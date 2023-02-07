@@ -5,6 +5,7 @@ import StoreProvider from "@/redux/StoreProvider";
 import { PersistGate } from "redux-persist/integration/react";
 import { persister } from "@/redux/store";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { FormProvider } from "@/components/elements/AddTradeForm/FormDataContext";
 const client = new ApolloClient({
   uri: "https://api.studio.thegraph.com/query/38778/trustme-subgraph/0.0.13",
   cache: new InMemoryCache(),
@@ -17,7 +18,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <StoreProvider>
           <PersistGate persistor={persister} loading={null}>
             <WagmiProvider>
-              <Component {...pageProps} />
+              <FormProvider>
+                <Component {...pageProps} />
+              </FormProvider>
             </WagmiProvider>
           </PersistGate>
         </StoreProvider>
