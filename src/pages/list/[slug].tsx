@@ -341,7 +341,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       {!txWait && buttonClicked && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
-                          <span>CONFIRMED</span>
+                          <span>COMPLETED</span>
                         </>
                       )}
                     </button>

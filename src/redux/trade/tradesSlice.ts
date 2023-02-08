@@ -47,7 +47,7 @@ const tradesSlice = createSlice({
       const id = Number(action.payload);
       if (!id) return;
       const index = state.data.findIndex((t) => t.id === id);
-      state.data[index].status = "Confirmed";
+      state.data[index].status = "Completed";
     },
 
     updateCreatedTrade: (state, action: PayloadAction<TradeData>) => {
