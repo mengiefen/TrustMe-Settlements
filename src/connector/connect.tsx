@@ -8,7 +8,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { Alchemy, Network } from "alchemy-sdk";
 
-const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "";
+const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API || "";
 const INFURA_API_KEY = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID || "";
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -45,7 +45,7 @@ const client = createClient({
 
 // Alchemy SDK
 const config = {
-  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_GOERLI_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API,
   network: Network.ETH_GOERLI,
 };
 
