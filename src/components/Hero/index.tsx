@@ -16,7 +16,7 @@ import FlashMessage from "../FlashMessage";
 const Hero = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
-  const { address, isConnected } = useAccount({});
+  const { address, isConnected } = useAccount();
   const [flash, setFlash] = useState(false);
   const router = useRouter();
 
@@ -78,10 +78,14 @@ const Hero = () => {
           {isMounted && (
             <div className="mt-5 flex flex-col justify-center items-center md:items-start md:mt-10">
               <Button
-                label={buttonText}
+                label={
+                  isConnected && address
+                    ? "Disconnect Wallet"
+                    : "Connect  Wallet"
+                }
                 variant="primary"
                 onClick={() => {
-                  if (isConnected) {
+                  if (isConnected && address) {
                     handleDisconnect();
                     return;
                   }
@@ -92,8 +96,8 @@ const Hero = () => {
               />
 
               <div className="flex flex-col items-center justify-center w-[80%] mt-5">
-                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:tracking-wider">
-                  {formattedAddress}
+                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg">
+                  {isConnected && address && `${formattedAddress}`}
                 </p>
               </div>
             </div>
@@ -103,11 +107,11 @@ const Hero = () => {
       {isConnected && (
         <Link
           href="/list"
-          className="hidden md:block absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-200  bg-transparent font-medium
-            border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
+          className="hidden md:flex md:flex-row absolute z-1000 bottom-2 right-5 gap-2 items-center text-gary-200  bg-transparent
+            border-gray-700 border-2 px-4 py-3 md:px-10 md:text-md md:tracking-widest hover:bg-transparent hover:text-purplish-500 hover:border-purplish-500"
         >
           <span>View Transactions</span>
-          <BsArrowDown className="border border-purplish-600 rounded-full p-1 text-xl" />
+          <BsArrowDown className="animate-bounce border border-gray-500 hover:border-purplish-600 rounded-full p-[2px] text-xl" />
         </Link>
       )}
     </div>
