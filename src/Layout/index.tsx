@@ -1,4 +1,5 @@
 import React, { ReactComponentElement, ReactElement, useEffect } from "react";
+import Head from "next/head";
 import Header from "@/components/elements/Header";
 import Footer from "@/components/elements/Footer";
 import { useRouter } from "next/router";
@@ -83,8 +84,20 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
-      <title>Trust Me</title>
-      <meta property="og:title" content="Trust Me" key="title" />
+      <Head>
+        <title>
+          Trust Me |{" "}
+          {pathname == "/"
+            ? "Home"
+            : pathname == "/addTrade"
+            ? "Add Trade"
+            : pathname == "/list"
+            ? "Transactions List"
+            : "Service"}
+        </title>
+        <meta property="og:title" content="Trust Me" key="title" />
+      </Head>
+
       {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
       ) : isTradeCanceled ? (

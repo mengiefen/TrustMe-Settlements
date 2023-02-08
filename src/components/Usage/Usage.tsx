@@ -1,6 +1,7 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import React from "react";
 import { Chrono } from "react-chrono";
+
 type TimelineItemModel = {
   title: string;
   cardTitle: string;
