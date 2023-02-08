@@ -1,38 +1,125 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![](https://img.shields.io/badge/AlechmyUniversity-blue)
+![](https://img.shields.io/badge/@-Rushikesh0125-success)
+![](https://img.shields.io/badge/Mr-Biskit-success)
+![](https://img.shields.io/badge/@-pokhrelanmol-success)
+![](https://img.shields.io/badge/@-NicoTollenaar-success)
+![](https://img.shields.io/badge/@-mengiefen-success)
+
+<div style="background-color:#202741; padding: 10px;margin-bottom:20px; text-align:center; ">
+    <img src="./public/TrustMeLogo/PurpleLogo.png" style="width: auto; height: 100px; " alt="Logo" />   
+</div>
+
+# TrustMe Settlement
+
+TrustMe Settlement is a full-fledge blockchain application which serves trade partners to process their with a middleman is replaced by a smart contract and everything is settled on a single ledger.
+
+## App Screenshot
+
+<div style="background-color:white; padding: 10px;">
+    <img src="./public/TrustMeLogo/Mock.com.png" style="width: %; height: auto;" alt="mobile  screenshot" />
+   
+</div>
+
+## Built with
+
+    - Major languages: Solidity, TypeScript, TailwindCSS, Next.js
+    - Technologies used: ESLint, Prettier, VSCode, Git, GitHub
+
+## Prerequisites
+
+    - Node.js installed on local system
+    - yarn (Package Manager)
+    - npm ( Node Package Manager )
+    - Git and Github Account
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy of this application run the following steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- Open terminal
+- Change to your desired directory then run the following:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  - run `git@github.com:mengiefen/TrustMe-Settlements.git`
+  - `cd TrustMe-Settlements/`
+  - run `git switch dev`
+  - run `yarn install`
+  - run `yarn dev`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## How to setup the application
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Open terminal
+- Change to your desired directory then run the following:
+  - run `git@github.com:mengiefen/TrustMe-Settlements.git`
+  - `cd TrustMe-Settlements/`
+  - run `git switch dev`
+  - run `yarn install`
+- create .env file on the root directory
+- populate created file with the following environment variables
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+  ```
+  NEXT_PUBLIC_ALCHEMY_API=your_alchemy_goerli_api_key
+  NEXT_PUBLIC_CONTRACT_ADDRESS= your_contract_address
+  ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- run `yarn dev`
 
-## Learn More
+## How to use TrustMe
 
-To learn more about Next.js, take a look at the following resources:
+> The first step is to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser extension wallet services.
+> The next step to use the TrustMe Services to settle your trade transactions. It is Simple. Safe & Reliable.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Deployment on Vercel**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+> ### [Live Website](https://trust-me-settlements.vercel.app/)
 
-## Deploy on Vercel
+## Authors
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+👤 **Mengstu Fentaw**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Github: [@mengiefen](https://github.com/mengiefen)
+- Twitter: [@MengistuFentaw](https://twitter.com/MengistuFentaw)
+- Linkedin: [@mengefen](https://www.linkedin.com/in/mengefen/)
+
+👤 **Gabriel Vince**
+
+- Github: [@Mr-Biskit](https://github.com/Mr-Biskit)
+- Twitter: [@mr\_\_biskit](https://twitter.com/mr__biskit)
+- Linkedin: [@gabriel-vince-017059214](https://www.linkedin.com/in/gabriel-vince-017059214/)
+
+👤 **Rushikesh Jadhav**
+
+- Github: [@Rushikesh0125](https://github.com/Rushikesh0125)
+- Twitter: [@Rushike57195546](https://twitter.com/Rushike57195546)
+- Linkedin: [@rushi441](https://www.linkedin.com/in/rushi441/)
+
+👤 **Nico**
+
+- Github: [@mengiefen](https://github.com/mengiefen)
+- Twitter: [@MengistuFentaw](https://twitter.com/MengistuFentaw)
+- Linkedin: [@mengefen](https://www.linkedin.com/in/mengefen/)
+
+👤 **Anmol Pokhrel**
+
+- Github: [@pokhrelanmol](https://github.com/pokhrelanmol)
+- Twitter: [@0xanmol](https://twitter.com/0xanmol)
+- Linkedin: [@](https://www.linkedin.com/in//)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/yersel500/recipe-app/issues).
+
+## Show your support
+
+Give a ⭐️ if you like this project!
+
+## Acknowledgments
+
+- Alchemy University: [AU community](https://university.alchemy.com/)
+
+- Alchemy: [Alchemy Website](https://www.alchemy.com/)
+
+## 📝 License
+
+This project is [MIT](./LICENSE) licensed.

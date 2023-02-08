@@ -27,7 +27,7 @@ const getStatus = (symbol: number) => {
     case 0:
       return "Pending";
     case 1:
-      return "Confirmed";
+      return "Completed";
     case 2:
       return "Canceled";
     case 3:

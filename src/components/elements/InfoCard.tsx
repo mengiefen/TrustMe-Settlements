@@ -30,7 +30,7 @@ const InfoCard = (props: InfoCardProps) => {
         </span>
       </div>
       <div className="flex items-center justify-start mt-2">
-        <span className="flex flex-row items-center text-secondary-700 md:tracking-wider text-sm font-normal md:text-sm md:font-medium md:tracking-wider">
+        <span className="flex flex-row items-center text-secondary-700  text-sm font-normal md:text-sm md:font-medium md:tracking-wider">
           {/* <span><AiOutlineCopy className='w-1/10 h-11/12 pr-1'/></span> */}
           {value}
         </span>

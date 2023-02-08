@@ -33,7 +33,7 @@ type TradeStatusProps = {
 
 const color = (status = "Expired") => {
   switch (status) {
-    case "Confirmed":
+    case "Completed":
       return "text-green-400  md:border-green-400";
     case "Pending":
       return "text-yellow-400 md:border-yellow-400";
@@ -48,7 +48,7 @@ const color = (status = "Expired") => {
 
 const ButtonIcon = (status = "Expired") => {
   switch (status) {
-    case "Confirmed":
+    case "Completed":
       return <BsCheckCircle className="text-green-400  " />;
     case "Pending":
       return <MdPendingActions className="text-yellow-400 " />;

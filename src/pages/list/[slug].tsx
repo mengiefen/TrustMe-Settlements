@@ -36,11 +36,16 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [currentTrade, setCurrentTrade] = useState({}) as any;
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
-  const [txWait, setTxWait] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [cancel, setCancel] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [withdraw, setWithdraw] = useState(false);
+  const [withdrawButtonClicked, setWithdrawButtonClicked] = useState(false);
+  const [confirmButtonClicked, setConfirmButtonClicked] = useState(false);
+  const [cancelButtonClicked, setCancelButtonClicked] = useState(false);
+
   const [isError, setIsError] = useState({
     status: false,
     message: "",
@@ -50,16 +55,17 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   const handleCancelTrade = async (id: string) => {
     try {
-      setTxWait(true);
+      setCancel(true);
       const contract = await trustMeContract();
       const cancel = await contract.cancelTrade(id);
       await cancel.wait();
       await dispatch(updateCanceledTrade(parseInt(id)));
-      setTxWait(false);
+      setCancel(false);
       router.push("/list");
     } catch (err) {
       console.log(err);
-      setTxWait(false);
+      setCancel(false);
+      setCancelButtonClicked(false);
       setIsError({
         status: true,
         message: "Transaction reverted",
@@ -70,7 +76,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
   const handleConfirmTrade = async (id: string) => {
     let tradeType = currentTrade.tradeType;
     try {
-      setTxWait(true);
+      setConfirm(true);
       const contract = await trustMeContract();
       if (tradeType === "NFT to ETH" || tradeType === "Token to ETH") {
         const confirm = await contract.confirmTrade(id, {
@@ -78,7 +84,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         });
         await confirm.wait();
         dispatch(updateConfirmedTrade(parseInt(id)));
-        setTxWait(false);
         router.push("/list");
       } else if (
         tradeType === "NFT to Token" ||
@@ -93,7 +98,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
         dispatch(updateConfirmedTrade(parseInt(id)));
-        setTxWait(false);
+
         router.push("/list");
       } else {
         const bignumberammount = parseEther(currentTrade.amountOfAssetToSend);
@@ -103,13 +108,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
         const confirm = await contract.confirmTrade(id);
         await confirm.wait();
         dispatch(updateConfirmedTrade(parseInt(id)));
-        setTxWait(false);
+        setConfirm(false);
         router.push("/list");
       }
     } catch (err) {
       console.log(err);
-      setButtonClicked(false);
-      setTxWait(false);
+      setConfirm(false);
+      setConfirmButtonClicked(false);
       setIsError({
         status: true,
         message: "Transaction reverted",
@@ -119,15 +124,16 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   const handleWithdrawTrade = async (id: string) => {
     try {
-      setTxWait(true);
+      setWithdraw(true);
       const contract = await trustMeContract();
       const withdraw = await contract.withdraw(id);
       await withdraw.wait();
       await dispatch(updateWithdrawnTrade(parseInt(id)));
-      setTxWait(false);
+      setWithdraw(false);
       router.push("/list");
     } catch (err) {
-      setTxWait(false);
+      setWithdraw(false);
+      setWithdrawButtonClicked(false);
       setIsError({
         status: true,
         message: "Transaction reverted",
@@ -256,29 +262,29 @@ const TransactionDetail = (props: TransactionDetailProps) => {
             <div className="flex items-center justify-center w-full h-11/12 py-5 md:py-10 px-10">
               {/* <Spinner/> */}
             </div>
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center gap-2 md:gap-5">
               <>
                 {isExpired && currentTrade.isCreatedByYou && (
-                  <div className="mt-5 flex flex-1">
+                  <div className="mt-5 flex">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto text-bg bg-secondary-200 md:px-10 md:py-3 rounded-md"
                       onClick={() => {
                         handleWithdrawTrade(currentTrade?.id);
-                        setButtonClicked(true);
+                        setWithdrawButtonClicked(true);
                       }}
                     >
-                      {!txWait && !buttonClicked && (
+                      {!withdraw && !withdrawButtonClicked && (
                         <>
                           <span>WITHDRAW YOUR ASSETS</span>
                         </>
                       )}
-                      {txWait && (
+                      {withdraw && (
                         <>
                           <AiOutlineLoading className="animate-spin h-5 w-5 " />
                           <span>WITHDRAWAL IN PROGRESS</span>
                         </>
                       )}
-                      {!txWait && buttonClicked && (
+                      {withdrawButtonClicked && !withdraw && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
                           <span>WITHDRAWN</span>
@@ -288,27 +294,27 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.isCreatedByYou && (
-                  <div className="mt-5 flex flex-1">
+                {isPending && (
+                  <div className="mt-5 flex">
                     <button
-                      className="flex flex-row items-center justify-center p-4 m-auto text-red-700 bg-red-300 rounded-md"
+                      className="flex flex-row items-center justify-center p-4 m-auto font-semibold text-red-700 bg-red-300 rounded-md font-semibold"
                       onClick={() => {
                         handleCancelTrade(currentTrade?.id);
-                        setButtonClicked(true);
+                        setCancelButtonClicked(true);
                       }}
                     >
-                      {!txWait && !buttonClicked && (
+                      {!cancel && !cancelButtonClicked && (
                         <>
                           <span>CANCEL TRANSACTION</span>
                         </>
                       )}
-                      {txWait && (
+                      {cancel && (
                         <>
                           <AiOutlineLoading className="text-red-700 animate-spin h-5 w-5 " />
                           <span>CANCELLING...</span>
                         </>
                       )}
-                      {!txWait && buttonClicked && (
+                      {cancelButtonClicked && !cancel && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
                           <span>CANCELLED</span>
@@ -324,24 +330,24 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       className="flex flex-row items-center justify-center p-4 m-auto font-semibold text-bg bg-secondary-600 border border-secondary-300 rounded-md"
                       onClick={() => {
                         handleConfirmTrade(currentTrade?.id);
-                        setButtonClicked(true);
+                        setConfirmButtonClicked(true);
                       }}
                     >
-                      {!txWait && !buttonClicked && (
+                      {!confirm && !confirmButtonClicked && (
                         <>
                           <span>CONFIRM TRANSACTION</span>
                         </>
                       )}
-                      {txWait && (
+                      {confirm && (
                         <>
                           <AiOutlineLoading className="animate-spin h-5 w-5 " />
                           <span>WAITING FOR CONFIRMATION...</span>
                         </>
                       )}
-                      {!txWait && buttonClicked && (
+                      {!confirm && confirmButtonClicked && (
                         <>
                           <AiOutlineCheck className="text-green h-5 w-5" />
-                          <span>CONFIRMED</span>
+                          <span>COMPLETED</span>
                         </>
                       )}
                     </button>
