@@ -175,10 +175,40 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     currentTrade.status,
     dispatch,
   ]);
+  const formatSymbolAndAmountSeller = () => {
+    const symbol =
+      currentTrade.tradeType === "NFT to Token" ||
+      currentTrade.tradeType === "NFT to ETH" ||
+      currentTrade.tradeType === "NFT to NFT"
+        ? "NFT"
+        : currentTrade.symbolAssetToSend;
+    const amount =
+      currentTrade.tradeType === "NFT to Token" ||
+      currentTrade.tradeType === "NFT to ETH" ||
+      currentTrade.tradeType === "NFT to NFT"
+        ? "TOKEN ID: " + parseInt(currentTrade.amountOfAssetToSend)
+        : currentTrade.amountOfAssetToSend;
+    return `${symbol} ${amount}`;
+  };
+  const formatSymbolAndAmountbuyer = () => {
+    const symbol =
+      currentTrade.tradeType === "Token to NFT" ||
+      currentTrade.tradeType === " ETH to NFT" ||
+      currentTrade.tradeType === "NFT to NFT"
+        ? "NFT"
+        : currentTrade.symbolAssetToReceive;
 
+    const amount =
+      currentTrade.tradeType === "Token to NFT" ||
+      currentTrade.tradeType === "ETH to NFT" ||
+      currentTrade.tradeType === "NFT to NFT"
+        ? "TOKEN ID: " + parseInt(currentTrade.amountOfAssetToReceive)
+        : currentTrade.amountOfAssetToReceive;
+
+    return `${symbol} ${amount}`;
+  };
   return (
     <Layout>
-
       {isLoading ? (
         <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full  uppercase">
           <Spinner /> Loading...
@@ -232,13 +262,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={`${currentTrade.symbolAssetToSend}  ${currentTrade.amountOfAssetToSend}`}
+                  value={formatSymbolAndAmountSeller()}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={`${currentTrade.symbolAssetToReceive}   ${currentTrade.amountOfAssetToReceive} `}
+                  value={formatSymbolAndAmountbuyer()}
                 />
               </div>
             </div>
@@ -280,7 +310,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.isCreatedByYou &&
+                {isPending && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto text-red-700 bg-red-300 rounded-md"
@@ -308,7 +338,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       )}
                     </button>
                   </div>
-                }
+                )}
 
                 {isPending && !currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
