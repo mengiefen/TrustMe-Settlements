@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import HeroImage from "../../assets/9.png";
 import Button from "../elements/Button";
@@ -7,16 +7,17 @@ import { useFormatAddress } from "@/hooks/hooks";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from 'next/link'
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
-import { getTrade } from "@/helpers/getterHelpers";
 import { BsArrowDown, BsArrowRight } from "react-icons/bs";
+import FlashMessage from "../FlashMessage";
 
 const Hero = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
-  const { address, isConnected } = useAccount({});
+  const { address, isConnected } = useAccount();
+  const [flash, setFlash] = useState(false);
   const router = useRouter();
 
   const { buttonText, address: userAddress } = useSelector(
@@ -34,8 +35,10 @@ const Hero = () => {
       await connectAsync({ connector });
       await dispatch(connectWallet(address));
       await router.push("/list");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      if (err.message == "Connector not found") {
+        setFlash(true);
+      }
     }
   };
 
@@ -46,6 +49,7 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5 ">
+      {flash && <FlashMessage type="alert" message="Please install metamask" />}
       <div
         className="flex flex-col md:flex-row-reverse items-center justify-center w-[80%]
                        mb-5 md:gap-5 lg:gap-10 md:w-full"
@@ -74,10 +78,14 @@ const Hero = () => {
           {isMounted && (
             <div className="mt-5 flex flex-col justify-center items-center md:items-start md:mt-10">
               <Button
-                label={buttonText}
+                label={
+                  isConnected && address
+                    ? "Disconnect Wallet"
+                    : "Connect  Wallet"
+                }
                 variant="primary"
                 onClick={() => {
-                  if (isConnected) {
+                  if (isConnected && address) {
                     handleDisconnect();
                     return;
                   }
@@ -88,8 +96,8 @@ const Hero = () => {
               />
 
               <div className="flex flex-col items-center justify-center w-[80%] mt-5">
-                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg md:tracking-wider">
-                  {formattedAddress}
+                <p className="text-center text-text font-light leading-6 md:tracking-wider md:text-lg">
+                  {isConnected && address && `${formattedAddress}`}
                 </p>
               </div>
             </div>
@@ -97,15 +105,15 @@ const Hero = () => {
         </div>
       </div>
       {isConnected && (
-        <Link href="/list"
-          className="hidden md:block absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-200  bg-transparent font-medium
-            border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
+        <Link
+          href="/list"
+          className="hidden md:flex md:flex-row absolute z-1000 bottom-2 right-5 gap-2 items-center text-gary-200  bg-transparent
+            border-gray-700 border-2 px-4 py-3 md:px-10 md:text-md md:tracking-widest hover:bg-transparent hover:text-purplish-500 hover:border-purplish-500"
         >
           <span>View Transactions</span>
-          <BsArrowDown className="border border-purplish-600 rounded-full p-1 text-xl"  />
+          <BsArrowDown className="animate-bounce border border-gray-500 hover:border-purplish-600 rounded-full p-[2px] text-xl" />
         </Link>
-      )
-    }
+      )}
     </div>
   );
 };

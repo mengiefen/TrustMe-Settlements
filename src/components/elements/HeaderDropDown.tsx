@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { getFormatAddress } from "@/utils";
 import { FaCaretDown } from "react-icons/fa";
-import { useConnect, useDisconnect, useNetwork } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useNetwork } from "wagmi";
 import React, { useState } from "react";
 
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ const HeaderDropDown = () => {
   const { address, connected, userBalances } = useSelector(
     (state: RootState) => state.wallets,
   );
+  const { address: userAddress, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { connectAsync, connectors } = useConnect({});
   const router = useRouter();
@@ -56,7 +57,7 @@ const HeaderDropDown = () => {
           fontSize: connected ? "0.9rem" : "1rem",
         }}
       >
-        {connected
+        {connected && isConnected && userAddress
           ? `Connected: ${getFormatAddress(address)}`
           : "Connect Your Wallet"}
         <FaCaretDown className="ml-2" />
@@ -66,7 +67,7 @@ const HeaderDropDown = () => {
         className="border border-gray-700 shadow-2xl shadow-secondary-500 w-full bg-slate-700 z-100 absolute mt-2"
         style={{ display: showMenu ? "block" : "none" }}
       >
-        {connected && (
+        {connected && isConnected && userAddress && (
           <ul className="py-2 text-text-dark bg-transparent max-h-[500px] no-scrollbar overflow-y-scroll">
             <li className="hover:bg-bg-light hover:text-secondary-400 p-2 px-4  flex flex-col">
               <span className="bg-secondary-900 p-2 text-[20px] rounded-lg text-text">{`${userBalances?.currencyBalance?.substring(
@@ -97,7 +98,7 @@ const HeaderDropDown = () => {
           </ul>
         )}
         <div className="py-2">
-          {!connected ? (
+          {!connected && !isConnected ? (
             <a
               href="#"
               className="text-secondary-300 block px-4 py-2 hover:bg-bg-light hover:text-secondary-600"
