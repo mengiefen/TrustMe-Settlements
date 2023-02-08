@@ -8,7 +8,12 @@ import Layout from "@/Layout";
 import { parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
-import { getFormatAddress, getFormatDate } from "@/utils";
+import {
+  formatSymbolAndAmountbuyer,
+  formatSymbolAndAmountSeller,
+  getFormatAddress,
+  getFormatDate,
+} from "@/utils";
 import { useRouter } from "next/router";
 import { fetchTrade } from "@/helpers/fetchTrade";
 import { TradeData } from "@/components/TransactionList/type";
@@ -178,7 +183,6 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   return (
     <Layout>
-
       {isLoading ? (
         <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full  uppercase">
           <Spinner /> Loading...
@@ -232,13 +236,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={`${currentTrade.symbolAssetToSend}  ${currentTrade.amountOfAssetToSend}`}
+                  value={formatSymbolAndAmountSeller(currentTrade)}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={`${currentTrade.symbolAssetToReceive}   ${currentTrade.amountOfAssetToReceive} `}
+                  value={formatSymbolAndAmountbuyer(currentTrade)}
                 />
               </div>
             </div>
@@ -280,7 +284,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.isCreatedByYou &&
+                {isPending && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto text-red-700 bg-red-300 rounded-md"
@@ -308,7 +312,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       )}
                     </button>
                   </div>
-                }
+                )}
 
                 {isPending && !currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">

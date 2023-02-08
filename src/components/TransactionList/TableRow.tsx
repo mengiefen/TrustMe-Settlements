@@ -27,7 +27,7 @@ const TableRow = ({
   amountOfTokenToSell,
   TransferTokenId,
   isCreatedByYou,
- tradeType,
+  tradeType,
   status,
   txId,
 }: RowProps) => {
@@ -53,10 +53,11 @@ const TableRow = ({
               <RiArrowLeftDownLine className="text-green-400 inline-block mr-1 md:mr-2 border border-green-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {
-                (tradeType === "NFT to ETH" || tradeType === "NFT to NFT" || tradeType === "NFT to Token") ?
-                `Id: ${parseInt(amountOfTokenToBuy)}` : amountOfTokenToBuy
-              }
+              {tradeType === "ETH to NFT" ||
+              tradeType === "NFT to NFT" ||
+              tradeType === "Token to NFT"
+                ? `TOKEN ID: ${parseInt(amountOfTokenToBuy)}`
+                : amountOfTokenToBuy}
               <span className="mr-1 text-gray-400 text-[20px]">
                 {ReceiveTokenId}
               </span>
@@ -67,10 +68,11 @@ const TableRow = ({
               <RiArrowRightUpLine className="text-red-400 inline-block mr-1 md:mr-2 border border-red-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {
-                (tradeType === "ETH to NFT" || tradeType === "NFT to NFT" || tradeType === "Token to NFT") ?
-               `Id: ${parseInt(amountOfTokenToSell)}` : amountOfTokenToSell
-              }
+              {tradeType === "NFT to ETH" ||
+              tradeType === "NFT to NFT" ||
+              tradeType === "NFT to ETH"
+                ? `TOKEN ID: ${parseInt(amountOfTokenToSell)}`
+                : amountOfTokenToSell}
               <span className="mr-1 text-gray-300 text-[20px] ">
                 {TransferTokenId}
               </span>
@@ -87,13 +89,13 @@ const TableRow = ({
           </div>
         </div>
 
-        {status === "Pending" &&  (
+        {status === "Pending" && (
           <Link
             href={`/list/${txId}`}
             className="outline-none border-none py-1 px-2 flex items-center justify-center bg-slate-900 text-sm font-normal"
           >
             <span className="mr-2 text-gray-400 hover:text-light-orange-400">
-              {isCreatedByYou ? "Awaiting Confirmation" : "You to Confirm" }
+              {isCreatedByYou ? "Awaiting Confirmation" : "You to Confirm"}
             </span>
 
             <MdOutlineArrowForward className="hover:translate-x-1 transition duration-200 text-gray-400 hover:text-light-orange-400" />
