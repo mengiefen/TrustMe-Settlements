@@ -1,6 +1,6 @@
 import { useFormatAddress } from "@/hooks/hooks";
 import Link from "next/link";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Button from "./Button";
 import { useAccount, useDisconnect, useConnect, Connector } from "wagmi";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -13,6 +13,7 @@ import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 type menuProps = {
   isActive: boolean;
   showMenu: () => void;
+  setIsActive : Dispatch<SetStateAction<boolean>>
 };
 
 const MobileMenu = (props: menuProps) => {
@@ -31,7 +32,7 @@ const MobileMenu = (props: menuProps) => {
   });
 
   const { disconnect } = useDisconnect();
-  const { showMenu, isActive } = props;
+  const { showMenu, isActive, setIsActive } = props;
 
   const formattedAddress = useFormatAddress(userAddress);
   const handleDisconnect = async () => {
@@ -52,6 +53,11 @@ const MobileMenu = (props: menuProps) => {
     }
   };
 
+
+  const handleMenuclick = () => {
+    setIsActive(false);
+  }
+
   return (
     <div
       className={
@@ -67,7 +73,7 @@ const MobileMenu = (props: menuProps) => {
       <div className="flex flex-col w-11/12 px-[60px] py-5">
         <div className="flex flex-row justify-end">
           <ul className="flex flex-col items-end justify-end">
-            <li className="py-2 hover:-translate-x-1 transition duration-300">
+            <li className="py-2 hover:-translate-x-1 transition duration-300" onClick={handleMenuclick}>
               <Link href="/" className="py-3  text-xl">
                 Home
               </Link>
