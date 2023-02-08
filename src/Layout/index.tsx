@@ -83,6 +83,8 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
+      <title>Trust Me</title>
+      <meta property="og:title" content="Trust Me" key="title" />
       {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
       ) : isTradeCanceled ? (

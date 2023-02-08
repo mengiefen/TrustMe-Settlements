@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import HeroImage from "../../assets/9.png";
 import Button from "../elements/Button";
@@ -12,12 +12,14 @@ import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
 import { getTrade } from "@/helpers/getterHelpers";
 import { BsArrowDown, BsArrowRight } from "react-icons/bs";
+import FlashMessage from "../FlashMessage";
 
 const Hero = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
   const { address, isConnected } = useAccount({});
   const router = useRouter();
+  const [flash, setFlash] = useState(false)
 
   const { buttonText, address: userAddress } = useSelector(
     (state: RootState) => state.wallets,
@@ -34,8 +36,10 @@ const Hero = () => {
       await connectAsync({ connector });
       await dispatch(connectWallet(address));
       await router.push("/list");
-    } catch (err) {
-      console.log(err);
+    } catch (err : any) {
+      if(err.message == "Connector not found"){
+        setFlash(true)
+      }
     }
   };
 
@@ -46,6 +50,9 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5 ">
+      {
+        flash && <FlashMessage type="alert" message="Please install metamask"/>
+      }
       <div
         className="flex flex-col md:flex-row-reverse items-center justify-center w-[80%]
                       mb-3 md:gap-5 lg:gap-10 md:w-full"
@@ -81,7 +88,7 @@ const Hero = () => {
                     handleDisconnect();
                     return;
                   }
-                  handleConnect(connectors[0]);
+                  handleConnect(connectors[0])
                 }}
                 size="large"
                 bg="bg-gradient-to-r from-purplish-800 to-secondary-800 md:py-4 md:px-12 lg:px-20 md:text-lg md:tracking-widest"
