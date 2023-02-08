@@ -8,7 +8,12 @@ import Layout from "@/Layout";
 import { parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
-import { getFormatAddress, getFormatDate } from "@/utils";
+import {
+  formatSymbolAndAmountbuyer,
+  formatSymbolAndAmountSeller,
+  getFormatAddress,
+  getFormatDate,
+} from "@/utils";
 import { useRouter } from "next/router";
 import { fetchTrade } from "@/helpers/fetchTrade";
 import { TradeData } from "@/components/TransactionList/type";
@@ -175,38 +180,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
     currentTrade.status,
     dispatch,
   ]);
-  const formatSymbolAndAmountSeller = () => {
-    const symbol =
-      currentTrade.tradeType === "NFT to Token" ||
-      currentTrade.tradeType === "NFT to ETH" ||
-      currentTrade.tradeType === "NFT to NFT"
-        ? "NFT"
-        : currentTrade.symbolAssetToSend;
-    const amount =
-      currentTrade.tradeType === "NFT to Token" ||
-      currentTrade.tradeType === "NFT to ETH" ||
-      currentTrade.tradeType === "NFT to NFT"
-        ? "TOKEN ID: " + parseInt(currentTrade.amountOfAssetToSend)
-        : currentTrade.amountOfAssetToSend;
-    return `${symbol} ${amount}`;
-  };
-  const formatSymbolAndAmountbuyer = () => {
-    const symbol =
-      currentTrade.tradeType === "Token to NFT" ||
-      currentTrade.tradeType === " ETH to NFT" ||
-      currentTrade.tradeType === "NFT to NFT"
-        ? "NFT"
-        : currentTrade.symbolAssetToReceive;
 
-    const amount =
-      currentTrade.tradeType === "Token to NFT" ||
-      currentTrade.tradeType === "ETH to NFT" ||
-      currentTrade.tradeType === "NFT to NFT"
-        ? "TOKEN ID: " + parseInt(currentTrade.amountOfAssetToReceive)
-        : currentTrade.amountOfAssetToReceive;
-
-    return `${symbol} ${amount}`;
-  };
   return (
     <Layout>
       {isLoading ? (
@@ -262,13 +236,13 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={formatSymbolAndAmountSeller()}
+                  value={formatSymbolAndAmountSeller(currentTrade)}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={formatSymbolAndAmountbuyer()}
+                  value={formatSymbolAndAmountbuyer(currentTrade)}
                 />
               </div>
             </div>
