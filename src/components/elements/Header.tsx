@@ -61,7 +61,7 @@ const Header = ({
         <DesktopMenu />
       </nav>
 
-      <MobileMenu showMenu={() => showMenu()} isActive={isActive} />
+      <MobileMenu showMenu={() => showMenu()} isActive={isActive} setIsActive ={setIsActive} />
     </div>
   );
 };

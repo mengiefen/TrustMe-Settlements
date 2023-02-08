@@ -20,8 +20,8 @@ const InfoCard = (props: InfoCardProps) => {
           : value == "Canceled"
           ? " border-red-500 "
           : value == "Withdrawn"
-          ? " border-secondary-500 "
-          : " border-slate-600 "
+          ? "border-secondary-500"
+          : "border-slate-600 "
       }`}
     >
       <div className="flex items-center justify-start">

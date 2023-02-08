@@ -178,6 +178,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
 
   return (
     <Layout>
+
       {isLoading ? (
         <div className="flex items-center gap-2 text-xl text-secondary-800 justify-center w-full  uppercase">
           <Spinner /> Loading...
@@ -252,7 +253,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                 {isExpired && currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">
                     <button
-                      className="flex flex-row items-center justify-center p-4 m-auto bg-yellow-300 rounded-md"
+                      className="flex flex-row items-center justify-center p-4 m-auto text-bg bg-secondary-200 md:px-10 md:py-3 rounded-md"
                       onClick={() => {
                         handleWithdrawTrade(currentTrade?.id);
                         setButtonClicked(true);
@@ -279,7 +280,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                   </div>
                 )}
 
-                {isPending && currentTrade.isCreatedByYou && (
+                {isPending && currentTrade.isCreatedByYou &&
                   <div className="mt-5 flex flex-1">
                     <button
                       className="flex flex-row items-center justify-center p-4 m-auto text-red-700 bg-red-300 rounded-md"
@@ -307,7 +308,7 @@ const TransactionDetail = (props: TransactionDetailProps) => {
                       )}
                     </button>
                   </div>
-                )}
+                }
 
                 {isPending && !currentTrade.isCreatedByYou && (
                   <div className="mt-5 flex flex-1">

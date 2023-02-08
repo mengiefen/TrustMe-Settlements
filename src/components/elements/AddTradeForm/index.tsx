@@ -56,7 +56,7 @@ export default function AddTradeForm() {
   const { formData, setFormData } = useFormData();
 
   const RadioButtonSeller = () => (
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center md:p-4">
       <div className="text-lg font-medium">Which Asset Do you want to Send</div>
       <div className="flex items-center gap-8 justify-evenly my-10">
         <div className="flex items-center">
@@ -106,7 +106,7 @@ export default function AddTradeForm() {
   );
 
   const RadioButtonBuyer = () => (
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center md:p-4">
       {" "}
       <div> Which Asset Do you want to Receive</div>
       <div className="flex items-center gap-8 justify-evenly my-4">
@@ -371,7 +371,7 @@ export default function AddTradeForm() {
   }
 
   return (
-    <div className="w-full h-[calc(100vh-70px)] md:h-[calc(100vh-85px)] flex items-center justify-center ">
+    <div className="w-full min-h-[calc(100vh-70px)] md:min-h-[calc(100vh-85px)] flex items-center justify-center ">
       <form
         className="w-full flex items-center justify-center py-5 md:w-[80%] lg:w-[75%] xl:w-[65%] h-full px-5 lg:px-10"
         onSubmit={onSubmit}
@@ -383,8 +383,8 @@ export default function AddTradeForm() {
           <div className="flex justify-end mt-3">
             {pending ? <Pending /> : null}
           </div>
-          <div className="flex items-center justify-between mx-5">
-            <h3 className="py-5 font-semibold text-xl uppercase text-secondary-200 text-center">
+          <div className="flex items-center justify-between md:mx-5">
+            <h3 className="py-5 font-semibold md:text-xl uppercase text-secondary-200 text-center">
               Create New Transaction
             </h3>
             <div className="flex items-center justify-between">
@@ -393,7 +393,7 @@ export default function AddTradeForm() {
           </div>
 
           <span className="text-gray-400"> {step}</span>
-          <div className="flex gap-2 justify-between mx-5 md:mx-10] mt-10">
+          <div className="flex gap-2 justify-between md:mx-10 mt-10">
             {!isFirstStep && (
               <button
                 className="py-2 text-white text-sm rounded shadow-md bg-purplish-800 
