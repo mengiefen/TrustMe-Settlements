@@ -24,14 +24,8 @@ export const useEthereum = () => {
 export const useFormatAddress = (
   address: `0x${string}` | undefined | string,
 ) => {
-  if (
-    address != undefined &&
-    address != "" &&
-    address != null
-  ) {
-    return (
-      address?.slice(0, 4) + " ... " + address?.slice(-4)
-    );
+  if (address != undefined && address != "" && address != null) {
+    return address?.slice(0, 4) + " ... " + address?.slice(-4);
   }
 
   return "";
@@ -47,20 +41,12 @@ export const useFormatDate = (unixTime: number) => {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
 
-  return `${day}/${month}/${year} ${changeTo12Hour(
-    hours,
-    minutes,
-    seconds,
-  )}`;
+  return `${day}/${month}/${year} ${changeTo12Hour(hours, minutes, seconds)}`;
 };
 
 export const useFormatDateStatus = (unixTime: number) => {
   const date = new Date(unixTime * 1000).getTime(); // Unix timestamp in milliseconds
   const dateNow = new Date().getTime(); // Unix timestamp in milliseconds
-
-  console.log("date", date);
-  console.log("dateNow", dateNow);
-
   if (date > dateNow) {
     return "Pending";
   }
@@ -68,11 +54,7 @@ export const useFormatDateStatus = (unixTime: number) => {
   return "Expired";
 };
 
-const changeTo12Hour = (
-  hours: number,
-  minutes: number,
-  seconds: number,
-) => {
+const changeTo12Hour = (hours: number, minutes: number, seconds: number) => {
   let hours12 = hours;
   let ampm = "AM";
 

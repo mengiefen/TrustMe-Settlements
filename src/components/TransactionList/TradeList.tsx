@@ -13,30 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice";
 import { RootState } from "@/redux/store";
 
-// import { useQuery } from "@apollo/client";
-// import { GET_ALL_TRADES, GET_TRADE_BY_ID } from "@/helpers/getDataFromGraph";
-
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any;
   const tradeList = useSelector((state: RootState) => state.trades.data);
   const [isLoading, setLoading] = React.useState(true);
   const { address } = useAccount();
   const dispatch = useDispatch();
-
-  // const {
-  //   loading: isListFetchingLoading,
-  //   error: isListFetchingError,
-  //   data: tradeListsFromGraph,
-  // } = useQuery(GET_ALL_TRADES);
-  // console.log(tradeListsFromGraph);
-  // const {
-  //   loading: isTradeLoading,
-  //   error: isTradeFetchError,
-  //   data: tradeFromGraph,
-  // } = useQuery(GET_TRADE_BY_ID, {
-  //   variables: { id: 0 },
-  // });
-  // console.log(tradeFromGraph);
 
   useEffect(() => {
     if (!address) return;
@@ -114,6 +96,7 @@ const TradeList = () => {
                     status={trade.status}
                     TransferTokenId={trade.symbolAssetToSend}
                     isCreatedByYou={trade.isCreatedByYou}
+                    tradeType={trade.tradeType}
                     ReceiveTokenId={trade.symbolAssetToReceive}
                     txId={trade.id}
                   />
@@ -136,6 +119,7 @@ const TradeList = () => {
                     TransferTokenId={trade.symbolAssetToSend}
                     ReceiveTokenId={trade.symbolAssetToReceive}
                     isCreatedByYou={trade.isCreatedByYou}
+                    tradeType={trade.tradeType}
                     txId={trade.id}
                   />
                 );

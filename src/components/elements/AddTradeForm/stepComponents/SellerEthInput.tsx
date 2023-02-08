@@ -14,7 +14,6 @@ const SellerEthInput = () => {
         name="sellerTokenAmount"
         //   value={formData?.sellerEthAmount || 0}
         onChange={(e) => {
-          console.log(parseFloat(e.target.value));
           setFormData({
             ...formData,
             sellerEthAmount: parseFloat(e.target.value),

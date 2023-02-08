@@ -1,7 +1,12 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import React from "react";
 import { Chrono } from "react-chrono";
-import { TimelineItemModel } from "react-chrono/dist/models";
+type TimelineItemModel = {
+  title: string;
+  cardTitle: string;
+  cardSubtitle: string;
+  cardDetailedText: string;
+};
 
 export const Usage = () => {
   const items: TimelineItemModel[] = [
@@ -63,7 +68,7 @@ export const Usage = () => {
       >
         <Chrono
           items={items}
-          mode={width > 992 ? "VERTICAL_ALTERNATING" : "VERTICAL"}
+          mode={(width as number) > 992 ? "VERTICAL_ALTERNATING" : "VERTICAL"}
           allowDynamicUpdate
           lineWidth={3}
           mediaHeight={0}

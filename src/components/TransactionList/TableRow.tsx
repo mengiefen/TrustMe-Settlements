@@ -13,7 +13,8 @@ interface RowProps {
   TransferTokenId?: string;
   amountOfTokenToBuy: string;
   amountOfTokenToSell: string;
-  isCreatedByYou: boolean,
+  isCreatedByYou: boolean;
+  tradeType: string;
   status: string;
   txId: number;
 }
@@ -21,11 +22,12 @@ interface RowProps {
 const TableRow = ({
   userPic = <FaUserCircle className="text-secondary-900 w-[40px] h-[40px]" />,
   buyerAddress = "",
-  amountOfTokenToBuy="NFT",
-  ReceiveTokenId = "USDT",
-  amountOfTokenToSell="NFT",
-  TransferTokenId = "TKN",
+  amountOfTokenToBuy,
+  ReceiveTokenId,
+  amountOfTokenToSell,
+  TransferTokenId,
   isCreatedByYou,
+ tradeType,
   status,
   txId,
 }: RowProps) => {
@@ -46,13 +48,15 @@ const TableRow = ({
               </span>
             </a>
           </div>
-
           <div className="col-span-3 overflow-clip  text-secondary-800 flex items-center">
             {
               <RiArrowLeftDownLine className="text-green-400 inline-block mr-1 md:mr-2 border border-green-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {amountOfTokenToBuy}
+              {
+                (tradeType === "NFT to ETH" || tradeType === "NFT to NFT" || tradeType === "NFT to Token") ?
+                `Id: ${parseInt(amountOfTokenToBuy)}` : amountOfTokenToBuy
+              }
               <span className="mr-1 text-gray-400 text-[20px]">
                 {ReceiveTokenId}
               </span>
@@ -63,7 +67,10 @@ const TableRow = ({
               <RiArrowRightUpLine className="text-red-400 inline-block mr-1 md:mr-2 border border-red-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {amountOfTokenToSell}
+              {
+                (tradeType === "ETH to NFT" || tradeType === "NFT to NFT" || tradeType === "Token to NFT") ?
+               `Id: ${parseInt(amountOfTokenToSell)}` : amountOfTokenToSell
+              }
               <span className="mr-1 text-gray-300 text-[20px] ">
                 {TransferTokenId}
               </span>
