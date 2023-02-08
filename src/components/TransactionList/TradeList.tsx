@@ -12,6 +12,7 @@ import Spinner from "../elements/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTradesPending, fetchTrades } from "@/redux/trade/tradesSlice";
 import { RootState } from "@/redux/store";
+import { formatAmountToSend, formatAmountToReceive } from "@/utils";
 
 const TradeList = () => {
   const [pendingTrades, setPendingTrades] = React.useState([]) as any;
@@ -91,8 +92,8 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.amountOfAssetToReceive}
-                    amountOfTokenToSell={trade.amountOfAssetToSend}
+                    amountOfTokenToBuy={formatAmountToReceive(trade)}
+                    amountOfTokenToSell={formatAmountToSend(trade)}
                     status={trade.status}
                     TransferTokenId={trade.symbolAssetToSend}
                     isCreatedByYou={trade.isCreatedByYou}
@@ -113,8 +114,8 @@ const TradeList = () => {
                   <TableRow
                     key={index}
                     buyerAddress={trade.buyer}
-                    amountOfTokenToBuy={trade.amountOfAssetToReceive}
-                    amountOfTokenToSell={trade.amountOfAssetToSend}
+                    amountOfTokenToBuy={formatAmountToReceive(trade)}
+                    amountOfTokenToSell={formatAmountToSend(trade)}
                     status={trade.status}
                     TransferTokenId={trade.symbolAssetToSend}
                     ReceiveTokenId={trade.symbolAssetToReceive}

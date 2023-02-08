@@ -75,45 +75,29 @@ export const getFormatAddress = (
 
   return "";
 };
-export const formatSymbolAndAmountbuyer = (trade: TradeData) => {
-  let symbol: string;
-  if (!trade.isCreatedByYou) {
-    symbol =
-      trade.tradeType === "Token to NFT" ||
-      trade.tradeType === "ETH to NFT" ||
-      trade.tradeType === "NFT to NFT"
-        ? "NFT"
-        : trade.symbolAssetToReceive;
-  } else {
-    symbol =
-      trade.tradeType === "NFT to ETH" ||
-      trade.tradeType === "NFT to Token" ||
-      trade.tradeType === "NFT to NFT"
-        ? "NFT"
-        : trade.symbolAssetToReceive;
+export const formatAmountToReceive = (trade: TradeData) => {
+  if (trade.isCreatedByYou) {
+    return trade.tradeType.split(" ")[2] === "NFT"
+      ? `ID: ${removeLeadingZeros(trade.amountOfAssetToReceive)}`
+      : trade.amountOfAssetToReceive;
   }
 
-  const amount =
-    trade.tradeType === "Token to NFT" ||
-    trade.tradeType === "ETH to NFT" ||
-    trade.tradeType === "NFT to NFT"
-      ? "TOKEN ID: " + parseInt(trade.amountOfAssetToReceive)
-      : trade.amountOfAssetToReceive;
-
-  return `${symbol} ${amount}`;
+  return trade.tradeType.split(" ")[0] === "NFT"
+    ? `ID: ${trade.amountOfAssetToReceive}`
+    : trade.amountOfAssetToReceive;
 };
-export const formatSymbolAndAmountSeller = (trade: TradeData) => {
-  const symbol =
-    (trade.isCreatedByYou && trade.tradeType === "NFT to Token") ||
-    trade.tradeType === "NFT to ETH" ||
-    trade.tradeType === "NFT to NFT"
-      ? "NFT"
-      : trade.symbolAssetToSend;
-  const amount =
-    trade.tradeType === "NFT to Token" ||
-    trade.tradeType === "NFT to ETH" ||
-    trade.tradeType === "NFT to NFT"
-      ? "ID: " + parseInt(trade.amountOfAssetToSend)
+export const formatAmountToSend = (trade: TradeData) => {
+  if (trade.isCreatedByYou) {
+    return trade.tradeType.split(" ")[0] === "NFT"
+      ? `ID: ${removeLeadingZeros(trade.amountOfAssetToSend)}`
       : trade.amountOfAssetToSend;
-  return `${symbol} ${amount}`;
+  }
+
+  return trade.tradeType.split(" ")[2] === "NFT"
+    ? `ID: ${removeLeadingZeros(trade.amountOfAssetToSend)}`
+    : trade.amountOfAssetToSend;
+};
+
+const removeLeadingZeros = (value: string) => {
+  return value.replace(/^0+/g, "").replace(/./, "").replace(/^0+/, "");
 };

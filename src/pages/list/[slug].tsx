@@ -9,8 +9,8 @@ import { parseEther } from "ethers/lib/utils.js";
 import { AiOutlineCheck, AiOutlineLoading } from "react-icons/ai";
 import InfoCard from "../../components/elements/InfoCard";
 import {
-  formatSymbolAndAmountbuyer,
-  formatSymbolAndAmountSeller,
+  formatAmountToSend,
+  formatAmountToReceive,
   getFormatAddress,
   getFormatDate,
 } from "@/utils";
@@ -236,13 +236,17 @@ const TransactionDetail = (props: TransactionDetailProps) => {
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO SEND"}
-                  value={formatSymbolAndAmountSeller(currentTrade)}
+                  value={`${
+                    currentTrade.symbolAssetToSend
+                  }  ${formatAmountToSend(currentTrade)}`}
                 />
               </div>
               <div className="flex flex-row items-center justify-between w-1/2 pr-2 md:w-full md:h-1/2">
                 <InfoCard
                   label={"ASSET TO RECEIVE"}
-                  value={formatSymbolAndAmountbuyer(currentTrade)}
+                  value={`${
+                    currentTrade.symbolAssetToReceive
+                  }   ${formatAmountToReceive(currentTrade)} `}
                 />
               </div>
             </div>

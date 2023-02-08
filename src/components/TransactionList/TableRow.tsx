@@ -11,8 +11,8 @@ interface RowProps {
   buyerAddress?: string;
   ReceiveTokenId?: string;
   TransferTokenId?: string;
-  amountOfTokenToBuy: string;
-  amountOfTokenToSell: string;
+  amountOfTokenToBuy: string | number;
+  amountOfTokenToSell: string | number;
   isCreatedByYou: boolean;
   tradeType: string;
   status: string;
@@ -53,11 +53,7 @@ const TableRow = ({
               <RiArrowLeftDownLine className="text-green-400 inline-block mr-1 md:mr-2 border border-green-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {tradeType === "ETH to NFT" ||
-              tradeType === "NFT to NFT" ||
-              tradeType === "Token to NFT"
-                ? `TOKEN ID: ${parseInt(amountOfTokenToBuy)}`
-                : amountOfTokenToBuy}
+              {amountOfTokenToBuy}
               <span className="mr-1 text-gray-400 text-[20px]">
                 {ReceiveTokenId}
               </span>
@@ -68,11 +64,7 @@ const TableRow = ({
               <RiArrowRightUpLine className="text-red-400 inline-block mr-1 md:mr-2 border border-red-400 rounded-full" />
             }
             <div className="flex flex-col">
-              {tradeType === "NFT to ETH" ||
-              tradeType === "NFT to NFT" ||
-              tradeType === "NFT to ETH"
-                ? `TOKEN ID: ${parseInt(amountOfTokenToSell)}`
-                : amountOfTokenToSell}
+              {amountOfTokenToSell}
               <span className="mr-1 text-gray-300 text-[20px] ">
                 {TransferTokenId}
               </span>

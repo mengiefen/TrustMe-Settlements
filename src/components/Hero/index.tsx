@@ -104,7 +104,7 @@ const Hero = () => {
           )}
         </div>
       </div>
-      {isConnected && (
+      {isConnected && address && (
         <Link
           href="/list"
           className="hidden md:flex md:flex-row absolute z-1000 bottom-2 right-5 gap-2 items-center text-gary-200  bg-transparent
