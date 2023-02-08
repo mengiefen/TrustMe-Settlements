@@ -18,6 +18,7 @@ import { updateUseBalances } from "@/redux/wallet/walletSlice";
 import { TokenListType } from "@/components/TransactionList/type";
 import { logout } from "@/redux/store";
 import { clearTrades } from "@/redux/trade/tradesSlice";
+import Head from "next/head";
 type LayoutProps = {
   children: ReactElement<any> | ReactComponentElement<any>;
   bg?: string;
@@ -83,6 +84,19 @@ const Layout = (props: LayoutProps) => {
       } flex flex-col justify-between items-center overflow-hidden w-screen
        md:px-10 lg:px-20`}
     >
+      <Head>
+        <title>
+          Trust Me |{" "}
+          {pathname == "/"
+            ? "Home"
+            : pathname == "/addTrade"
+            ? "Add Trade"
+            : pathname == "/list"
+            ? "Transactions List"
+            : "Service"}
+        </title>
+        <meta property="og:title" content="Trust Me" key="title" />
+      </Head>
       {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
       ) : isTradeCanceled ? (

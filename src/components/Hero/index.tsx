@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import HeroImage from "../../assets/9.png";
 import Button from "../elements/Button";
@@ -7,16 +7,17 @@ import { useFormatAddress } from "@/hooks/hooks";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from 'next/link'
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { connectWallet, disconnectWallet } from "@/redux/wallet/walletSlice";
-import { getTrade } from "@/helpers/getterHelpers";
 import { BsArrowDown, BsArrowRight } from "react-icons/bs";
+import FlashMessage from "../FlashMessage";
 
 const Hero = () => {
   const isMounted = useIsMounted();
   const dispatch = useDispatch();
   const { address, isConnected } = useAccount({});
+  const [flash, setFlash] = useState(false);
   const router = useRouter();
 
   const { buttonText, address: userAddress } = useSelector(
@@ -34,8 +35,10 @@ const Hero = () => {
       await connectAsync({ connector });
       await dispatch(connectWallet(address));
       await router.push("/list");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      if (err.message == "Connector not found") {
+        setFlash(true);
+      }
     }
   };
 
@@ -46,6 +49,7 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col items-center justify-around mb-12 lg:min-h-screen md:py-5 ">
+      {flash && <FlashMessage type="alert" message="Please install metamask" />}
       <div
         className="flex flex-col md:flex-row-reverse items-center justify-center w-[80%]
                        mb-5 md:gap-5 lg:gap-10 md:w-full"
@@ -97,15 +101,15 @@ const Hero = () => {
         </div>
       </div>
       {isConnected && (
-        <Link href="/list"
+        <Link
+          href="/list"
           className="hidden md:block absolute z-1000 bottom-2 right-5 flex gap-2 items-center text-gary-200  bg-transparent font-medium
             border-gray-700 border-2 px-4 py-3 md:px-10 md:text-lg md:tracking-widest hover:bg-transparent hover:text-purplish-600 hover:border-purplish-600"
         >
           <span>View Transactions</span>
-          <BsArrowDown className="border border-purplish-600 rounded-full p-1 text-xl"  />
+          <BsArrowDown className="border border-purplish-600 rounded-full p-1 text-xl" />
         </Link>
-      )
-    }
+      )}
     </div>
   );
 };
