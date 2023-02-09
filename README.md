@@ -65,8 +65,8 @@ To get a local copy of this application run the following steps:
 
 ## How to use TrustMe
 
-> The first step is to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser extension wallet services.
-> The next step to use the TrustMe Services to settle your trade transactions. It is Simple. Safe & Reliable.
+> The first step is to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser wallet services extension.
+> The next step using the TrustMe Services to settle your trade transactions. It is Simple, Safe & Efficient.
 
 **Deployment on Vercel**
 
@@ -94,15 +94,10 @@ To get a local copy of this application run the following steps:
 
 👤 **Nico**
 
-- Github: [@mengiefen](https://github.com/mengiefen)
-- Twitter: [@MengistuFentaw](https://twitter.com/MengistuFentaw)
-- Linkedin: [@mengefen](https://www.linkedin.com/in/mengefen/)
-
 👤 **Anmol Pokhrel**
 
 - Github: [@pokhrelanmol](https://github.com/pokhrelanmol)
-- Twitter: [@0xanmol](https://twitter.com/0xanmol)
-- Linkedin: [@](https://www.linkedin.com/in//)
+- Twitter: [@AnmolPokhrel6](https://twitter.com/AnmolPokhrel6)
 
 ## 🤝 Contributing
 
