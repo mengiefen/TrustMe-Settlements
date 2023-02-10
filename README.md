@@ -9,7 +9,7 @@
     <img src="./public/TrustMeLogo/PurpleLogo.png" style="width: auto; height: 100px; " alt="Logo" />   
 </div>
 
-# TrustME Settlement Application
+# TrustME Application
 
 Trust<span className="text-secondary-600 leading-10">ME</span> is a full-fledge blockchain application which serves trade partners to process their trade with a middleman is replaced by a smart contract and everything is settled on a single ledger. It is a decentralized platform that allows users to trade assets with each other in a secure and transparent manner. The platform is built on Ethereum and uses smart contracts to facilitate the exchange of assets.
 
@@ -65,8 +65,10 @@ To get a local copy of this application run the following steps:
 
 ## How to use TrustMe
 
-> The first step to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser extension wallet services.
-> Then you can use the TrustMe Services to settle your trade transactions. It is Simple. Safe & Reliable.
+- The first step to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser extension wallet services.
+- Get test goerli ether from https://goerlifaucet.com/
+- Get test tokens from Uniswap with this link:https://app.uniswap.org/#/swap. You can exchange test goerli ETH with UNI or any other tokens.
+- Then you can test the TrustMe Services to settle your test trade. It is Simple. Safe & Efficient.
 
 **Useful Links**
 
