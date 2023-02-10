@@ -9,11 +9,11 @@
     <img src="./public/TrustMeLogo/PurpleLogo.png" style="width: auto; height: 100px; " alt="Logo" />   
 </div>
 
-# TrustMe Settlement
+# TrustME Settlement Application
 
-TrustMe Settlement is a full-fledge blockchain application which serves trade partners to process their with a middleman is replaced by a smart contract and everything is settled on a single ledger.
+Trust<span className="text-secondary-600 leading-10">ME</span> is a full-fledge blockchain application which serves trade partners to process their trade with a middleman is replaced by a smart contract and everything is settled on a single ledger. It is a decentralized platform that allows users to trade assets with each other in a secure and transparent manner. The platform is built on Ethereum and uses smart contracts to facilitate the exchange of assets.
 
-## App Screenshot
+## Screenshot
 
 <div style="background-color:white; padding: 10px;">
     <img src="./public/TrustMeLogo/Mock.com.png" style="width: %; height: auto;" alt="mobile  screenshot" />
@@ -65,20 +65,23 @@ To get a local copy of this application run the following steps:
 
 ## How to use TrustMe
 
-> The first step is to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser wallet services extension.
-> The next step using the TrustMe Services to settle your trade transactions. It is Simple, Safe & Efficient.
+> The first step to use the TrustMe Services is to connect with your wallet. You need to have an Ethereum web3 browser extension wallet services.
+> Then you can use the TrustMe Services to settle your trade transactions. It is Simple. Safe & Reliable.
 
-**Deployment on Vercel**
+**Useful Links**
 
-> ### [Live Website](https://trust-me-settlements.vercel.app/)
+> ### [Backend Link](https://github.com/Mr-Biskit/TrustMeBackend)
+
+> ### [TrustME Website Link](https://trust-me-settlements.vercel.app/)
 
 ## Authors
 
-👤 **Mengstu Fentaw**
+👤 **Nicolaes Tollenaar**
 
-- Github: [@mengiefen](https://github.com/mengiefen)
-- Twitter: [@MengistuFentaw](https://twitter.com/MengistuFentaw)
-- Linkedin: [@mengefen](https://www.linkedin.com/in/mengefen/)
+- Github: [@NicoTollenaar](https://github.com/NicoTollenaar)
+
+- Twitter: [@NicoTollenaar](https://twitter.com/NicoTollenaar)
+- Linkedin: [@nicolaes-tollenaar-4316492](https://www.linkedin.com/in/nicolaes-tollenaar-4316492/)
 
 👤 **Gabriel Vince**
 
@@ -92,12 +95,16 @@ To get a local copy of this application run the following steps:
 - Twitter: [@Rushike57195546](https://twitter.com/Rushike57195546)
 - Linkedin: [@rushi441](https://www.linkedin.com/in/rushi441/)
 
-👤 **Nico**
-
 👤 **Anmol Pokhrel**
 
 - Github: [@pokhrelanmol](https://github.com/pokhrelanmol)
-- Twitter: [@AnmolPokhrel6](https://twitter.com/AnmolPokhrel6)
+- Twitter: [@AnmolPokhrel6](https://twitter.com/@AnmolPokhrel6)
+
+👤 **Mengstu Fentaw**
+
+- Github: [@mengiefen](https://github.com/mengiefen)
+- Twitter: [@MengistuFentaw](https://twitter.com/MengistuFentaw)
+- Linkedin: [@mengefen](https://www.linkedin.com/in/mengefen/)
 
 ## 🤝 Contributing
 
