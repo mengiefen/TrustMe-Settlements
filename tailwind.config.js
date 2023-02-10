@@ -22,6 +22,7 @@ module.exports = {
       colors: {
         "menu-dark": "rgba(0, 0, 0, 0.1)",
         bg: "#202741",
+        "bg-transparent": "#202741aa",
         "bg-light": "#1e293b",
         secondary: {
           50: "#e6fafc",

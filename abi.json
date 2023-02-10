@@ -1,7 +1,5 @@
-
 [
-
-    {
+      {
       "inputs": [],
       "name": "CannotTradeSameToken",
       "type": "error"
@@ -749,4 +747,3 @@
     }
 
 ]
-
