@@ -95,7 +95,16 @@ const Layout = (props: LayoutProps) => {
             ? "Transactions List"
             : "Service"}
         </title>
-        <meta property="og:title" content="Trust Me" key="title" />
+        <meta property="og:title" content="Trust Me" key="title" />         
+        <meta name="description" content="TrustMe allows you to instantly settle peer-to-peer transactions in digital assets on a “Delivery-versus-Payment” basis”." key="desc" />
+        <meta
+          property="og:description"
+          content="TrustMe allows you to instantly settle peer-to-peer transactions in digital assets on a “Delivery-versus-Payment” basis”."
+        />
+        <meta
+          property="og:image"
+          content="https://live.staticflickr.com/65535/52688531719_355e0e04a1_b.jpg"
+        />
       </Head>
       {isTradeCreated ? (
         <FlashMessage message="Trade created!" type="success" />
